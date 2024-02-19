@@ -1,0 +1,18 @@
+.ng-valid:not(form).ng-touched {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form).ng-touched {
+  border-left: 5px solid #a94442; /* red */
+}
+
+.text-danger{
+  text-align: left;
+}
+
+.alert-danger{
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 10px;
+  padding-right: 10px; 
+}
