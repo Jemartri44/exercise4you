@@ -1,0 +1,153 @@
+<section class="position-relative py-4 py-xl-5">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6 col-xl-4">
+                <div class="card mb-5">
+                    <div class="card-body d-flex flex-column align-items-center">
+                        <form class="text-center" [formGroup]="registerForm">
+                            <h2 class="mb-4">Registrarse</h2>
+                            <!-- Datos de usuario -->
+                            <div class="mb-1"><label>Datos de usuario:</label></div>
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
+                                <div *ngIf="email.errors?.['required']">Es obligatorio introducir un correo electrónico</div>
+                                <div *ngIf="email.errors?.['email']">El formato del correo electrónico no es válido</div>
+                                <div *ngIf="email.errors?.['maxlength']">El correo electrónico es demasiado largo</div>
+                            </div>
+                            <div class="mb-1"><input class="form-control" type="email" formControlName="email" placeholder="Correo electrónico*"></div>
+                            <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+                                <div *ngIf="password.errors?.['required']">Es obligatorio introducir una contraseña</div>
+                                <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres</div>
+                                <div *ngIf="password.errors?.['maxlength']">La contraseña es demasiado larga</div>
+                            </div>
+                            <div class="mb-1"><input class="form-control" type="password" formControlName="password" placeholder="Contraseña*"></div>
+                            <div *ngIf="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)" class="text-danger">
+                                <div *ngIf="repeatPassword.errors?.['required']">Es obligatorio repetir la contraseña</div>
+                                <div *ngIf="repeatPassword.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres</div>
+                                <div *ngIf="repeatPassword.errors?.['maxlength']">La contraseña es demasiado larga</div>
+                            </div>
+                            <div class="mb-3"><input class="form-control" type="password" formControlName="repeatPassword" placeholder="Repetir contraseña*"></div>
+                            <!-- Datos personales -->
+                            <div class="mb-1"><label>Datos personales:</label></div>
+                            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+                                <div *ngIf="name.errors?.['required']">Es obligatorio introducir un nombre</div>
+                                <div *ngIf="name.errors?.['maxlength']">El nombre es demasiado largo</div>
+                            </div>
+                            <div class="mb-1"><input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre*"></div>
+                            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="text-danger">
+                                <div *ngIf="lastName.errors?.['required']">Es obligatorio introducir apellidos</div>
+                                <div *ngIf="lastName.errors?.['maxlength']">Los apellidos demasiado largos</div>
+                            </div>
+                            <div class="mb-1"><input type="text" class="form-control" id="lastName" formControlName="lastName" placeholder="Apellidos*"></div>
+                            <div *ngIf="community.invalid && (community.dirty || community.touched)" class="text-danger">
+                                <div *ngIf="community.errors?.['required']">Es obligatorio introducir una comunidad autónoma</div>
+                                <div *ngIf="community.errors?.['maxlength']">La comunidad autónoma introducida no es válida</div>
+                            </div>
+                            <div class="mb-1"><select autocomplete="nope" class="form-select" id="community" formControlName="community">
+                                <!-- Opciones de Comunidad Autónoma -->
+                                <option value="" selected>Seleccione su comunidad autónoma*</option>
+                                <option value="Andalucía">Andalucía</option>
+                                <option value="Aragón">Aragón</option>
+                                <option value="Asturias, Principado de">Asturias, Principado de</option>
+                                <option value="Balears, Illes">Balears, Illes</option>
+                                <option value="Canarias">Canarias</option>
+                                <option value="Cantabria">Cantabria</option>
+                                <option value="Castilla y León">Castilla y León</option>
+                                <option value="Castilla - La Mancha">Castilla - La Mancha</option>
+                                <option value="Cataluña">Cataluña</option>
+                                <option value="Comunitat Valenciana">Comunitat Valenciana</option>
+                                <option value="Extremadura">Extremadura</option>
+                                <option value="Galicia">Galicia</option>
+                                <option value="Madrid, Comunidad de">Madrid, Comunidad de</option>
+                                <option value="Murcia, Región de">Murcia, Región de</option>
+                                <option value="Navarra, Comunidad Foral de">Navarra, Comunidad Foral de</option>
+                                <option value="País Vasco">País Vasco</option>
+                                <option value="Rioja, La">Rioja, La</option>
+                                <option value="Ceuta">Ceuta</option>
+                                <option value="Melilla">Melilla</option>
+                            </select></div>
+                            <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
+                                <div *ngIf="province.errors?.['required']">Es obligatorio introducir una provincia</div>
+                                <div *ngIf="province.errors?.['maxlength']">La provincia introducida no es válida</div>
+                            </div>
+                            <div class="mb-1"><select autocomplete="nope" class="form-select" id="province" formControlName="province">
+                                <!-- Opciones de Provincia -->
+                                <option value="" selected>Selecciona una provincia*</option>
+                                <option value="Albacete">Albacete</option>
+                                <option value="Alicante / Alacant">Alicante / Alacant</option>
+                                <option value="Almería">Almería</option>
+                                <option value="Araba/Álava">Araba/Álava</option>
+                                <option value="Asturias">Asturias</option>
+                                <option value="Badajoz">Badajoz</option>
+                                <option value="Balears, Illes">Balears, Illes</option>
+                                <option value="Barcelona">Barcelona</option>
+                                <option value="Bizkaia">Bizkaia</option>
+                                <option value="Burgos">Burgos</option>
+                                <option value="Cantabria">Cantabria</option>
+                                <option value="Castellón / Castelló">Castellón / Castelló</option>
+                                <option value="Ceuta">Ceuta</option>
+                                <option value="Ciudad Real">Ciudad Real</option>
+                                <option value="Coruña, A">Coruña, A</option>
+                                <option value="Cuenca">Cuenca</option>
+                                <option value="Cáceres">Cáceres</option>
+                                <option value="Cádiz">Cádiz</option>
+                                <option value="Córdoba">Córdoba</option>
+                                <option value="Gipuzkoa">Gipuzkoa</option>
+                                <option value="Girona">Girona</option>
+                                <option value="Granada">Granada</option>
+                                <option value="Guadalajara">Guadalajara</option>
+                                <option value="Huelva">Huelva</option>
+                                <option value="Huesca">Huesca</option>
+                                <option value="Jaén">Jaén</option>
+                                <option value="León">León</option>
+                                <option value="Lleida">Lleida</option>
+                                <option value="Lugo">Lugo</option>
+                                <option value="Madrid">Madrid</option>
+                                <option value="Melilla">Melilla</option>
+                                <option value="Murcia">Murcia</option>
+                                <option value="Málaga">Málaga</option>
+                                <option value="Navarra">Navarra</option>
+                                <option value="Ourense">Ourense</option>
+                                <option value="Palencia">Palencia</option>
+                                <option value="Palmas, Las">Palmas, Las</option>
+                                <option value="Pontevedra">Pontevedra</option>
+                                <option value="Rioja, La">Rioja, La</option>
+                                <option value="Salamanca">Salamanca</option>
+                                <option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option>
+                                <option value="Segovia">Segovia</option>
+                                <option value="Sevilla">Sevilla</option>
+                                <option value="Soria">Soria</option>
+                                <option value="Tarragona">Tarragona</option>
+                                <option value="Teruel">Teruel</option>
+                                <option value="Toledo">Toledo</option>
+                                <option value="Valencia / València">Valencia / València</option>
+                                <option value="Valladolid">Valladolid</option>
+                                <option value="Zamora">Zamora</option>
+                                <option value="Zaragoza">Zaragoza</option>
+                                <option value="Ávila">Ávila</option>
+                            </select></div>
+                            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
+                                <div *ngIf="phone.errors?.['maxlength']">El teléfono es demasiado largo</div>
+                            </div>
+                            <div class="mb-1"><input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Teléfono (opcional)"></div>
+                            <div *ngIf="job.invalid && (job.dirty || job.touched)" class="text-danger">
+                                <div *ngIf="job.errors?.['maxlength']">El nombre del trabajo es demasiado largo</div>
+                            </div>
+                            <div class="mb-1"><input type="text" class="form-control" id="job" formControlName="job" placeholder="Puesto de trabajo actual (opcional)"></div>
+                            <div *ngIf="experience.invalid && (experience.dirty || experience.touched)" class="text-danger">
+                                <div *ngIf="experience.errors?.['maxlength']">El número de años es demasiado largo</div>
+                            </div>
+                            <div class="mb-1"><input type="number" class="form-control" id="experience" formControlName="experience" placeholder="Años de experiencia (opcional)"></div>
+                            <div class="mb-1"><p class="text-muted">* Campos obligatorios</p></div>
+                            <div class="mb-3"><button (click)="register()" class="btn btn-primary d-block w-100" type="submit">Iniciar sesión</button></div>
+                        </form>
+                        <div class="form-options">
+                            <a class="text-muted">¿Olvidaste tu contraseña?</a>
+                            <span class="separator"> | </span>
+                            <a class="text-muted" routerLink="/login">Iniciar sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
