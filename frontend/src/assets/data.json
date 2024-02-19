@@ -1,0 +1,7 @@
+{
+    "message": "Hello, World! This is a test of the API Gateway!",
+    "id": "1",
+    "name": "Test",
+    "lastName": "Test",
+    "email": "Test@test"
+}
