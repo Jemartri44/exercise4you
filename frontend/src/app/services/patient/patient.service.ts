@@ -1,17 +1,20 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { RegisterRequest } from './registerRequest';
+import { Patient } from '../../model/patient';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterService {
-  
+export class PatientService {
+
   constructor(private http:HttpClient) { }
 
-  register(credentials:RegisterRequest):Observable<any>{
-    return this.http.get('../../../assets/data.json').pipe(
+  getPatients():Observable<Patient[]>{
+    
+    let url = environment.apiUrl+"/pacientes";
+    return this.http.get<Patient[]>(url).pipe(
       catchError(this.handleError)
     )
   }

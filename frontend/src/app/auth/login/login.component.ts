@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { LoginService } from '../../services/auth/login/login.service';
-import { LoginRequest } from '../../services/auth/login/loginRequest';
+import { AuthService } from '../../services/auth/auth.service';
+import { LoginRequest } from '../../services/auth/loginRequest';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -21,11 +21,11 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
     password: ['', [Validators.required, Validators.maxLength(128), Validators.minLength(8)]]
   });
-  constructor(private formBuilder: FormBuilder, private router:Router, private loginService:LoginService) {  }
+  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService) {  }
 
   login(){
     if(this.loginForm.valid){
-      this.loginService.login(this.loginForm.value as LoginRequest).subscribe({
+      this.authService.login(this.loginForm.value as LoginRequest).subscribe({
         next: (userData) => {console.log(userData);},
         error: (errorData) => {
           console.error(errorData);
@@ -40,7 +40,7 @@ export class LoginComponent {
       
     }
     else{
-      alert("Error al ingresar los datos");
+      this.loginError="Por favor, ingrese un email y contraseña válidos";
     }
   }
 

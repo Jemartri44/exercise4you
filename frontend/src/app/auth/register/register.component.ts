@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { RegisterService } from '../../services/auth/register/register.service';
-import { RegisterRequest } from '../../services/auth/register/registerRequest';
+import { RegisterRequest } from '../../services/auth/registerRequest';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -28,11 +28,11 @@ export class RegisterComponent {
     job: ['', [Validators.maxLength(64)]],
     experience: ['', [Validators.maxLength(2)]],
   });
-  constructor(private formBuilder: FormBuilder, private router:Router, private registerService:RegisterService) {  }
+  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService) {  }
 
   register(){
     if(this.registerForm.valid){
-      this.registerService.register(this.registerForm.value as RegisterRequest).subscribe({
+      this.authService.register(this.registerForm.value as RegisterRequest).subscribe({
         next: (userData) => {console.log(userData);},
         error: (errorData) => {
           console.error(errorData);
