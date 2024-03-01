@@ -1,0 +1,28 @@
+.bg-primary {
+  background-color: #73a3d6d5 !important;
+}
+
+.app-logo {
+    width:15cap;
+    height: auto;
+    margin-left: 4%;
+}
+
+.icon {
+    width: 65px;
+    height: auto;
+    margin-right: 30px;
+    margin-top: 5px;
+    padding: 10px;
+}
+
+.icons {
+    margin-right: 4%;
+}
+
+.icon:hover {
+    cursor: pointer;
+    box-shadow: -1px 2px 10px #030a1193;
+    background-color: #030a110c;
+    border-radius: 20px;
+}
