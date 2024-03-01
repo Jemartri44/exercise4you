@@ -1,7 +1,10 @@
 package es.codeurjc.exercise4you.service.auth;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,16 @@ public class AuthService {
             .build();
     }
 
+    public LoginResponse refreshToken(String token) {
+        if (jwtService.isTokenValid(token, getLoggedUser())) {
+            return LoginResponse.builder()
+                .token(jwtService.getToken(getLoggedUser()))
+                .build();
+        } else {
+            throw new RuntimeException("Token no válido");
+        }
+    }
+
     public LoginResponse register(RegisterRequest registerRequest) {
         Usr usr = Usr.builder().email(registerRequest.getEmail())
             .password(passwordEncoder.encode(registerRequest.getPassword()))
@@ -52,5 +65,18 @@ public class AuthService {
             .token(jwtService.getToken(usr))
             .build();
 
+    }
+
+    public String getLoggedUsername(){
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            return authentication.getName();
+        }else{
+            return null;
+        }
+    }
+
+    public Usr getLoggedUser(){
+        return userRepository.findByEmail(getLoggedUsername()).orElse(null);
     }
 }
