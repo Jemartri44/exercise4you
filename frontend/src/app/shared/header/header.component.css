@@ -5,19 +5,14 @@
 .app-logo {
     width:15cap;
     height: auto;
-    margin-left: 4%;
 }
 
 .icon {
     width: 65px;
     height: auto;
-    margin-right: 30px;
+    margin-left: 30px;
     margin-top: 5px;
     padding: 10px;
-}
-
-.icons {
-    margin-right: 4%;
 }
 
 .icon:hover {

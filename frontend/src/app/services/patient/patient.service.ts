@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Patient } from '../../model/patient';
 import { environment } from '../../../environments/environment';
+import { PatientPage } from '../../model/patient-page';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,13 @@ export class PatientService {
 
   constructor(private http:HttpClient) { }
 
-  getPatients():Observable<Patient[]>{
+  getPatients(search: string, page: number = 0, size: number = 10):Observable<PatientPage>{
     
-    let url = environment.apiUrl+"/pacientes";
-    return this.http.get<Patient[]>(url).pipe(
-      catchError(this.handleError)
+    let url = environment.apiUrl+"/pacientes?";
+    if(search != ""){
+      url = url + "search=" + search;
+    }
+    return this.http.get<PatientPage>(url + "&page=" + page + "&size=" + size).pipe(
     )
   }
 

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PatientDTO {
+    Integer id;
     String name;
     String surnames;
     String gender;

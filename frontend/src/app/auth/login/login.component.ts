@@ -29,7 +29,7 @@ export class LoginComponent {
         next: (userData) => {console.log(userData);},
         error: (errorData) => {
           console.error(errorData);
-          this.loginError = errorData;
+          this.loginError = errorData.message;
         },
         complete: () => {
           console.info("Login completo");
