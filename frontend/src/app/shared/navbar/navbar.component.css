@@ -1,0 +1,45 @@
+.navbar {
+    background-color: #d0d9e4;
+}
+
+.dropdown:hover .dropdown-main {
+    display: block;
+    margin-top: 0;
+    /* remove the gap so it doesn't close */
+}
+
+.nav-link {
+    font-size: large;
+    font-weight: 400;
+}
+
+.active {
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    cursor: pointer;
+}
+
+
+
+
+.dropdown-menu li {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}
+
+.dropdown-menu .dropdown-submenu-left {
+    right: 100%;
+    left: auto;
+}
+
+.dropdown-menu>li:hover>.dropdown-submenu {
+    display: block;
+}
