@@ -26,15 +26,31 @@ import lombok.NoArgsConstructor;
 
 @NamedNativeQuery(
     name = "Patient.findPatientDtoByUsrId",
-    query = "SELECT p.name, p.surnames, p.gender, p.birthdate FROM patients p WHERE p.usr_id = :usrId",
+    query = "SELECT p.id, p.name, p.surnames, p.gender, p.birthdate FROM patients p WHERE p.usr_id = :usrId",
     resultSetMapping = "Mapping.PatientDTO")
 @SqlResultSetMapping(
-    name = "Mapping.PatientDTO",
+    name = "Mapping.sdf",
     classes = @ConstructorResult(targetClass = PatientDTO.class, columns = {
+        @ColumnResult(name = "id"),
         @ColumnResult(name = "name"),
         @ColumnResult(name = "surnames"),
         @ColumnResult(name = "gender"),
         @ColumnResult(name = "birthdate")})
+)
+
+@NamedNativeQuery(
+    name = "Patient.customFindPatientDtoByUsrIdAndNameContainingAndSurnamesContaining",
+    query = "SELECT p.id, p.name, p.surnames, p.gender, p.birthdate FROM patients p WHERE p.usr_id = :usrId AND concat(p.name,' ',p.surnames) like CONCAT('%','ilario','%')",
+    resultSetMapping = "Mapping.PatientDTO")
+@SqlResultSetMapping(
+    name = "Mapping.PatientDTO",
+    classes = @ConstructorResult(targetClass = PatientDTO.class, columns = {
+        @ColumnResult(name = "id"),
+        @ColumnResult(name = "name"),
+        @ColumnResult(name = "surnames"),
+        @ColumnResult(name = "gender"),
+        @ColumnResult(name = "birthdate")}
+    )
 )
 
 @Data
