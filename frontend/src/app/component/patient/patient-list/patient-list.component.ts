@@ -4,7 +4,7 @@ import { FooterComponent } from '../../../shared/footer/footer.component';
 import { PatientService } from '../../../services/patient/patient.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { PatientPage } from '../../../model/patient-page';
+import { PatientPage } from '../../../model/patient/patient-page';
 import { Observable, catchError, map, of, startWith } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 

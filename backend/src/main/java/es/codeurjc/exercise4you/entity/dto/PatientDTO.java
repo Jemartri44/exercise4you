@@ -1,6 +1,6 @@
 package es.codeurjc.exercise4you.entity.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,5 +16,5 @@ public class PatientDTO {
     String name;
     String surnames;
     String gender;
-    Date birthdate;
+    LocalDate birthdate;
 }

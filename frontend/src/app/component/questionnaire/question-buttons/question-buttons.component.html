@@ -1,0 +1,30 @@
+<ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="'days'"> <!-- Case to show buttons from 0 to 7 to choose a number of days in a week -->
+        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'yesOrNo'"> <!-- Case to show buttons for yes or no answers -->
+        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'time'"> <!-- Case to show buttons to choose hours and minutes or Not sure -->
+        <label>Horas: </label>
+        <input ngModel #hours class="ms-2 number" [ngClass]="selected[1] ? 'number-white' : 'number-light'" type="number" maxlength="2" (click)="change()" (change)="change()">
+        <label class="ms-4">Minutos: </label>
+        <input ngModel #minutes class="ms-2 number" [ngClass]="selected[1] ? 'number-white' : 'number-light'" type="number" maxlength="2" (click)="change()" (change)="change()">
+        <button class="btn mb-2 not-sure" (click)="notSure()" [ngClass]="selected[0] ? 'btn-white' : 'btn-light'">No sé/No estoy seguro</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'multipleChoice'"> <!-- Case to show buttons to choose one of vaious options provided -->
+        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'writtenAnswer'"> <!-- Case to show a text input field -->
+        <input ngModel #hours class="ms-2 text btn-light" type="text" maxlength="64" size="64" placeholder="Escriba aquí su respuesta">
+    </ng-container>
+    <ng-container *ngSwitchCase="'agreementLevel'"> <!-- Case to show 5 buttons to show your level of agreement -->
+        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2
+            " (click)="selectOption(i)">{{option}}</button>
+    </ng-container>
+    <p class="text-danger d-flex justify-content-center">{{this.error}}</p>
+</ng-container>

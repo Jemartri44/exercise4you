@@ -1,0 +1,38 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<div class="container">
+    <ng-container *ngIf="(questionnairesState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADED'">
+            <h1>{{ state.appData?.title }}</h1>
+            <div class="container ps-5 pe-5 mt-5">
+                <ul>
+                    <h2>
+                        <li>Descripción</li>
+                    </h2>
+                </ul>
+                <p>{{ state.appData?.description }}</p>
+                <app-session-buttons *ngIf="!state.appData?.todayCompleted" [buttons]="['toComplete']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-session-buttons>
+
+            </div>
+
+            <hr>
+            <div class="container ps-5 pe-5 mt-2">
+                <app-session-buttons *ngIf="state.appData?.todayCompleted" [buttons]="['toRepeat', 'answered']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-session-buttons>
+                <app-session-buttons *ngFor="let session of state.appData?.sessions" [buttons]="['answered']" [session]="session.number" [date]="session.date"></app-session-buttons>
+            </div>
+            <div style="height:100px"></div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<app-footer></app-footer>

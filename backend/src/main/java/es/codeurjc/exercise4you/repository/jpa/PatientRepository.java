@@ -1,4 +1,4 @@
-package es.codeurjc.exercise4you.repository;
+package es.codeurjc.exercise4you.repository.jpa;
 
 import java.util.List;
 import java.util.Optional;

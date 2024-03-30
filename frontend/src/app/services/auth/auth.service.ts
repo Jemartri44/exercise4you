@@ -46,10 +46,8 @@ export class AuthService {
   }
 
   refreshToken():void{
-    console.debug("Refreshing token");
     this.http.get<any>(environment.hostUrl + "/auth/refresh-token").pipe(
       tap(userData => {
-        console.debug("Refreshing token: " + userData.token);
         sessionStorage.setItem("token", userData.token);
         this.loggedIn = true;
       }),

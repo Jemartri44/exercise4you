@@ -16,7 +16,9 @@
         </ng-container>
         <ng-container *ngIf="state.appState==='PAGINATING' || state.appState==='LOADED'">
             <div class="">
-                <div *ngIf="!hasPatients" class="alert alert-info ">Aún no tiene pacientes registrados</div>
+                <div *ngIf="!hasPatients" class="alert alert-info mt-5">Aún no tiene pacientes registrados</div>
+                <button *ngIf="!hasPatients" (click)="goToNewPatient()" class="btn btn-primary" type="submit">Añadir
+                    nuevo paciente</button>
                 <div *ngIf="hasPatients" class="container">
                     <div class="col-md-12 mt-5">
                         <form #searchForm="ngForm" (ngSubmit)="goToPage(searchForm.value.name, 0, state.appData)" class="mb-4 d-flex justify-content-end" role="search">
