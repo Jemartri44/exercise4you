@@ -1,0 +1,112 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+
+<div class="container">
+    <h1>{{this.title}}</h1>
+    <!-- Alert: Cuestionario empezado -->
+    <div #modalAlreadyExists  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex align-items-center">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">¿Continuar cuestionario?</h2>
+                </div>
+                <div class="modal-body ms-4 me-4">
+                    <h3>Este cuestinario ya está comenzado. ¿Desea continuar o comenzar de cero?<br>Si desea completarlo desde cero, se borrarán las respuestas anteriores.</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Respetir cuestionario" (click)="repeatQuestionnaire()">Repetir cuestionario</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Comenzar cuestionario" (click)="showModal('alert')">Continuar cuestionario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Alert: Cuestionario autoadministrado -->
+    <div #modalAlert  id="staticBackdrop" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex align-items-center">
+                <div class="modal-header">
+                    <h2 *ngIf="this.alert !== undefined" class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">{{alert.title}}</h2>
+                </div>
+                <div class="modal-body ms-4 me-4">
+                    <h3 *ngIf="this.alert !== undefined">{{alert.alert}}</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Comenzar cuestionario">Comenzar cuestionario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Alert: Repetir cuestionario -->
+    <div #modalRepeat  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex align-items-center">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">¿Repetir cuestionario?</h2>
+                </div>
+                <div class="modal-body ms-4 me-4">
+                    <h3>¿Está seguro de que desea repetir el cuestionario?<br>Si continúa con esta acción, se borrarán las respuestas anteriores.</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancelar">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Repetir cuestionario" (click)="repeatQuestionnaire()">Repetir cuestionario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="(questionnaireState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADED'" >
+            <h3 class="pe-5 ps-5 m-5 text-justify" [innerHTML]="question.description"></h3>
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-10 col-xl-8">
+                        <div class="card text-dark bg-light p-3">
+                            <div class="card-body">
+                                <h3 class="card-title" [innerHTML]="question.introduction"></h3>
+                                <h3 class="card-title question" [innerHTML]="question.question"></h3>
+                                
+                                <form class="text-center" [formGroup]="questionnaireForm">
+                                    <app-question-buttons #questionButtons [options]="question.options" [type]="question.type"></app-question-buttons>
+                                    <div class="d-flex justify-content-end me-5">
+                                        <button *ngIf="state.questionState === 'LOADED'" type="button" class="btn btn-primary" (click)="submit()">
+                                            Siguiente
+                                        </button>
+                                        <button *ngIf="state.questionState === 'LOADING'" type="button" class="btn btn-primary disabled">
+                                            <div class="spinner-border next text-light justify-content-end" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            Siguiente
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'END'">
+            <h3 class="pe-5 ps-5 m-5 text-justify" [innerHTML]="question.description"></h3>
+            <div class="ms-5 me-5 ps-5 pe-5">
+                <button type="button" class="btn btn-secondary ms-5" aria-label="Repetir cuestionario" (click)="showModal('repeat')">Repetir cuestionario</button>
+                <button *ngIf="state.questionState === 'END'" type="button" class="btn btn-primary ms-3" aria-label="Guardar y finalizar cuestionario" (click)="end()">Guardar y finalizar cuestionario</button>
+                <button *ngIf="state.questionState === 'LOADING'" type="button" class="btn btn-primary ms-3 disabled" aria-label="Guardar y finalizar cuestionario" (click)="end()">
+                    <div class="spinner-border next text-light justify-content-end" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    Guardar y finalizar cuestionario</button>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div style="height:100px"></div>
+</div>
+<app-footer></app-footer>

@@ -1,5 +1,6 @@
 package es.codeurjc.exercise4you.controller;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.exercise4you.controller.request.PatientRequest;
+import es.codeurjc.exercise4you.entity.DataRecord;
+import es.codeurjc.exercise4you.entity.Patient;
 import es.codeurjc.exercise4you.entity.dto.PatientDTO;
 import es.codeurjc.exercise4you.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +37,10 @@ public class PatientsController {
     public String newPatient(@RequestBody PatientRequest patientRequest){
         return patientService.newPatient(patientRequest);
 
+    }
+
+    @GetMapping("/paciente/{id}")
+    public Collection<DataRecord> getPatient(){
+        return patientService.getPatient("1").getDataRecord();
     }
 }

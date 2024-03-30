@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalExceptionHandler {
-
+/* 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handlerArgumentException(IllegalArgumentException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -29,5 +29,5 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handlerException(Exception e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    }*/
 }

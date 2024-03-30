@@ -1,5 +1,6 @@
 package es.codeurjc.exercise4you.service.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import es.codeurjc.exercise4you.entity.Role;
 import es.codeurjc.exercise4you.entity.Usr;
-import es.codeurjc.exercise4you.repository.UserRepository;
+import es.codeurjc.exercise4you.repository.jpa.UserRepository;
 import es.codeurjc.exercise4you.security.LoginRequest;
 import es.codeurjc.exercise4you.security.LoginResponse;
 import es.codeurjc.exercise4you.security.RegisterRequest;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;

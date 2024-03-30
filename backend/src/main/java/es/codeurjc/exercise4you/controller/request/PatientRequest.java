@@ -1,6 +1,6 @@
 package es.codeurjc.exercise4you.controller.request;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +15,5 @@ public class PatientRequest {
     private String name;
     private String surnames;
     private String gender;
-    private Date birthdate;
+    private LocalDate birthdate;
 }

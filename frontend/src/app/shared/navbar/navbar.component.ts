@@ -16,4 +16,9 @@ export class NavbarComponent {
     console.debug("Redirecting to patient list");
     this.router.navigate(['/pacientes']);
   }
+
+  goToIpaq() {
+    console.debug("Redirecting to ipaq");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IPAQ']);
+  }
 }

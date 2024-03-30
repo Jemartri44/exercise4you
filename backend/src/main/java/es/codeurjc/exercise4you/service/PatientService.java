@@ -3,6 +3,7 @@ package es.codeurjc.exercise4you.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import es.codeurjc.exercise4you.controller.request.PatientRequest;
 import es.codeurjc.exercise4you.entity.Patient;
 import es.codeurjc.exercise4you.entity.dto.PatientDTO;
-import es.codeurjc.exercise4you.repository.PatientRepository;
+import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientService {
 
+    @Autowired
     private final PatientRepository patientRepository;
     private final AuthService authService;
 
@@ -47,5 +49,9 @@ public class PatientService {
             .build();
         patientRepository.save(patient);
         return "Paciente creado";
+    }
+
+    public Patient getPatient(String id) {
+        return patientRepository.findById(Integer.valueOf(id)).orElseThrow();
     }
 }

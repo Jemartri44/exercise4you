@@ -99,7 +99,7 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [ "../node_modules/jquery/dist/jquery.min.js", "../node_modules/bxslider/dist/jquery.bxslider.min.js", "../node_modules/owl-carousel/owl-carousel/owl.carousel.js" ]
           }
         }
       }

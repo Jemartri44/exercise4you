@@ -1,5 +1,8 @@
 package es.codeurjc.exercise4you.entity;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -13,8 +16,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -59,7 +64,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "patients")
-public class Patient{
+public class Patient implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
@@ -76,5 +81,8 @@ public class Patient{
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date birthdate;
+    private LocalDate birthdate;
+    @JsonBackReference
+    @OneToMany(mappedBy = "patientId")
+    private Collection<DataRecord> dataRecord;
 }

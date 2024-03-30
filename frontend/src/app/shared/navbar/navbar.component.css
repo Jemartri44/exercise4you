@@ -21,7 +21,9 @@
     cursor: pointer;
 }
 
-
+.dropdown-item:hover {
+    cursor:pointer;
+}
 
 
 .dropdown-menu li {
