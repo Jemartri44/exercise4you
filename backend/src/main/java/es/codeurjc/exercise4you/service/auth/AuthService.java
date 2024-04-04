@@ -66,7 +66,11 @@ public class AuthService {
             .role(Role.USER)
             .build();
 
-        userRepository.save(usr);
+        try {
+            userRepository.save(usr);
+        } catch (Exception e) {
+            throw new RuntimeException("Ya hay una cuenta asociada a ese correo electrónico");
+        }
 
         return LoginResponse.builder()
             .token(jwtService.getToken(usr))

@@ -36,27 +36,25 @@ export class LoginComponent implements OnInit{
   });
 
   login(){
-    if(this.loginForm.valid){
-      this.loginState = 'LOADING';
-      this.authService.login(this.loginForm.value as LoginRequest).subscribe({
-        next: (userData) => {console.log(userData);},
-        error: (errorData) => {
-          this.loginState = 'ERROR';
-          console.error(errorData);
-          this.loginError = errorData.message;
-        },
-        complete: () => {
-          this.loginState = '';
-          console.info("Login completo");
-          this.router.navigate(['/']);
-          this.loginForm.reset();
-        }
-      });
-      
+    if(!this.loginForm.valid){
+      this.loginError = "Introduzca un correo electrónico y una contraseña válidos";
+      return;
     }
-    else{
-      this.loginError="Por favor, ingrese un email y contraseña válidos";
-    }
+    this.loginState = 'LOADING';
+    this.authService.login(this.loginForm.value as LoginRequest).subscribe({
+      next: (userData) => {console.log(userData);},
+      error: (errorData) => {
+        this.loginState = 'ERROR';
+        console.error(errorData);
+        this.loginError = errorData.message;
+      },
+      complete: () => {
+        this.loginState = '';
+        console.info("Login completo");
+        this.router.navigate(['/']);
+        this.loginForm.reset();
+      }
+    });
   }
 
   get email(){

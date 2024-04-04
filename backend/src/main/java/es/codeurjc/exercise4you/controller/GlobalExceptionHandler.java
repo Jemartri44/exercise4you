@@ -18,6 +18,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handlerRuntimeException(RuntimeException e){
         System.out.println(e.getMessage());
+        if(e.getMessage().equals("Ya hay una cuenta asociada a ese correo electrónico")){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
