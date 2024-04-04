@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RegisterRequest } from '../../../services/auth/registerRequest';
@@ -12,22 +12,13 @@ import { AuthService } from '../../../services/auth/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
   registerError:string="";
   registerState: string='';
   expired: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
-
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.expired = params['expired'];
-    });
-    if(this.expired){
-      this.registerState = "La sesión ha expirado. Por favor, inicie sesión nuevamente.";
-    }
-  }
 
   registerForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
