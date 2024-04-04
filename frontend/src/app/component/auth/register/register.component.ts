@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RegisterRequest } from '../../../services/auth/registerRequest';
 import { AuthService } from '../../../services/auth/auth.service';
 
@@ -12,9 +12,22 @@ import { AuthService } from '../../../services/auth/auth.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
 
   registerError:string="";
+  registerState: string='';
+  expired: boolean = false;
+
+  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.expired = params['expired'];
+    });
+    if(this.expired){
+      this.registerState = "La sesión ha expirado. Por favor, inicie sesión nuevamente.";
+    }
+  }
 
   registerForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
@@ -28,29 +41,29 @@ export class RegisterComponent {
     job: ['', [Validators.maxLength(64)]],
     experience: ['', [Validators.maxLength(2)]],
   });
-  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService) {  }
 
   register(){
-    if(this.registerForm.valid){
-      this.authService.register(this.registerForm.value as RegisterRequest).subscribe({
-        next: (userData) => {console.log(userData);},
-        error: (errorData) => {
-          console.error(errorData);
-          this.registerError = errorData;
-        },
-        complete: () => {
-          console.info("Registro completado");
-          this.router.navigateByUrl('/login');
-          this.registerForm.reset();
-        }
-      });
-      
+    if(!this.registerForm.valid || this.password.value != this.repeatPassword.value){
+      this.registerError = "Por favor, rellene todos los campos obligatorios correctamente";
+      return;
     }
-    else{
-      alert("Error al ingresar los datos");
-    }
+    this.registerState = 'LOADING';
+    this.authService.register(this.registerForm.value as RegisterRequest).subscribe({
+      next: (userData) => {console.log(userData);},
+      error: (errorData) => {
+        this.registerState = 'ERROR';
+        console.error(errorData);
+        this.registerError = errorData.message;
+      },
+      complete: () => {
+        this.registerState = '';
+        console.info("Registro completado");
+        this.router.navigateByUrl('/login');
+        this.registerForm.reset();
+      }
+    });
   }
-
+  
   get email(){
     return this.registerForm.controls.email;
   }
