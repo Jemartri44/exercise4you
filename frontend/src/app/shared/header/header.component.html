@@ -10,9 +10,24 @@
           <img class="icon" src="/assets/img/icons/header/account.png" alt="Logo" (click)="goToAccount()">
         </li>
         <li class="nav-item">
-          <img class="icon" src="/assets/img/icons/header/logout.png" alt="Logo" (click)="goToLogout()">
+          <img class="icon" src="/assets/img/icons/header/logout.png" alt="Logo" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Alert: Logout -->
+<div #modalLogout  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content d-flex align-items-center">
+          <div class="modal-header">
+              <h2 class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">¿Desea cerrar la sesión?</h2>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancelar">Cancelar</button>
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Cerrar sesión" (click)="goToLogout()">Cerrar sesión</button>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  constructor(private router:Router) {  }
+  constructor( private router:Router, private authService:AuthService ) {  }
 
   goToManual() {
     console.debug("Redirecting to manual")
@@ -23,6 +24,6 @@ export class HeaderComponent {
 
   goToLogout() {
     console.debug("Logging out and redirecting to login")
-    this.router.navigate(['/logout']);
+    this.authService.logout();
   }
 }
