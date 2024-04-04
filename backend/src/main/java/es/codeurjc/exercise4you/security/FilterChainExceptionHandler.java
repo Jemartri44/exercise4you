@@ -31,6 +31,7 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter{
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             System.out.println("Error en la peticion: " + HttpStatus.UNAUTHORIZED.value() + e.getMessage());
+            //resolver.resolveException(request, response, null, e);
             /*response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setHeader("error", e.getMessage());
             response.getWriter().write("Session expired. Please login again.");*/

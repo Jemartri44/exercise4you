@@ -26,9 +26,16 @@ form {
 }
 
 .ng-valid:not(form).ng-touched {
-border-left: 5px solid #42A948; /* green */
+    border-left: 5px solid #42A948; /* green */
 }
 
 .ng-invalid:not(form).ng-touched {
-border-left: 5px solid #a94442; /* red */
+    border-left: 5px solid #a94442; /* red */
+}
+
+.spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 3px;
+    margin-top:3px;
 }

@@ -41,12 +41,10 @@ export class QuestionnaireListComponent implements OnInit {
           questionnaireListInfo.sessions.sort((a, b) =>  a.number < b.number ? 1 : -1 );
         }
         this.today = questionnaireListInfo.today;
-        console.debug(questionnaireListInfo);
         return ({ appState: 'LOADED', appData: questionnaireListInfo })
       }),
       startWith({ appState: 'LOADING' }),
       catchError((error) => {
-        console.debug(error);
         return of({ appState: 'ERROR', appError: error.message})
       })
     );
