@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './component/auth/login/login.component';
+import { RegisterComponent } from './component/auth/register/register.component';
 import { PatientListComponent } from './component/patient/patient-list/patient-list.component';
-import { authGuard } from './auth/guard/auth.guard';
+import { authGuard } from './guard/auth.guard';
 import { PatientInfoComponent } from './component/patient/patient-info/patient-info.component';
 import { QuestionnaireListComponent } from './component/questionnaire/questionnaire-list/questionnaire-list.component';
 import { QuestionnaireCompleteComponent } from './component/questionnaire/questionnaire-complete/questionnaire-complete.component';

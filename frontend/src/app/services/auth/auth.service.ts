@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 const helper = new JwtHelperService();
 
@@ -15,7 +16,7 @@ export class AuthService {
 
   loggedIn:boolean = false;
 
-  constructor(private http:HttpClient) {
+  constructor( private http:HttpClient, private router:Router ) {
     this.checkToken();
   }
 
@@ -26,7 +27,6 @@ export class AuthService {
   login(credentials:LoginRequest):Observable<any>{
     return this.http.post<any>(environment.hostUrl + "/auth/login", credentials).pipe(
       tap(userData => {
-        console.debug("Login token: " + userData.token);
         sessionStorage.setItem("token", userData.token);
         this.loggedIn = true;
       }),
@@ -37,7 +37,6 @@ export class AuthService {
   register(credentials:RegisterRequest):Observable<any>{
     return this.http.post<any>(environment.hostUrl + "/auth/register", credentials).pipe(
       tap(userData => {
-        console.debug("Register token: " + userData.token);
         sessionStorage.setItem("token", userData.token);
         this.loggedIn = true;
       }),
@@ -55,14 +54,23 @@ export class AuthService {
     ).subscribe();
   }
 
-  logout():void{
+  logout(expiredToken: boolean = false):void{
     sessionStorage.removeItem("token");
     this.loggedIn = false;
+    expiredToken ? this.router.navigate(['/login'], { queryParams: { expired: 'true' }}) : this.router.navigate(['/login']);
   }
 
-  private checkToken():void{
+  checkToken():void{
     const token = sessionStorage.getItem("token");
-    helper.isTokenExpired(token) ? this.logout() : this.loggedIn = true;
+    const expired = helper.isTokenExpired(token);
+    if (expired) {
+      if (this.router.url == '/login' || this.router.url == '/login?expired=true' || this.router.url == '/register') {
+        return;
+      }
+      this.logout(token != null);
+    } else {
+      this.loggedIn = true;
+    }
   }
 
   get userLoggedIn():boolean{

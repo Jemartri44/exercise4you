@@ -14,10 +14,11 @@ export class JwtInterceptorService implements HttpInterceptor{
     if(req.url.includes('login') || req.url.includes('register')){
       return next.handle(req);
     }
+    
     if(token != ""){
+      this.authService.checkToken();
       if(!req.url.includes('refresh-token')){
         this.authService.refreshToken();
-        console.debug("req.url" + req.url);
       }
       req = req.clone({
         setHeaders: {

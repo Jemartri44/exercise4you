@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../services/auth/auth.service';
-import { LoginRequest } from '../../services/auth/loginRequest';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../services/auth/auth.service';
+import { LoginRequest } from '../../../services/auth/loginRequest';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -13,25 +13,40 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   loginError:string="";
-  
+  loginState: string='';
+  expired: boolean = false;
+
+  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.expired = params['expired'];
+    });
+    if(this.expired){
+      this.loginError = "La sesión ha expirado. Por favor, inicie sesión nuevamente.";
+    }
+  }
+
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
     password: ['', [Validators.required, Validators.maxLength(128), Validators.minLength(8)]]
   });
-  constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService) {  }
 
   login(){
     if(this.loginForm.valid){
+      this.loginState = 'LOADING';
       this.authService.login(this.loginForm.value as LoginRequest).subscribe({
         next: (userData) => {console.log(userData);},
         error: (errorData) => {
+          this.loginState = 'ERROR';
           console.error(errorData);
           this.loginError = errorData.message;
         },
         complete: () => {
+          this.loginState = '';
           console.info("Login completo");
           this.router.navigate(['/']);
           this.loginForm.reset();

@@ -116,10 +116,8 @@ export class QuestionnaireCompleteComponent implements OnInit{
     if(answer === undefined) {
       return;
     }
-    console.debug(answer);
     this.questionnaireState = this.questionnaireService.getNextQuestion( this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4], this.question.code, this.question.question, answer).pipe(
       map((question: QuestionnaireInfo["question"]) => {
-        console.debug(question);
         if(question === undefined ) {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
