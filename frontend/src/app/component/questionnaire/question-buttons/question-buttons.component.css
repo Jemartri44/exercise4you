@@ -1,0 +1,64 @@
+.btn-light {
+    background-color: #dcdcdc;
+    color: #343a40;
+    border-color: #dcdcdc;
+}
+
+.btn-light:hover {
+    background-color: #aaaaaa;
+    color: #343a40;
+    border-color: #aaaaaa;
+    box-shadow: 0 0 0 0.1rem #aaaaaa;
+}
+
+.btn-selected {
+    background-color: #aaaaaa;
+    color: #343a40;
+    border-color: #aaaaaa;
+    box-shadow: 0 0 0 0.1rem #aaaaaa;
+}
+
+p {
+    font-size: medium;
+}
+
+input {
+    border-color:white;
+    box-shadow: white;
+    border-radius: 8px;
+    padding: 10px;
+    height: 40px;
+}
+
+.number {
+    width: 70px;
+}
+
+label {
+    font-size: medium;
+}
+
+.not-sure {
+    margin-left: 15%;
+    height: 40px;
+}
+
+.btn-white {
+    background-color: #e1e1e1;
+    color: #343a40;
+    border-color: #e1e1e1;
+    box-shadow: 0 0 0 0.2rem #565656;
+}
+
+.number-white {
+    background-color: #f4f4f4;
+    color: #343a40;
+    border-color: #f4f4f4;
+    box-shadow: 0 0 0 0.2rem #565656;
+}
+
+.number-light {
+    background-color: #f4f4f4;
+    color: #343a40;
+    border-color: #dcdcdc;
+}

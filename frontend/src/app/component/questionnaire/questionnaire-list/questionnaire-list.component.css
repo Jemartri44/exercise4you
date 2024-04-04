@@ -1,0 +1,21 @@
+h1 {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.7rem;
+}
+
+p {
+    text-align: justify;
+    font-size:1rem;
+}
+
+.spinner-border {
+    width: 4rem;
+    height: 4rem;
+    border-width: 6px;
+    margin-top: 15%;
+}

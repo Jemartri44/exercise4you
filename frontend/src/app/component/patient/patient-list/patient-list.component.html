@@ -1,0 +1,93 @@
+<app-header></app-header>
+
+<div class="container">
+    <h1>Listado de pacientes</h1>
+
+    <ng-container *ngIf="(patientsState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="state.appState==='PAGINATING' || state.appState==='LOADED'">
+            <div class="">
+                <div *ngIf="!hasPatients" class="alert alert-info mt-5">Aún no tiene pacientes registrados</div>
+                <button *ngIf="!hasPatients" (click)="goToNewPatient()" class="btn btn-primary" type="submit">Añadir
+                    nuevo paciente</button>
+                <div *ngIf="hasPatients" class="container">
+                    <div class="col-md-12 mt-5">
+                        <form #searchForm="ngForm" (ngSubmit)="goToPage(searchForm.value.name, 0, state.appData)" class="mb-4 d-flex justify-content-end" role="search">
+                            <input autocomplete="off" type="text" name="name" ngModel class="form-control me-2" type="search" placeholder="Buscar por nombre y/o apellidos"
+                                aria-label="Search">
+                            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                        </form>
+                        <div class="row">
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Apellidos</th>
+                                        <th scope="col">Género</th>
+                                        <th scope="col">Fecha de nacimiento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let patient of state.appData?.content;"
+                                        (click)="goToPatient(this.patient.id)">
+                                        <td scope="row">{{ patient.name }}</td>
+                                        <td>{{ patient.surnames }}</td>
+                                        <td>{{ patient.gender }}</td>
+                                        <td>{{ patient.birthdate }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p *ngIf="state.appData?.empty" class="alert alert-info">No se encontraron pacientes que encajen con la búsqueda</p>
+                            <div class="col-md-12 mt-3 mb-3 d-flex align-items-center">
+                                <button (click)="goToNewPatient()" class="btn btn-primary me-auto" type="submit">Añadir
+                                    nuevo paciente</button>
+                                <nav aria-label="Páginas" class="d-flex align-items-center">
+                                    <ng-container *ngSwitchCase="'PAGINATING'">
+                                        <div class="me-5 ms-4">
+                                            <div class="spinner-border pagination-spinner text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <p class="me-4">{{ getPageIndex(state.appData) }}</p>
+                                    <ul class="pagination">
+                                        <li *ngIf="showPrev(state.appData)" class="page-item pointer">
+                                            <a class="page-link" (click)="goToPrev(state.appData)"
+                                                aria-label="Anterior">
+                                                <span aria-hidden="true">&laquo; Anterior</span>
+                                            </a>
+                                        </li>
+                                        <li *ngFor="let page of getPages(state.appData)" class="page-item"
+                                            [ngClass]="page-1 == state.appData?.number ? 'active': 'pointer'"
+                                            (click)="goToPage(undefined, page - 1, state.appData)"><a
+                                                class="page-link">{{ page }}</a></li>
+                                        <li *ngIf="showNext(state.appData)" class="page-item pointer">
+                                            <a class="page-link" (click)="goToNext(state.appData)"
+                                                aria-label="Siguiente">
+                                                <span aria-hidden="true">Siguiente &raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        
+
+                        <div style="height:100px"></div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<app-footer></app-footer>

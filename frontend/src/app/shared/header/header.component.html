@@ -1,1 +1,18 @@
-<p>header works!</p>
+<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="light">
+  <div class="container">
+    <img class="app-logo" src="/assets/img/exercise4you.png" alt="Logo">
+    <div class="icons justify-content-start">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 flex-row">
+        <li class="nav-item">
+          <img class="icon" src="/assets/img/icons/header/manual.png" alt="Logo" (click)="goToManual()">
+        </li>
+        <li class="nav-item">
+          <img class="icon" src="/assets/img/icons/header/account.png" alt="Logo" (click)="goToAccount()">
+        </li>
+        <li class="nav-item">
+          <img class="icon" src="/assets/img/icons/header/logout.png" alt="Logo" (click)="goToLogout()">
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

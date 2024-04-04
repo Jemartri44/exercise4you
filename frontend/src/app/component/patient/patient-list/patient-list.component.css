@@ -1,0 +1,38 @@
+h1 {
+  margin-top: 50px;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+table {
+  margin-bottom: 20px;
+}
+
+.alert {
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+form {
+  width:360px;
+}
+
+.spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 6px;
+  margin-top: 15%;
+}
+
+.pagination-spinner {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+td {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}

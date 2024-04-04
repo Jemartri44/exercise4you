@@ -15,5 +15,5 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppComponent{
   loggedIn:boolean = false;
 
-  title = 'my-app';
+  title = 'EXERCISE4YOU';
 }
