@@ -75,7 +75,7 @@
                                 <h3 class="card-title question" [innerHTML]="question.question"></h3>
                                 
                                 <form class="text-center" [formGroup]="questionnaireForm">
-                                    <app-question-buttons #questionButtons [options]="question.options" [type]="question.type"></app-question-buttons>
+                                    <app-question-buttons #questionButtons [options]="this.buttonOptions" [type]="question.type"></app-question-buttons>
                                     <div class="d-flex justify-content-end me-5">
                                         <button *ngIf="state.questionState === 'LOADED'" type="button" class="btn btn-primary" (click)="submit()">
                                             Siguiente

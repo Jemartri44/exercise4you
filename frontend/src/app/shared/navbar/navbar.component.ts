@@ -21,4 +21,9 @@ export class NavbarComponent {
     console.debug("Redirecting to ipaq");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IPAQ']);
   }
+
+  goToEparmed() {
+    console.debug("Redirecting to eparmed");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/ePARmed-X']);
+  }
 }

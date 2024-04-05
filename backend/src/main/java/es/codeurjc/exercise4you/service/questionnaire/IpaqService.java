@@ -117,7 +117,9 @@ public class IpaqService {
             throw new InternalError("Invalid parameters");
         }
         Optional<Ipaq> optional = ipaqRepository.findBySessionAndPatientId(session, id);
-        
+        if(!optional.isPresent()){
+            throw new RuntimeException("Ipaq not found");
+        }
         Ipaq ipaq = optional.get();
         if(questionCode.equals("end")){
             ipaq.setComplete(true);

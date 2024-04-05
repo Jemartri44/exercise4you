@@ -34,7 +34,6 @@ public class PatientService {
     }*/
 
     public Page<PatientDTO> getPaginatedPatients(String search, int page, int size) {
-        System.out.println("Search: "+ search + " Page: " + page + " Size: " + size + " User: " + authService.getLoggedUser().getId());
         Page<Patient> patients = patientRepository.findByUsrIdAndNameContaining(authService.getLoggedUser().getId(), search, PageRequest.of(page, size));
         return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate()));
     }

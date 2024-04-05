@@ -25,6 +25,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
   question: QuestionnaireInfo["question"];
   alert: QuestionnaireInfo["alert"] | undefined = undefined;
   alreadyExists: boolean = false;
+  buttonOptions: string[] = [];
   @ViewChild('modalAlert') modalAlert: ElementRef;
   @ViewChild('modalAlreadyExists') modalAlreadyExists: ElementRef;
   @ViewChild('modalRepeat') modalRepeat: ElementRef;
@@ -58,9 +59,10 @@ export class QuestionnaireCompleteComponent implements OnInit{
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
         this.question = questionnaireInfo.question;
-        if(questionnaireInfo.question.code === "end") {
+        if(questionnaireInfo.question.code.includes("end") || questionnaireInfo.question.code.includes("End") ) {
           return ({ appState: 'END', questionState: 'END', appData: questionnaireInfo })
         }
+        this.setOptions(this.question.type, this.question.options);
         this.alreadyExists = questionnaireInfo.alreadyExists;
         this.modalShowed = false;
         this.alert = questionnaireInfo.alert;
@@ -122,9 +124,11 @@ export class QuestionnaireCompleteComponent implements OnInit{
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
         this.question = question;
+        console.debug(question);
         if(question.code === "end") {
           return ({ appState: 'END', questionState: 'END', appData: question })
         }
+        this.setOptions(this.question.type, this.question.options);
         this.questionButtons.restart(this.question.type, this.question.options);
         return ({ appState: 'LOADED', questionState: 'LOADED', appData: question })
       }),
@@ -147,6 +151,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
         this.question = questionnaireInfo.question;
         this.alreadyExists = questionnaireInfo.alreadyExists;
         this.modalShowed = false;
+        this.setOptions(this.question.type, this.question.options);
         this.showModal("alert");
         return ({ appState: 'LOADED', questionState: 'LOADED', appData: questionnaireInfo })
       }),
@@ -171,5 +176,20 @@ export class QuestionnaireCompleteComponent implements OnInit{
         return of({ appState: 'ERROR', questionState: 'ERROR', appError: error.message})
       })
     );
+  }
+
+  setOptions(type: string, options: string[]) {
+    if(type === 'days') {
+      this.buttonOptions = ['0', '1', '2', '3', '4', '5', '6', '7'];
+    }
+    if(type === 'yesOrNo') {
+      this.buttonOptions = ['Sí', 'No'];
+    }
+    if(type === 'multipleChoice') {
+      this.buttonOptions = options
+    }
+    if(type === 'agreementLevel') {
+      this.buttonOptions = ['Totalmente de acuerdo', 'Mayormente de acuerdo', 'Ni de acuerdo ni en desacuerdo', 'Mayormente en desacuerdo', 'Totalmente en desacuerdo'];
+    }
   }
 }
