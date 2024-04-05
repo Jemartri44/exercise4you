@@ -45,9 +45,7 @@ public class IpaqService {
         Boolean isTodayCompleted = false;
         if(!ipaqList.isEmpty()){
             if(ipaqList.get(ipaqList.size()-1).getCompletionDate().equals(LocalDate.now())){
-                System.out.println(ipaqList.get(ipaqList.size()-1).getCompletionDate());
                 if(ipaqList.get(ipaqList.size()-1).getComplete()){
-                    System.out.println(ipaqList.get(ipaqList.size()-1).getComplete());
                     isTodayCompleted = true;
                 }
                 ipaqList.remove(ipaqList.size()-1);
@@ -56,7 +54,6 @@ public class IpaqService {
                     ipaqList.remove(ipaqList.size()-1);
                 }
             }
-            
         }
         for(Ipaq ipaq: ipaqList){
             sessions.add( new Session(ipaq.getSession(), ipaq.getCompletionDate()));
@@ -75,14 +72,13 @@ public class IpaqService {
         // Else, leave as is.
         if(!ipaqList.isEmpty()){
             Ipaq lastIpaq = ipaqList.get(ipaqList.size()-1);
-            System.out.println(lastIpaq);
             // Delete if the last ipaq is not completed and the session is different
             if((!lastIpaq.getComplete()) && (!lastIpaq.getSession().equals(session))){
-                ipaqRepository.deleteIpaqByPatientIdAndSession(id, lastIpaq.getSession());
+                deleteIpaq(id, lastIpaq.getSession());
             }
             // Delete if the last ipaq is not completed and the date is different
             if((!lastIpaq.getComplete()) && (!lastIpaq.getCompletionDate().equals(LocalDate.now()))){
-                ipaqRepository.deleteIpaqByPatientIdAndSession(id, lastIpaq.getSession());
+                deleteIpaq(id, lastIpaq.getSession());
             }
         }
         
@@ -112,31 +108,23 @@ public class IpaqService {
     }
 
     public void deleteIpaq(Integer id, Integer session) {
+        dataRecordService.deleteIpaq(id, session);
         ipaqRepository.deleteIpaqByPatientIdAndSession(id, session);
     }
 
-    @SuppressWarnings("null")
     public Question nextQuestion(Integer id, Integer session, String questionCode, String question, String answer) {
-        Ipaq ipaq = ipaqRepository.findBySessionAndPatientId(session, id).get();
+        if(id == null || session == null || questionCode == null || question == null || answer == null){
+            throw new InternalError("Invalid parameters");
+        }
+        Optional<Ipaq> optional = ipaqRepository.findBySessionAndPatientId(session, id);
+        
+        Ipaq ipaq = optional.get();
         if(questionCode.equals("end")){
             ipaq.setComplete(true);
             ipaq.setLastQuestionCode("end");
             ipaqRepository.save(ipaq);
-            // We check if there is a data record for today. If there is not, we create one.
-            Patient patient = patientRepository.findById(id).get();
-            Optional<DataRecord> optional = dataRecordRepository.findByPatientIdAndCompletionDate(patient, LocalDate.now());
-            DataRecord dataRecord;
-            if(!optional.isPresent()){
-                dataRecord = DataRecord.builder()
-                    .patientId(patient)
-                    .completionDate(LocalDate.now())
-                    .nSession(session).build();
-                dataRecordRepository.save(dataRecord);
-            } else {
-                dataRecord = optional.get();
-            }
             // We set the ipaq in the data record
-            dataRecord.setIpaq(ipaq.getId());
+            dataRecordService.setIpaq(ipaq);
             return new Question();
         }
         // We add the last question and answer to the ipaq document

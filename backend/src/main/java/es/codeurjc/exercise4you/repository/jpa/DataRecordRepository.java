@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import es.codeurjc.exercise4you.entity.DataRecord;
-import es.codeurjc.exercise4you.entity.DataRecordId;
 import es.codeurjc.exercise4you.entity.Patient;
 
 public interface DataRecordRepository extends JpaRepository<DataRecord, Integer>{
@@ -17,6 +16,9 @@ public interface DataRecordRepository extends JpaRepository<DataRecord, Integer>
 
     @Query(value = "SELECT * FROM data_record d WHERE d.patient_id = :id", nativeQuery = true)
     List<DataRecord> findByPatientId(Integer id);
+
+    @Query(value = "SELECT * FROM data_record d WHERE d.patient_id = :id ORDER BY d.n_session asc", nativeQuery = true)
+    List<DataRecord> findByPatientIdOrderByNSessionAsc(Integer id);
 
     Optional<DataRecord> findByPatientIdAndCompletionDate(Patient patient, LocalDate date);
 }

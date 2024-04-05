@@ -8,5 +8,6 @@ import jakarta.persistence.MappedSuperclass;
 public interface Questionnaire {
     public String getId();
     public Integer getSession();
+    public Integer getPatientId();
     public LocalDate getCompletionDate();
 }
