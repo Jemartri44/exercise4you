@@ -30,7 +30,6 @@ public class AuthController {
 
     @GetMapping(value = "refresh-token")
     public ResponseEntity<LoginResponse> refreshToken(@RequestHeader (name="Authorization") String token){
-        System.out.println("Token: " + token.substring(7));
         return ResponseEntity.ok(authService.refreshToken(token.substring(7)));
     }
 

@@ -11,7 +11,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 export class QuestionButtonsComponent implements OnInit {
 
   @Input() type: string;
-  @Input() options: string[] = [];
+  @Input() options: string[];
   @ViewChild('hours') hours: ElementRef;
   @ViewChild('minutes') minutes: ElementRef;
   @ViewChild('answer') answer: ElementRef;
@@ -122,7 +122,9 @@ export class QuestionButtonsComponent implements OnInit {
   }
   
   public restart(type: string, options: string[]) {
-    this.options = options;
+    if(options !== null && options !== undefined) {
+      this.options = options;
+    }
     this.type = type;
     this.ngOnInit();
   }

@@ -4,8 +4,10 @@
             class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
     </ng-container>
     <ng-container *ngSwitchCase="'yesOrNo'"> <!-- Case to show buttons for yes or no answers -->
-        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
-            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+        <button [ngClass]="selected[0] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(0)">Sí</button>
+            <button [ngClass]="selected[1] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(1)">No</button>
     </ng-container>
     <ng-container *ngSwitchCase="'time'"> <!-- Case to show buttons to choose hours and minutes or Not sure -->
         <label>Horas: </label>

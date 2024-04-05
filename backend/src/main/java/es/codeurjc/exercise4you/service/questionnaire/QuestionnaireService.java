@@ -1,19 +1,16 @@
 package es.codeurjc.exercise4you.service.questionnaire;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.exercise4you.entity.Patient;
-import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
 import es.codeurjc.exercise4you.entity.questionnaire.Question;
 import es.codeurjc.exercise4you.entity.questionnaire.QuestionnaireAnswers;
 import es.codeurjc.exercise4you.entity.questionnaire.QuestionnaireInfo;
 import es.codeurjc.exercise4you.entity.questionnaire.QuestionnairesInfo;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
-import es.codeurjc.exercise4you.repository.mongo.questionnaire.IpaqRepository;
 import es.codeurjc.exercise4you.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,10 +18,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class QuestionnaireService {
 
-    @Autowired
-    private final IpaqRepository ipaqRepository;
     private final AuthService authService;
     private final IpaqService ipaqService;
+    private final EparmedService eparmedService;
     @Autowired
     private final PatientRepository patientRepository;
 
@@ -34,6 +30,8 @@ public class QuestionnaireService {
         switch (questionnaireType) {
             case "IPAQ":
                 return ipaqService.getIpaqSessionsInfo(id);
+            case "ePARmed-X":
+                return eparmedService.getEparmedSessionsInfo(id);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -46,6 +44,8 @@ public class QuestionnaireService {
         switch (questionnaireType) {
             case "IPAQ":
                 return ipaqService.startIpaq(id, session);
+            case "ePARmed-X":
+                return eparmedService.startEparmed(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -59,6 +59,9 @@ public class QuestionnaireService {
             case "IPAQ":
                 ipaqService.deleteIpaq(id, session);
                 return ipaqService.startIpaq(id, session);
+            case "ePARmed-X":
+                eparmedService.deleteEparmed(id, session);
+                return eparmedService.startEparmed(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -71,6 +74,8 @@ public class QuestionnaireService {
         switch (questionnaireType) {
             case "IPAQ":
                 return ipaqService.nextQuestion(id, session, questionCode, question, answer);
+            case "ePARmed-X":
+                return eparmedService.nextQuestion(id, session, questionCode, question, answer);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -83,6 +88,8 @@ public class QuestionnaireService {
         switch (questionnaireType) {
             case "IPAQ":
                 return ipaqService.getAnswers(id, session);
+            case "ePARmed-X":
+                return eparmedService.getAnswers(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }

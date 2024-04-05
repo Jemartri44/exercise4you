@@ -27,7 +27,6 @@ public class FilterChainExceptionHandler extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            System.out.println("FilterChainExceptionHandler");
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             System.out.println("Error en la peticion: " + HttpStatus.UNAUTHORIZED.value() + e.getMessage());
