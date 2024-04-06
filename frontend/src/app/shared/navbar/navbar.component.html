@@ -11,7 +11,7 @@
                         pacientes</a>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link" [ngClass]="this.router.url.split('/').length === 3 ? 'active' : ''">Datos generales</a>
+                    <a class="nav-link" (click)="goToGeneral()" [ngClass]="this.router.url.split('/').length === 3 ? 'active' : ''">Datos generales</a>
                 </li>
                 <li class="nav-item dropdown me-4">
                     <a class="nav-link dropdown-toggle" [ngClass]="(this.router.url.split('/')[3]==='APALQ') || (this.router.url.split('/')[3]==='IPAQ') || (this.router.url.split('/')[3]==='IPAQ-E') || (this.router.url.split('/')[3]==='CMTCEF') || (this.router.url.split('/')[3]==='PAR-Q') || (this.router.url.split('/')[3]==='ePARmed-X') ? 'active' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">

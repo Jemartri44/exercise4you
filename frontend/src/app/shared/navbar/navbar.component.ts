@@ -13,6 +13,11 @@ export class NavbarComponent {
 
   constructor( protected router: Router ) { }
 
+  goToGeneral() {
+    console.debug("Redirecting to general");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2]]);
+  }
+
   goToPatientList() {
     console.debug("Redirecting to patient list");
     this.router.navigate(['/pacientes']);
