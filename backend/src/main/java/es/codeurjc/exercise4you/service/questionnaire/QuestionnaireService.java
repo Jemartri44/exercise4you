@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class QuestionnaireService {
 
     private final AuthService authService;
+    private final ApalqService apalqService;
     private final IpaqService ipaqService;
     private final EparmedService eparmedService;
     @Autowired
@@ -28,6 +29,8 @@ public class QuestionnaireService {
     public QuestionnairesInfo getSessionsInfo(Integer id, String questionnaireType) {
         checkPatient(id);
         switch (questionnaireType) {
+            case "APALQ":
+                return apalqService.getApalqSessionsInfo(id);
             case "IPAQ":
                 return ipaqService.getIpaqSessionsInfo(id);
             case "ePARmed-X":
@@ -42,6 +45,8 @@ public class QuestionnaireService {
         checkSession(session);
 
         switch (questionnaireType) {
+            case "APALQ":
+                return apalqService.startApalq(id, session);
             case "IPAQ":
                 return ipaqService.startIpaq(id, session);
             case "ePARmed-X":
@@ -56,6 +61,9 @@ public class QuestionnaireService {
         checkSession(session);
 
         switch (questionnaireType) {
+            case "APALQ":
+                apalqService.deleteApalq(id, session);
+                return apalqService.startApalq(id, session);
             case "IPAQ":
                 ipaqService.deleteIpaq(id, session);
                 return ipaqService.startIpaq(id, session);
@@ -72,6 +80,8 @@ public class QuestionnaireService {
         checkSession(session);
         
         switch (questionnaireType) {
+            case "APALQ":
+                return apalqService.nextQuestion(id, session, questionCode, question, answer);
             case "IPAQ":
                 return ipaqService.nextQuestion(id, session, questionCode, question, answer);
             case "ePARmed-X":
@@ -86,6 +96,8 @@ public class QuestionnaireService {
         checkSession(session);
 
         switch (questionnaireType) {
+            case "APALQ":
+                return apalqService.getAnswers(id, session);
             case "IPAQ":
                 return ipaqService.getAnswers(id, session);
             case "ePARmed-X":

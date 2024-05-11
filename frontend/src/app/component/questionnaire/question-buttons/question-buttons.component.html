@@ -18,7 +18,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'multipleChoice'"> <!-- Case to show buttons to choose one of vaious options provided -->
         <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
-            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+            class="btn me-3 mb-2" (click)="selectOption(i)" [innerHtml]="option"></button>
     </ng-container>
     <ng-container *ngSwitchCase="'writtenAnswer'"> <!-- Case to show a text input field -->
         <input ngModel #hours class="ms-2 text btn-light" type="text" maxlength="64" size="64" placeholder="Escriba aquí su respuesta">

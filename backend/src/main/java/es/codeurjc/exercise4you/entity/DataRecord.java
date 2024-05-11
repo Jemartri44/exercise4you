@@ -47,6 +47,7 @@ public class DataRecord implements Serializable{
     private Integer nSession;
     
     private String ipaq;
+    private String apalq;
     private String eparmed;
     private String imc;
     private String icc;

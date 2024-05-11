@@ -23,6 +23,11 @@ export class NavbarComponent {
     this.router.navigate(['/pacientes']);
   }
 
+  goToApalq() {
+    console.debug("Redirecting to apalq");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/APALQ']);
+  }
+
   goToIpaq() {
     console.debug("Redirecting to ipaq");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IPAQ']);

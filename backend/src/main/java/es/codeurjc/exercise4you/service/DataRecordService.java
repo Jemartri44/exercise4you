@@ -14,6 +14,7 @@ import es.codeurjc.exercise4you.entity.anthropometry.IdealWeight;
 import es.codeurjc.exercise4you.entity.anthropometry.Imc;
 import es.codeurjc.exercise4you.entity.anthropometry.SkinFolds;
 import es.codeurjc.exercise4you.entity.anthropometry.WaistCircumference;
+import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
 import es.codeurjc.exercise4you.repository.jpa.DataRecordRepository;
@@ -102,6 +103,32 @@ public class DataRecordService {
         dataRecordRepository.save(dataRecord);
     }
 
+    public void deleteEparmed(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setEparmed(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+
+    public void setApalq(Apalq apalq) {
+        if(apalq == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(apalq.getPatientId(), apalq.getSession());
+        dataRecord.setApalq(apalq.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteApalq(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setApalq(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+    
     public void setImc(Imc imc) {
         if(imc == null){
             throw new InternalError("Anthropometry is not valid");
@@ -152,11 +179,4 @@ public class DataRecordService {
         dataRecordRepository.save(dataRecord);
     }
 
-    public void deleteEparmed(Integer patientId, Integer session) {
-        // We get the data record we should update
-        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
-        dataRecord.setEparmed(null);
-        dataRecordRepository.save(dataRecord);
-        deleteDataRecordIfEmpty(dataRecord);
-    }
 }

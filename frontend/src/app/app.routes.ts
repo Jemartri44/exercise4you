@@ -15,6 +15,11 @@ export const routes: Routes = [
     { path: 'pacientes', component: PatientListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id', component: PatientInfoComponent, canActivate: [authGuard] },
 
+    { path: 'pacientes/:id/APALQ', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/APALQ/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/APALQ/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/APALQ/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
     { path: 'pacientes/:id/IPAQ', component: QuestionnaireListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/IPAQ/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/IPAQ/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },

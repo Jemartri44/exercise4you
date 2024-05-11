@@ -18,7 +18,7 @@
                         Anamnesis
                     </a>
                     <ul class="dropdown-menu dropdown-main">
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
+                        <li><a class="dropdown-item" (click)="goToApalq()" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">

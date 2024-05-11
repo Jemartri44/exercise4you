@@ -17,10 +17,10 @@
         <ng-container *ngSwitchCase="'LOADED'" >
             <u class="d-flex justify-content-center"><h2 class="pe-5 ps-5 m-5 text-justify" [innerHTML]="state.appData.session"></h2></u>
             <div *ngFor="let answer of state.appData.answers; index as i" class="me-3 mb-2">
-                <h3><li>{{answer.question}}</li></h3>
+                <h3><li [innerHTML]="answer.question"></li></h3>
                 <div class="d-flex align-items-center justify-content-center">
-                    <h3 class="fw-bold ms-5">Respuesta:</h3>
-                    <input type="text" class="form-control ms-5" value="{{answer.answer}}" readonly>
+                    <h3 class="fw-bold ms-5 mt-2">Respuesta:</h3>
+                    <input type="text" class="form-control ms-5" [value]="answer.answer" readonly>
                 </div>
             </div>
         </ng-container>

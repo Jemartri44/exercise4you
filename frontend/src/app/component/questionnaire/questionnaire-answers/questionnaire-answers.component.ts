@@ -45,8 +45,14 @@ export class QuestionnaireAnswersComponent implements OnInit {
   setTitle() {
     let questionnaire = this.router.url.split('/')[3];
     switch(questionnaire){
+      case 'APALQ':
+        this.title = 'Cuestionario de evaluación de los niveles de actividad física (APALQ)';
+        break;
       case 'IPAQ':
         this.title = 'Cuestionario internacional de actividad física (IPAQ)';
+        break;
+      case 'ePARmed-X':
+        this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
         break;
     }
   }
