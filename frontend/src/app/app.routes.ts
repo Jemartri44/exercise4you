@@ -25,6 +25,16 @@ export const routes: Routes = [
     { path: 'pacientes/:id/IPAQ/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/IPAQ/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
 
+    { path: 'pacientes/:id/IPAQ-E', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/IPAQ-E/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/IPAQ-E/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/IPAQ-E/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
+    { path: 'pacientes/:id/CMTCEF', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/CMTCEF/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/CMTCEF/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/CMTCEF/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
     { path: 'pacientes/:id/ePARmed-X', component: QuestionnaireListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ePARmed-X/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ePARmed-X/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },

@@ -33,7 +33,9 @@ public class QuestionnaireController {
 
     @GetMapping("/pacientes/{id}/{questionnaireType}/{nSession}/start")
     public QuestionnaireInfo startQuestionnaire(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType) {
-        return questionnaireService.startQuestionnaire(id, nSession, questionnaireType);
+        QuestionnaireInfo toReturn = questionnaireService.startQuestionnaire(id, nSession, questionnaireType);
+        System.out.println(toReturn);
+        return toReturn;
     }
 
     @GetMapping("/pacientes/{id}/{questionnaireType}/{nSession}/repeat")

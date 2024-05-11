@@ -51,6 +51,12 @@ export class QuestionnaireAnswersComponent implements OnInit {
       case 'IPAQ':
         this.title = 'Cuestionario internacional de actividad física (IPAQ)';
         break;
+      case 'IPAQ-E':
+        this.title = 'Cuestionario internacional de actividad física en personas mayores (IPAQ-E)';
+        break;
+      case 'CMTCEF':
+        this.title = 'Cuestionario del modelo transteórico del cambio de ejercicio físico';
+        break;
       case 'ePARmed-X':
         this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
         break;

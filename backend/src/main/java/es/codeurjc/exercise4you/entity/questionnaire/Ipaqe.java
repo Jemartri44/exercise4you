@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "apalq")
-public class Apalq implements Questionnaire{
+@Document(collection = "ipaqe")
+public class Ipaqe implements Questionnaire{
 
     @MongoId
     private String id;
@@ -33,7 +33,7 @@ public class Apalq implements Questionnaire{
     private Integer session;
     private Boolean complete;
     @Builder.Default
-    private String lastQuestionCode = "apalq1";
+    private String lastQuestionCode = "ipaqe1";
     @Embedded
     private List<Answer> answers;
     private String pdfId;

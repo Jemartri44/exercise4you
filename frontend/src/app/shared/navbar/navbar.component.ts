@@ -33,6 +33,16 @@ export class NavbarComponent {
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IPAQ']);
   }
 
+  goToIpaqe() {
+    console.debug("Redirecting to ipaq-e");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IPAQ-E']);
+  }
+
+  goToCmtcef() {
+    console.debug("Redirecting to cmtcef");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/CMTCEF']);
+  }
+
   goToEparmed() {
     console.debug("Redirecting to eparmed");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/ePARmed-X']);

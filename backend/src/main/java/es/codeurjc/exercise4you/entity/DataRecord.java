@@ -46,8 +46,10 @@ public class DataRecord implements Serializable{
     @Column(name = "n_session", nullable = false)
     private Integer nSession;
     
-    private String ipaq;
     private String apalq;
+    private String ipaq;
+    private String ipaqe;
+    private String cmtcef;
     private String eparmed;
     private String imc;
     private String icc;

@@ -18,7 +18,6 @@ import es.codeurjc.exercise4you.entity.questionnaire.QuestionnairesInfo.Session;
 import es.codeurjc.exercise4you.repository.jpa.DataRecordRepository;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.repository.mongo.questionnaire.ApalqRepository;
-import es.codeurjc.exercise4you.repository.mongo.questionnaire.ApalqRepository;
 import es.codeurjc.exercise4you.repository.mongo.questionnaire.QuestionRepository;
 import es.codeurjc.exercise4you.service.DataRecordService;
 import lombok.RequiredArgsConstructor;

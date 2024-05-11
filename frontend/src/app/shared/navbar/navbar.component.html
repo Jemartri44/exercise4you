@@ -28,12 +28,12 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
+                        <li><a class="dropdown-item" (click)="goToIpaqe()" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
+                        <li><a class="dropdown-item" (click)="goToCmtcef()" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
                                 ejercicio físico</a></li>
                         <li>
                             <hr class="dropdown-divider">

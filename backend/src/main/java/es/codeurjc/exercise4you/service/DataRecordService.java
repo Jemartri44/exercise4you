@@ -15,8 +15,10 @@ import es.codeurjc.exercise4you.entity.anthropometry.Imc;
 import es.codeurjc.exercise4you.entity.anthropometry.SkinFolds;
 import es.codeurjc.exercise4you.entity.anthropometry.WaistCircumference;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
+import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
+import es.codeurjc.exercise4you.entity.questionnaire.Ipaqe;
 import es.codeurjc.exercise4you.repository.jpa.DataRecordRepository;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 
@@ -74,6 +76,24 @@ public class DataRecordService {
         }
         dataRecordRepository.delete(dataRecord);
     }
+    
+    public void setApalq(Apalq apalq) {
+        if(apalq == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(apalq.getPatientId(), apalq.getSession());
+        dataRecord.setApalq(apalq.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteApalq(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setApalq(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
 
     public void setIpaq(Ipaq ipaq) {
         if(ipaq == null){
@@ -93,6 +113,43 @@ public class DataRecordService {
         deleteDataRecordIfEmpty(dataRecord);
     }
 
+    public void setIpaqe(Ipaqe ipaqe) {
+        if(ipaqe == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(ipaqe.getPatientId(), ipaqe.getSession());
+        dataRecord.setIpaq(ipaqe.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteIpaqe(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setIpaqe(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+
+    public void setCmtcef(Cmtcef cmtcef) {
+        if(cmtcef == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(cmtcef.getPatientId(), cmtcef.getSession());
+        dataRecord.setCmtcef(cmtcef.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteCmtcef(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setCmtcef(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+
+
     public void setEparmed(Eparmed eparmed) {
         if(eparmed == null){
             throw new InternalError("Questionnaire is not valid");
@@ -111,23 +168,6 @@ public class DataRecordService {
         deleteDataRecordIfEmpty(dataRecord);
     }
 
-    public void setApalq(Apalq apalq) {
-        if(apalq == null){
-            throw new InternalError("Questionnaire is not valid");
-        }
-        // We get the data record we should update
-        DataRecord dataRecord = getCurrentDataRecord(apalq.getPatientId(), apalq.getSession());
-        dataRecord.setApalq(apalq.getId());
-        dataRecordRepository.save(dataRecord);
-    }
-
-    public void deleteApalq(Integer patientId, Integer session) {
-        // We get the data record we should update
-        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
-        dataRecord.setApalq(null);
-        dataRecordRepository.save(dataRecord);
-        deleteDataRecordIfEmpty(dataRecord);
-    }
     
     public void setImc(Imc imc) {
         if(imc == null){

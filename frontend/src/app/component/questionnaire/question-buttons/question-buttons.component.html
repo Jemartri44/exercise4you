@@ -24,9 +24,10 @@
         <input ngModel #hours class="ms-2 text btn-light" type="text" maxlength="64" size="64" placeholder="Escriba aquí su respuesta">
     </ng-container>
     <ng-container *ngSwitchCase="'agreementLevel'"> <!-- Case to show 5 buttons to show your level of agreement -->
-        <button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
-            class="btn me-3 mb-2
-            " (click)="selectOption(i)">{{option}}</button>
+        <div class="d-flex flex-column ms-5 me-5 ps-5 pe-5 mt-4 mb-3"><button *ngFor="let option of options; index as i" [ngClass]="selected[i] ? 'btn-selected' : 'btn-light'"
+            class="btn me-3 mb-2" (click)="selectOption(i)">{{option}}</button>
+        </div>
+        
     </ng-container>
     <p class="text-danger d-flex justify-content-center">{{this.error}}</p>
 </ng-container>
