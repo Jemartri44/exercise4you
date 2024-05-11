@@ -48,4 +48,9 @@ public class DataRecord implements Serializable{
     
     private String ipaq;
     private String eparmed;
+    private String imc;
+    private String icc;
+    private String waistCircumference;
+    private String idealWeight;
+    private String skinFolds;
 }

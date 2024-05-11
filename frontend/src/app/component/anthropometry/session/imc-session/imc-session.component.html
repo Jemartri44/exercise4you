@@ -1,0 +1,87 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li class="mt-4"><h3>Datos</h3></li>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="weight" class="me-5">Peso (kilogramos): Utilizar una báscula precisa</label>
+                    <input #weight (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="weight" name="weight" min="0" max="999" maxlength="5" size="5">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="height" class="me-5">Altura (metros): Medir con un estadiómetro </label>
+                    <input #height (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="height" name="height" min="0" max="999" step="0.01" maxlength="5">
+                </div>
+                <p>Cálculo:<span class="ms-5"></span>IMC = peso (kg) / altura (m)<span>&#178;</span><span class="ms-4"></span>IMC principal = IMC / 25</p>
+                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
+                <li class="mt-4"><h3>Resultados</h3></li>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="imc" class="me-5">Índice de masa corporal:</label>
+                    <input #imc class="form-control number" type="number" id="imc" name="imc" readonly>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="imcp" class="me-5">Índice de masa corporal principal:</label>
+                    <input #imcp class="form-control number" type="number" id="imcp" name="imcp" readonly>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="category" class="me-5">Categoría:</label>
+                    <input #category class="form-control text" type="text" id="category" name="category" readonly>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="risk" class="me-5">Riesgo cardiovascular:</label>
+                    <input #risk class="form-control text" type="text" id="risk" name="risk" readonly>
+                </div>
+            </ul>
+        </div>
+        <div class="col align-content-end mb-4">
+            <table class="table table-primary table-bordered text-center">
+                <thead>
+                    <tr>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">IMC (kg/m<span>&#178;</span>)</th>
+                    <th scope="col">IMC principal (IMC/25)</th>
+                    <th scope="col">Riesgo cardiovascular</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <th scope="row">Infrapeso</th>
+                        <td>&lt; 18.5</td>
+                        <td>&lt; 0.74</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Normal</th>
+                        <td>18.5 - 24.9</td>
+                        <td>0.74 - 1</td>
+                        <td>Promedio</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Sobrepeso</th>
+                        <td>25.0 - 29.9</td>
+                        <td>1 - 1.2</td>
+                        <td>Aumentado</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Obesidad grado 1</th>
+                        <td>30.0 - 34.9</td>
+                        <td>1.2 - 1.4</td>
+                        <td>Moderado</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Obesidad grado 2</th>
+                        <td>35.0 - 39.9</td>
+                        <td>1.4 - 1.6</td>
+                        <td>Severo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Obesidad grado 3</th>
+                        <td>≥ 40</td>
+                        <td>≥ 1.6</td>
+                        <td>Muy severo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
