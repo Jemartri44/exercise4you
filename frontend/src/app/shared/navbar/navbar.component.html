@@ -38,7 +38,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
+                        <li><a class="dropdown-item" (click)="goToParq()" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
                                 todos (PAR-Q+)</a></li>
                         <li>
                             <hr class="dropdown-divider">

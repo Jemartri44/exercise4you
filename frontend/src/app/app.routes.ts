@@ -35,6 +35,11 @@ export const routes: Routes = [
     { path: 'pacientes/:id/CMTCEF/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/CMTCEF/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
 
+    { path: 'pacientes/:id/PAR-Q', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PAR-Q/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PAR-Q/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PAR-Q/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
     { path: 'pacientes/:id/ePARmed-X', component: QuestionnaireListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ePARmed-X/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ePARmed-X/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },

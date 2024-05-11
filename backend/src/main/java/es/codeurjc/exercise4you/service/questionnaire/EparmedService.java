@@ -227,6 +227,8 @@ public class EparmedService {
                 return (lastAnswer.equals("Sí")) ? "eparmed9b" : "eparmedEnd17";
             case "eparmed9b":
                 return (lastAnswer.equals("Sí")) ? "eparmedEnd13" : "eparmed9c";
+            case "eparmed9c":
+                return (lastAnswer.equals("Sí")) ? "eparmedEnd14" : "eparmed9d";
             case "eparmed9d":
                 return (lastAnswer.equals("Sí")) ? "eparmedEnd15" : "eparmedEnd16";
             case "eparmed10a":

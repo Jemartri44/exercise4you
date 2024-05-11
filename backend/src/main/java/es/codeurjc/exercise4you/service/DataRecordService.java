@@ -19,6 +19,7 @@ import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaqe;
+import es.codeurjc.exercise4you.entity.questionnaire.Parq;
 import es.codeurjc.exercise4you.repository.jpa.DataRecordRepository;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 
@@ -149,6 +150,23 @@ public class DataRecordService {
         deleteDataRecordIfEmpty(dataRecord);
     }
 
+    public void setParq(Parq parq) {
+        if(parq == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(parq.getPatientId(), parq.getSession());
+        dataRecord.setParq(parq.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteParq(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setParq(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
 
     public void setEparmed(Eparmed eparmed) {
         if(eparmed == null){

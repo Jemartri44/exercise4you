@@ -23,6 +23,7 @@ public class QuestionnaireService {
     private final IpaqService ipaqService;
     private final IpaqeService ipaqeService;
     private final CmtcefService cmtcefService;
+    private final ParqService parqService;
     private final EparmedService eparmedService;
     @Autowired
     private final PatientRepository patientRepository;
@@ -39,6 +40,8 @@ public class QuestionnaireService {
                 return ipaqeService.getIpaqeSessionsInfo(id);
             case "CMTCEF":
                 return cmtcefService.getCmtcefSessionsInfo(id);
+            case "PAR-Q":
+                return parqService.getParqSessionsInfo(id);
             case "ePARmed-X":
                 return eparmedService.getEparmedSessionsInfo(id);
             default:
@@ -59,6 +62,8 @@ public class QuestionnaireService {
                 return ipaqeService.startIpaqe(id, session);
             case "CMTCEF":
                 return cmtcefService.startCmtcef(id, session);
+            case "PAR-Q":
+                return parqService.startParq(id, session);
             case "ePARmed-X":
                 return eparmedService.startEparmed(id, session);
             default:
@@ -83,6 +88,9 @@ public class QuestionnaireService {
             case "CMTCEF":
                 cmtcefService.deleteCmtcef(id, session);
                 return cmtcefService.startCmtcef(id, session);
+            case "PAR-Q":
+                parqService.deleteParq(id, session);
+                return parqService.startParq(id, session);
             case "ePARmed-X":
                 eparmedService.deleteEparmed(id, session);
                 return eparmedService.startEparmed(id, session);
@@ -104,6 +112,8 @@ public class QuestionnaireService {
                 return ipaqeService.nextQuestion(id, session, questionCode, question, answer);
             case "CMTCEF":
                 return cmtcefService.nextQuestion(id, session, questionCode, question, answer);
+            case "PAR-Q":
+                return parqService.nextQuestion(id, session, questionCode, question, answer);
             case "ePARmed-X":
                 return eparmedService.nextQuestion(id, session, questionCode, question, answer);
             default:
@@ -124,6 +134,8 @@ public class QuestionnaireService {
                 return ipaqeService.getAnswers(id, session);
             case "CMTCEF":
                 return cmtcefService.getAnswers(id, session);
+            case "PAR-Q":
+                return parqService.getAnswers(id, session);
             case "ePARmed-X":
                 return eparmedService.getAnswers(id, session);
             default:

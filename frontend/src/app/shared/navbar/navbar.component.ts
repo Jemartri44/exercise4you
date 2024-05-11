@@ -43,6 +43,11 @@ export class NavbarComponent {
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/CMTCEF']);
   }
 
+  goToParq() {
+    console.debug("Redirecting to par-q");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/PAR-Q']);
+  }
+
   goToEparmed() {
     console.debug("Redirecting to eparmed");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/ePARmed-X']);

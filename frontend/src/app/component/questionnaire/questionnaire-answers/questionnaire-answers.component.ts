@@ -57,6 +57,9 @@ export class QuestionnaireAnswersComponent implements OnInit {
       case 'CMTCEF':
         this.title = 'Cuestionario del modelo transteórico del cambio de ejercicio físico';
         break;
+      case 'PAR-Q':
+        this.title = 'Cuestionario de aptitud para la actividad física para todos (PAR-Q+)';
+        break;
       case 'ePARmed-X':
         this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
         break;

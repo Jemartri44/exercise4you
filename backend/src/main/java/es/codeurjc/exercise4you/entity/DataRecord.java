@@ -50,6 +50,7 @@ public class DataRecord implements Serializable{
     private String ipaq;
     private String ipaqe;
     private String cmtcef;
+    private String parq;
     private String eparmed;
     private String imc;
     private String icc;
