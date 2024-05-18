@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Patient } from '../../model/patient/patient';
 import { environment } from '../../../environments/environment';
 import { PatientPage } from '../../model/patient/patient-page';
+import { NewPatientRequest } from './newPatientRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,11 @@ export class PatientService {
       console.error('Se ha recibido el código de error: ', error.status, error.error);
     }
     return throwError(() => new Error('Algo falló. Por favor inténtelo de nuevo.'));
+  }
+
+  addNewPatient(newPatient: NewPatientRequest):Observable<Patient>{
+    return this.http.post<Patient>(environment.apiUrl+"/pacientes/nuevo", newPatient).pipe(
+      catchError(this.handleError)
+    )
   }
 }

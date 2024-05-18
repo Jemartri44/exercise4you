@@ -72,9 +72,9 @@ public class Patient implements Serializable{
     @JsonBackReference
     @ManyToOne
     private Usr usr;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String surnames;
     @Column(nullable = false)
     private String gender;

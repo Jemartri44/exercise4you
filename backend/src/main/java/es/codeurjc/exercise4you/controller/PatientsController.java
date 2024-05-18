@@ -33,10 +33,9 @@ public class PatientsController {
         return patientService.getPaginatedPatients(search.orElse(""), page.orElse(0), size.orElse(10));
     }
 
-    @PostMapping("/nuevo_paciente")
-    public String newPatient(@RequestBody PatientRequest patientRequest){
+    @PostMapping("/pacientes/nuevo")
+    public Patient newPatient(@RequestBody PatientRequest patientRequest){
         return patientService.newPatient(patientRequest);
-
     }
 
     @GetMapping("/paciente/{id}")

@@ -38,7 +38,7 @@ public class PatientService {
         return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate()));
     }
 
-    public String newPatient(PatientRequest patientRequest) {
+    public Patient newPatient(PatientRequest patientRequest) {
         Patient patient = Patient.builder()
             .usr(authService.getLoggedUser())
             .name(patientRequest.getName())
@@ -46,8 +46,8 @@ public class PatientService {
             .gender(patientRequest.getGender())
             .birthdate(patientRequest.getBirthdate())
             .build();
-        patientRepository.save(patient);
-        return "Paciente creado";
+        patient = patientRepository.save(patient);
+        return patient;
     }
 
     public Patient getPatient(String id) {

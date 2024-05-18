@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './component/auth/login/login.component';
 import { RegisterComponent } from './component/auth/register/register.component';
 import { PatientListComponent } from './component/patient/patient-list/patient-list.component';
+import { PatientNewComponent } from './component/patient/patient-new/patient-new.component';
 import { authGuard } from './guard/auth.guard';
 import { PatientInfoComponent } from './component/patient/patient-info/patient-info.component';
 import { QuestionnaireListComponent } from './component/questionnaire/questionnaire-list/questionnaire-list.component';
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [authGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [authGuard] },
     { path: 'pacientes', component: PatientListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/nuevo', component: PatientNewComponent, canActivate: [authGuard]},
     { path: 'pacientes/:id', component: PatientInfoComponent, canActivate: [authGuard] },
 
     { path: 'pacientes/:id/APALQ', component: QuestionnaireListComponent, canActivate: [authGuard] },

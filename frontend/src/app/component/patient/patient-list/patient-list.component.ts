@@ -8,17 +8,11 @@ import { PatientPage } from '../../../model/patient/patient-page';
 import { Observable, catchError, map, of, startWith } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, RouterModule, FormsModule, CommonModule],
+  imports: [ HeaderComponent, FooterComponent, RouterModule, FormsModule, CommonModule ],
   templateUrl: './patient-list.component.html',
   styleUrl: './patient-list.component.css'
 })
@@ -77,7 +71,7 @@ export class PatientListComponent implements OnInit {
 
   goToNewPatient() {
     console.debug("Redirecting to new patient");
-    this.router.navigate(['/nuevo-paciente/']);
+    this.router.navigate(['/pacientes/nuevo']);
   }
 
   goToNext(patientPage?: PatientPage) {

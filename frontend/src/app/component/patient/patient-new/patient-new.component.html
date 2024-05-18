@@ -1,0 +1,66 @@
+<app-header></app-header>
+
+<div class="container">
+    <h1>Añadir nuevo paciente</h1>
+    <form autocomplete="on" [formGroup]="newPatientForm" (ngSubmit)="addNewPatient()">
+        <p *ngIf="newPatientError!=''" class="mb-4 alert alert-danger">{{newPatientError}}</p>
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mb-1 ms-1">
+            <div *ngIf="name.errors?.['required']">Es obligatorio introducir un nombre</div>
+            <div *ngIf="name.errors?.['maxlength']">El nombre es demasiado largo</div>
+        </div>
+        <div class="mb-4">
+            <label for="name" class="mb-2">Nombre del paciente:</label>
+            <input ngModel class="form-control text" type="text" formControlName="name">
+        </div>
+        <div *ngIf="surnames.invalid && (surnames.dirty || surnames.touched)" class="text-danger mb-1 ms-1">
+            <div *ngIf="surnames.errors?.['required']">Es obligatorio introducir apellidos</div>
+            <div *ngIf="surnames.errors?.['maxlength']">Los apellidos son demasiado largos</div>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="mb-2">Apellidos del paciente:</label>
+            <input ngModel class="form-control text" type="text" formControlName="surnames">
+        </div>
+        <div *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)" class="text-danger mb-1 ms-1">
+            <div *ngIf="birthdate.errors?.['required']">Es obligatorio introducir la fecha de nacimiento</div>
+            <div *ngIf="birthdate.errors?.['maxlength']">La fecha indicada no es válida</div>
+        </div>
+        <div class="mb-3 d-flex flex-column">
+            <label for="picker" class="mb-2">Fecha de nacimiento del paciente:</label>
+            <mat-form-field class="date-picker">
+                <mat-label>Seleccione una fecha</mat-label>
+                <input matInput [matDatepicker]="picker" [max]="currentDate" formControlName="birthdate" class="date">
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger mb-1 ms-1">
+            <div *ngIf="gender.errors?.['required']">Es obligatorio indicar el sexo del paciente</div>
+            <div *ngIf="gender.errors?.['maxlength']">La opción indicada no es válida</div>
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="mb-2">Sexo del paciente:</label>
+            <select class="form-select" id="gender" formControlName="gender">
+                <option value="" selected>Seleccione una opción</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
+            </select>
+        </div>
+
+        <div *ngIf="newPatientState=='LOADING'" class="mb-3 ms-5 mt-4">
+            <button class="btn btn-primary disabled" type="submit">
+                <div class="spinner-border next text-light justify-content-end me-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                Añadir nuevo paciente
+            </button>
+        </div>
+        <div *ngIf="newPatientState!=='LOADING'" class="mb-3 ms-5 mt-4">
+            <button class="btn btn-primary" type="submit">Añadir nuevo paciente</button>
+            <button class="btn btn-secondary ms-2" (click)="goToPatients()">Volver</button>
+        </div>
+    </form>
+</div>
+<div style="height:100px"></div>
+
+<app-footer></app-footer>
