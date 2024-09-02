@@ -36,7 +36,7 @@ public class Parq implements Questionnaire{
     private String lastQuestionCode = "parq1";
     @Embedded
     private List<Answer> answers;
-    private String pdfId;
+    private String pdf;
 
     @Data
     @AllArgsConstructor
@@ -44,8 +44,8 @@ public class Parq implements Questionnaire{
     @Embeddable
     public static class Answer {
         private String code;
-        private String answer;
         private String question;
+        private String answer;
     }
 
     @Override

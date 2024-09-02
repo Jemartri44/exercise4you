@@ -36,7 +36,8 @@ public class Ipaqe implements Questionnaire{
     private String lastQuestionCode = "ipaqe1";
     @Embedded
     private List<Answer> answers;
-    private String pdfId;
+    private Double weight;
+    private String pdf;
 
     @Data
     @AllArgsConstructor
@@ -44,8 +45,8 @@ public class Ipaqe implements Questionnaire{
     @Embeddable
     public static class Answer {
         private String code;
-        private String answer;
         private String question;
+        private String answer;
     }
 
     @Override

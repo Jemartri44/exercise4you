@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { QuestionnaireListInfo } from '../../model/questionnaires/questionnaire-list-info';
 import { PatientPage } from '../../model/patient/patient-page';
 import { environment } from '../../../environments/environment';
@@ -37,6 +37,15 @@ export class QuestionnaireService {
   getQuestionnaireAnswers(questionnaireType: string, patientId: string, session: string): Observable<QuestionnaireAnswers> {
     let url = environment.apiUrl+"/pacientes/" + patientId + "/" + questionnaireType + "/" + session + "/get-answers";
     return this.http.get<QuestionnaireAnswers>(url)
+  }
+
+  setWeight(questionnaireType: string, patientId: string, session: string, weight: number): Observable<boolean> {
+    let url = environment.apiUrl+"/pacientes/" + patientId + "/" + questionnaireType + "/" + session + "/set-weight";
+    let response = this.http.post<void>(url, weight);
+    return response.pipe(
+      map(() => true),
+      catchError(() => of(false))
+    );
   }
 
   private handleError(error: HttpErrorResponse){

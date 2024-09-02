@@ -3,6 +3,8 @@
 
 <div class="container">
     <h1>{{this.title}}</h1>
+    
+    <ng-container *ngIf="(questionnaireState | async) as state" [ngSwitch]="state.appState">
     <!-- Alert: Cuestionario empezado -->
     <div #modalAlreadyExists  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -15,7 +17,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Respetir cuestionario" (click)="repeatQuestionnaire()">Repetir cuestionario</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Comenzar cuestionario" (click)="showModal('alert')">Continuar cuestionario</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Comenzar cuestionario" (click)="showNextAlert(false)">Continuar cuestionario</button>
                 </div>
             </div>
         </div>
@@ -25,13 +27,43 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content d-flex align-items-center">
                 <div class="modal-header ms-4 me-4">
-                    <h2 *ngIf="this.alert !== undefined" class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">{{alert.title}}</h2>
+                    <h2 *ngIf="this.alertList !== undefined" class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">{{alertList[currentAlert].title}}</h2>
                 </div>
                 <div class="modal-body ms-4 me-4">
-                    <h3 *ngIf="this.alert !== undefined">{{alert.alert}}</h3>
+                    <h3 *ngIf="this.alertList !== undefined">{{alertList[currentAlert].alert}}</h3>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Comenzar cuestionario">Comenzar cuestionario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Alert: Peso paciente -->
+    <div #modalWeight  id="staticBackdrop" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content d-flex align-items-center">
+                <div class="modal-header ms-4 me-4">
+                    <h2 *ngIf="this.alertList !== undefined" class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">{{alertList[0].title}}</h2>
+                </div>
+                <div class="modal-body ms-4 me-4">
+                    <h3 *ngIf="this.alertList !== undefined">{{alertList[0].alert}}</h3>
+                    <div class="d-flex justify-content-center">
+                        <input #weight class="form-control number" type="number" id="weight" name="weight" placeholder="Peso en kg">
+                    </div>
+                    <p *ngIf="this.weightState == 'ERROR'" class="mt-2 alert alert-danger">{{this.error}}</p>
+                </div>
+                <div *ngIf="this.weightState != 'LOADING'" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Volver atrás" (click)="goBack()">Volver atrás</button>
+                    <button #weight type="button" class="btn btn-primary" aria-label="Guardar" (click)="saveWeight()">Guardar</button>
+                </div>
+                <div *ngIf="this.weightState === 'LOADING'" class="modal-footer">
+                    <button type="button" class="btn btn-secondary disabled" aria-label="Volver atrás">Volver atrás</button>
+                    <button type="button" class="btn btn-primary disabled" aria-label="Guardar">
+                        <div class="spinner-border next text-light justify-content-end" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        Guardando
+                    </button>
                 </div>
             </div>
         </div>
@@ -53,7 +85,6 @@
             </div>
         </div>
     </div>
-    <ng-container *ngIf="(questionnaireState | async) as state" [ngSwitch]="state.appState">
         <ng-container *ngSwitchCase="'ERROR'">
             <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
         </ng-container>

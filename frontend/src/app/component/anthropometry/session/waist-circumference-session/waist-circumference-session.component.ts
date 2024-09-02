@@ -48,7 +48,7 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
   calculate(): boolean {
     let waistCircumference = +this.waistCircumference.nativeElement.value;
     if(waistCircumference) {
-      waistCircumference = this.anthropometryService.round(+this.waistCircumference.nativeElement.value, 1);
+      waistCircumference = AnthropometryService.round(+this.waistCircumference.nativeElement.value, 1);
       this.waistCircumference.nativeElement.value = waistCircumference
     }
     if (!this.validate()) return false;

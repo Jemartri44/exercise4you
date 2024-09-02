@@ -34,15 +34,15 @@ export class AnthropometryService {
     return this.http.post<AnthropometryGeneralData>(url, data)
   }
 
-  round(value: number, decimals: number): number {
+  public static round(value: number, decimals: number): number {
     if(decimals == 0) return Math.round(value + Number.EPSILON);
     let factor = Math.pow(10, decimals);
     return Math.round((value + Number.EPSILON) * factor) / factor;
   }
 
   calculateImc(weight: number, height: number): {imc: number, imcp: number, category: string, risk: string} {
-    let imc = this.round(weight / (height * height), 1);
-    let imcp = this.round(imc / 25, 1);
+    let imc = AnthropometryService.round(weight / (height * height), 1);
+    let imcp = AnthropometryService.round(imc / 25, 1);
     let category = this.getImcCategory(imc);
     let risk = this.getImcRisk(imc);
     return {imc, imcp, category, risk};
@@ -67,7 +67,7 @@ export class AnthropometryService {
   }
 
   calculateIcc(waistCircumference: number, hipCircumference: number, gender: boolean): {icc: number, category: string, risk: string} {
-    let icc = this.round(waistCircumference / hipCircumference, 2);
+    let icc = AnthropometryService.round(waistCircumference / hipCircumference, 2);
     let category = this.getIccCategory(icc, gender);
     let risk = this.getIccRisk(icc, gender);
     return {icc, category, risk};
@@ -115,14 +115,14 @@ export class AnthropometryService {
     switch (formula) {
       case "Fórmula de Lorentz":
         if(gender) {
-          idealWeight = this.round((height - 100) - ((height - 150) / 4), 1);
-          return {idealWeight, difference: this.round(weight - idealWeight, 1)};
+          idealWeight = AnthropometryService.round((height - 100) - ((height - 150) / 4), 1);
+          return {idealWeight, difference: AnthropometryService.round(weight - idealWeight, 1)};
         }
-        idealWeight = this.round((height - 100) - ((height - 150) / 2), 1);
-        return {idealWeight, difference: this.round(weight - idealWeight, 1)};
+        idealWeight = AnthropometryService.round((height - 100) - ((height - 150) / 2), 1);
+        return {idealWeight, difference: AnthropometryService.round(weight - idealWeight, 1)};
       case "Fórmula de la Metropolitan Life Insurance Company":
-        idealWeight = this.round(50 + (0.75 * (height - 150)), 1);
-        return {idealWeight, difference: this.round(weight - idealWeight, 1)};
+        idealWeight = AnthropometryService.round(50 + (0.75 * (height - 150)), 1);
+        return {idealWeight, difference: AnthropometryService.round(weight - idealWeight, 1)};
       default:
         throw new Error("Fórmula no reconocida");
     }
@@ -135,16 +135,16 @@ export class AnthropometryService {
     switch (formula1) {
       case "Fórmula de Jackson-Pollock de 3 pliegues":
         if(gender) {
-          density = this.round(1.10938 - (0.0008267 * foldsSum) + (0.0000016 * foldsSum * foldsSum) - (0.0002574 * age), 4);
+          density = AnthropometryService.round(1.10938 - (0.0008267 * foldsSum) + (0.0000016 * foldsSum * foldsSum) - (0.0002574 * age), 4);
         } else {
-          density = this.round(1.0994921 - (0.0009929 * foldsSum) + (0.0000023 * foldsSum * foldsSum) - (0.0001392 * age), 4);
+          density = AnthropometryService.round(1.0994921 - (0.0009929 * foldsSum) + (0.0000023 * foldsSum * foldsSum) - (0.0001392 * age), 4);
         }
         break;
       case "Fórmula de Jackson-Pollock de 7 pliegues":
         if(gender) {
-          density = this.round(1.112 - (0.00043499 * foldsSum) + (0.00000055 * foldsSum * foldsSum) - (0.00028826 * age), 4);
+          density = AnthropometryService.round(1.112 - (0.00043499 * foldsSum) + (0.00000055 * foldsSum * foldsSum) - (0.00028826 * age), 4);
         } else {
-          density = this.round(1.097 - (0.00046971 * foldsSum) + (0.00000056 * foldsSum * foldsSum) - (0.00012828 * age), 4);
+          density = AnthropometryService.round(1.097 - (0.00046971 * foldsSum) + (0.00000056 * foldsSum * foldsSum) - (0.00012828 * age), 4);
         }
         break;
       case "Fórmula de Durnin-Womersley":
@@ -193,7 +193,7 @@ export class AnthropometryService {
             m = 0.0645;
           }
         }
-        density = this.round(c - (m * Math.log10(foldsSum)), 4);
+        density = AnthropometryService.round(c - (m * Math.log10(foldsSum)), 4);
         break;
       case "Fórmula de Boileau et al.":
         density = 0;
@@ -203,30 +203,30 @@ export class AnthropometryService {
       }
     if(age >= 18) {
       if(age <= 60) { // FÓRMULA DE SIRI
-        fatMassPercentage = this.round(((4.95 / density) - 4.5) * 100, 1);
+        fatMassPercentage = AnthropometryService.round(((4.95 / density) - 4.5) * 100, 1);
       } else { // FÓRMULA DE BROZEK
-        fatMassPercentage = this.round(((4.57 / density) - 4.14) * 100, 1);
+        fatMassPercentage = AnthropometryService.round(((4.57 / density) - 4.14) * 100, 1);
       }
     } else if (gender){
-      fatMassPercentage = this.round((1.35 * foldsSum) - (0.012 * Math.pow(foldsSum,2)) - 4.4, 1);
+      fatMassPercentage = AnthropometryService.round((1.35 * foldsSum) - (0.012 * Math.pow(foldsSum,2)) - 4.4, 1);
     } else {
-      fatMassPercentage = this.round((1.35 * foldsSum) - (0.012 * Math.pow(foldsSum,2)) - 2.4, 1);
+      fatMassPercentage = AnthropometryService.round((1.35 * foldsSum) - (0.012 * Math.pow(foldsSum,2)) - 2.4, 1);
     }
-    fatMass = this.round(fatMassPercentage * weight / 100, 1);
-    fatFreeMass = this.round(weight - fatMass, 1);
+    fatMass = AnthropometryService.round(fatMassPercentage * weight / 100, 1);
+    fatFreeMass = AnthropometryService.round(weight - fatMass, 1);
     fatLevel = this.getSkinFoldsFatLevel(fatMassPercentage, gender, age);
     if(gender) {
       if(formula2 == "Fórmula de James") {
-        leanMass = this.round((1.1 * weight) - (128 * Math.pow(weight,2) / Math.pow(height,2)), 1);
+        leanMass = AnthropometryService.round((1.1 * weight) - (128 * Math.pow(weight,2) / Math.pow(height,2)), 1);
       } else if(formula2 == "Fórmula de Hume") {
-        leanMass = this.round((0.32810 * weight) + (0.33929 * height) - 29.5336, 1);
+        leanMass = AnthropometryService.round((0.32810 * weight) + (0.33929 * height) - 29.5336, 1);
       } else {
         throw new Error("Fórmula no reconocida");
       }
     } else if(formula2 == "Fórmula de James"){
-      leanMass = this.round((1.07 * weight) - (148 * Math.pow(weight,2) / Math.pow(height,2)), 1);
+      leanMass = AnthropometryService.round((1.07 * weight) - (148 * Math.pow(weight,2) / Math.pow(height,2)), 1);
     } else if(formula2 == "Fórmula de Hume") {
-      leanMass = this.round((0.29569 * weight) + (0.41813 * height) - 43.2933, 1);
+      leanMass = AnthropometryService.round((0.29569 * weight) + (0.41813 * height) - 43.2933, 1);
     } else {
       throw new Error("Fórmula no reconocida");
     }

@@ -9,6 +9,7 @@ import { QuestionnaireInfo } from '../../../model/questionnaires/questionnaire-i
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QuestionButtonsComponent } from '../question-buttons/question-buttons.component';
+import { AnthropometryService } from '../../../services/anthropometry/anthropometry.service';
 
 declare let $:any;
 
@@ -23,13 +24,18 @@ export class QuestionnaireCompleteComponent implements OnInit{
 
   title: string = '';
   question: QuestionnaireInfo["question"];
-  alert: QuestionnaireInfo["alert"] | undefined = undefined;
+  alertList: QuestionnaireInfo["alertList"] | undefined = undefined;
+  currentAlert: number = 0;
   alreadyExists: boolean = false;
   buttonOptions: string[] = [];
+  error: string = "";
+  weightState: string = "";
   @ViewChild('modalAlert') modalAlert: ElementRef;
+  @ViewChild('modalWeight') modalWeight: ElementRef;
   @ViewChild('modalAlreadyExists') modalAlreadyExists: ElementRef;
   @ViewChild('modalRepeat') modalRepeat: ElementRef;
   @ViewChild('questionButtons') questionButtons: QuestionButtonsComponent;
+  @ViewChild('weight') weight: ElementRef;
   questionnaireState: Observable<{
     appState: string;
     questionState: string;
@@ -65,7 +71,8 @@ export class QuestionnaireCompleteComponent implements OnInit{
         this.setOptions(this.question.type, this.question.options);
         this.alreadyExists = questionnaireInfo.alreadyExists;
         this.modalShowed = false;
-        this.alert = questionnaireInfo.alert;
+        console.debug(questionnaireInfo);
+        this.alertList = questionnaireInfo.alertList;
         return ({ appState: 'LOADED', questionState: 'LOADED', appData: questionnaireInfo })
       }),
       startWith({ appState: 'LOADING', questionState: 'LOADING' }),
@@ -85,7 +92,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
         if(this.alreadyExists) {
           this.showModal("alreadyExists");
         } else {
-          this.showModal("alert");
+          this.showNextAlert(true);
         }
       }
     });
@@ -101,6 +108,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
   }
 
   showModal(modal: string) {
+    console.debug(modal);
     this.modalShowed = false;
     if(modal === "alreadyExists") {
       $(this.modalAlreadyExists.nativeElement).modal('show');
@@ -108,8 +116,27 @@ export class QuestionnaireCompleteComponent implements OnInit{
     if(modal === "alert") {
       $(this.modalAlert.nativeElement).modal('show');
     }
+    if(modal === "weight") {
+      $(this.modalWeight.nativeElement).modal('show');
+    }
     if(modal === "repeat") {
       $(this.modalRepeat.nativeElement).modal('show');
+    }
+  }
+
+  showNextAlert(first: boolean = false) {
+    first ? this.currentAlert = 0 : this.currentAlert++;
+    console.debug(this.currentAlert);
+    if(this.alertList == undefined) {
+      return;
+    }
+
+    if(this.currentAlert < this.alertList?.length) {
+      console.debug(this.alertList[this.currentAlert].title);
+      this.alertList[this.currentAlert].title === "PESO DEL PACIENTE" ? this.showModal("weight") : this.showModal("alert");
+    } else if(this.alertList.length === 1) {
+      this.currentAlert = 0;
+      this.showModal("alert");
     }
   }
 
@@ -147,12 +174,13 @@ export class QuestionnaireCompleteComponent implements OnInit{
         if(questionnaireInfo === undefined ) {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
-        this.alert = questionnaireInfo.alert;
+        console.debug(questionnaireInfo)
+        this.alertList = questionnaireInfo.alertList;
         this.question = questionnaireInfo.question;
         this.alreadyExists = questionnaireInfo.alreadyExists;
         this.modalShowed = false;
         this.setOptions(this.question.type, this.question.options);
-        this.showModal("alert");
+        this.showNextAlert(true);
         return ({ appState: 'LOADED', questionState: 'LOADED', appData: questionnaireInfo })
       }),
       startWith({ appState: 'LOADING', questionState: 'LOADING' }),
@@ -191,5 +219,47 @@ export class QuestionnaireCompleteComponent implements OnInit{
     if(type === 'agreementLevel') {
       this.buttonOptions = ['Totalmente de acuerdo', 'Mayormente de acuerdo', 'Ni de acuerdo ni en desacuerdo', 'Mayormente en desacuerdo', 'Totalmente en desacuerdo'];
     }
+  }
+
+  goBack() {
+    console.debug("Redirecting to: " + '/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3]);
+    this.router.navigateByUrl('pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3]);
+  }
+
+  saveWeight() {
+    if (!this.validateWeight()) {
+      return;
+    }
+    this.weightState = "LOADING";
+    this.error = "";
+    let weight = this.weight.nativeElement.value;
+    this.questionnaireService.setWeight(this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4], weight).subscribe((response: boolean) => {
+      if (response) {
+        $(this.modalWeight.nativeElement).modal('hide');
+        this.showNextAlert();
+      } else {
+        this.error = "No se ha podido guardar el peso";
+        this.weightState = "ERROR";
+      }
+    });
+  }
+
+  validateWeight() : boolean{
+    let weight = +this.weight.nativeElement.value;
+    if (weight == undefined || weight == null) {
+      this.error = "Introduzca un peso";
+      this.weightState = "ERROR";
+      return false;
+    }
+    weight = AnthropometryService.round(weight, 2);
+    this.weight.nativeElement.value = weight;
+    if (weight <= 0 || weight >= 1000) {
+      this.error = "Introduzca un peso válido";
+      this.weightState = "ERROR";
+      return false;
+    }
+    this.weightState = "";
+    this.error = "";
+    return true;
   }
 }

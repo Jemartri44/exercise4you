@@ -36,7 +36,7 @@ public class Cmtcef implements Questionnaire{
     private String lastQuestionCode = "cmtcef0";
     @Embedded
     private List<Answer> answers;
-    private String pdfId;
+    private String pdf;
 
     @Data
     @AllArgsConstructor
@@ -44,8 +44,8 @@ public class Cmtcef implements Questionnaire{
     @Embeddable
     public static class Answer {
         private String code;
-        private String answer;
         private String question;
+        private String answer;
     }
 
     @Override

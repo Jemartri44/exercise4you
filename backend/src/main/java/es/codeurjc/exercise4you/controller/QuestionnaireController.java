@@ -51,4 +51,9 @@ public class QuestionnaireController {
         return questionnaireService.nextQuestion(id, nSession, questionnaireType, questionRequest.getQuestionCode(), questionRequest.getQuestion(), questionRequest.getAnswer());
     }
 
+    @PostMapping("/pacientes/{id}/{questionnaireType}/{nSession}/set-weight")
+    public void setWeight(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType, @RequestBody Double weight) {
+        questionnaireService.setWeight(id, nSession, questionnaireType, weight);
+    }
+
 }

@@ -1,0 +1,22 @@
+{
+    // A name for the devcontainer which can be
+    // displayed to the user
+    "name": "exercise4you MinIO Dev Container",
+    // The name of the docker-compose file use 
+    // to start the services
+    "dockerComposeFile": "docker-compose.yml",
+    // The service you want to work on. This is 
+    // considered the primary container for your
+    // dev environment which your editor will 
+    // connect to.
+    "service": "app",
+    // The path of the workspace folder inside 
+    // the container. This is typically the target
+    // path of a volume mount in the docker-compose.yml.
+    "workspaceFolder": "/workspace/devcontainer-with-minio",
+    // The username to use for spawning processes
+    // in the container including lifecycle scripts
+    // and any remote editor/IDE server process. 
+    // The default is the same user as the container.
+    "remoteUser": "root"
+}

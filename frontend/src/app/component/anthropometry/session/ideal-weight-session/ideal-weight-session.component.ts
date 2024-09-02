@@ -52,11 +52,11 @@ export class IdealWeightSessionComponent {
     let weight = +this.weight.nativeElement.value;
     let height = +this.height.nativeElement.value;
     if(weight) {
-      weight = this.anthropometryService.round(+this.weight.nativeElement.value, 1);
+      weight = AnthropometryService.round(+this.weight.nativeElement.value, 1);
       this.weight.nativeElement.value = weight
     }
     if(height) {
-      height = this.anthropometryService.round(+this.height.nativeElement.value, 1);
+      height = AnthropometryService.round(+this.height.nativeElement.value, 1);
       this.height.nativeElement.value = height
     }
     if (!this.validate()) return false;

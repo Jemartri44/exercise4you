@@ -468,43 +468,43 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
 
   roundParams() {
     if(this.weight.nativeElement.value == "" || this.height.nativeElement.value == "") { return; }
-    this.weight.nativeElement.value = this.anthropometryService.round(+this.weight.nativeElement.value, 1);
-    this.height.nativeElement.value = this.anthropometryService.round(+this.height.nativeElement.value, 1);
+    this.weight.nativeElement.value = AnthropometryService.round(+this.weight.nativeElement.value, 1);
+    this.height.nativeElement.value = AnthropometryService.round(+this.height.nativeElement.value, 1);
     switch(this.formula1) {
       case "Fórmula de Jackson-Pollock de 3 pliegues":
         if(this.gender) {
           if(this.anteriorThighFold.nativeElement.value == "" || this.abdominalFold.nativeElement.value == "" || this.pectoralFold.nativeElement.value == "") { return; }
-          this.anteriorThighFold.nativeElement.value = this.anthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
-          this.abdominalFold.nativeElement.value = this.anthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
-          this.pectoralFold.nativeElement.value = this.anthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
+          this.anteriorThighFold.nativeElement.value = AnthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
+          this.abdominalFold.nativeElement.value = AnthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
+          this.pectoralFold.nativeElement.value = AnthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
         } else {
           if(this.tricipitalFold.nativeElement.value == "" || this.suprailiacFold.nativeElement.value == "" || this.anteriorThighFold.nativeElement.value == "") { return; }
-          this.anteriorThighFold.nativeElement.value = this.anthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
-          this.tricipitalFold.nativeElement.value = this.anthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
-          this.suprailiacFold.nativeElement.value = this.anthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
+          this.anteriorThighFold.nativeElement.value = AnthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
+          this.tricipitalFold.nativeElement.value = AnthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
+          this.suprailiacFold.nativeElement.value = AnthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
         }
         break;
       case "Fórmula de Jackson-Pollock de 7 pliegues":
         if(this.pectoralFold.nativeElement.value == "" || this.midaxillaryFold.nativeElement.value == "" || this.tricipitalFold.nativeElement.value == "" || this.subscapularFold.nativeElement.value == "" || this.abdominalFold.nativeElement.value == "" || this.suprailiacFold.nativeElement.value == "" || this.anteriorThighFold.nativeElement.value == "") { return; }
-        this.pectoralFold.nativeElement.value = this.anthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
-        this.midaxillaryFold.nativeElement.value = this.anthropometryService.round(+this.midaxillaryFold.nativeElement.value, 0);
-        this.tricipitalFold.nativeElement.value = this.anthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
-        this.subscapularFold.nativeElement.value = this.anthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
-        this.abdominalFold.nativeElement.value = this.anthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
-        this.suprailiacFold.nativeElement.value = this.anthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
-        this.anteriorThighFold.nativeElement.value = this.anthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
+        this.pectoralFold.nativeElement.value = AnthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
+        this.midaxillaryFold.nativeElement.value = AnthropometryService.round(+this.midaxillaryFold.nativeElement.value, 0);
+        this.tricipitalFold.nativeElement.value = AnthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
+        this.subscapularFold.nativeElement.value = AnthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
+        this.abdominalFold.nativeElement.value = AnthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
+        this.suprailiacFold.nativeElement.value = AnthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
+        this.anteriorThighFold.nativeElement.value = AnthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
         break;
       case "Fórmula de Durnin-Womersley":
         if(this.suprailiacFold.nativeElement.value == "" || this.subscapularFold.nativeElement.value == "" || this.bicipitalFold.nativeElement.value == "" || this.tricipitalFold.nativeElement.value == "") { return; }
-        this.suprailiacFold.nativeElement.value = this.anthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
-        this.subscapularFold.nativeElement.value = this.anthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
-        this.bicipitalFold.nativeElement.value = this.anthropometryService.round(+this.bicipitalFold.nativeElement.value, 0);
-        this.tricipitalFold.nativeElement.value = this.anthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
+        this.suprailiacFold.nativeElement.value = AnthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
+        this.subscapularFold.nativeElement.value = AnthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
+        this.bicipitalFold.nativeElement.value = AnthropometryService.round(+this.bicipitalFold.nativeElement.value, 0);
+        this.tricipitalFold.nativeElement.value = AnthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
         break;
       case "Fórmula de Boileau et al.":
         if(this.tricipitalFold.nativeElement.value == "" || this.subscapularFold.nativeElement.value == "") { return; }
-        this.tricipitalFold.nativeElement.value = this.anthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
-        this.subscapularFold.nativeElement.value = this.anthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
+        this.tricipitalFold.nativeElement.value = AnthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
+        this.subscapularFold.nativeElement.value = AnthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
         break;
       default:
         throw new Error("Fórmula no válida");
@@ -515,43 +515,43 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
     switch(param) {
       case "weight":
         if(this.weight.nativeElement.value == "") { return; }
-        this.weight.nativeElement.value = this.anthropometryService.round(+this.weight.nativeElement.value, 1);
+        this.weight.nativeElement.value = AnthropometryService.round(+this.weight.nativeElement.value, 1);
         break;
       case "height":
         if(this.height.nativeElement.value == "") { return; }
-        this.height.nativeElement.value = this.anthropometryService.round(+this.height.nativeElement.value, 1);
+        this.height.nativeElement.value = AnthropometryService.round(+this.height.nativeElement.value, 1);
         break;
       case "bicipitalFold":
         if(this.bicipitalFold.nativeElement.value == "") { return; }
-        this.bicipitalFold.nativeElement.value = this.anthropometryService.round(+this.bicipitalFold.nativeElement.value, 0);
+        this.bicipitalFold.nativeElement.value = AnthropometryService.round(+this.bicipitalFold.nativeElement.value, 0);
         break;
       case "pectoralFold":
         if(this.pectoralFold.nativeElement.value == "") { return; }
-        this.pectoralFold.nativeElement.value = this.anthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
+        this.pectoralFold.nativeElement.value = AnthropometryService.round(+this.pectoralFold.nativeElement.value, 0);
         break;
       case "midaxillaryFold":
         if(this.midaxillaryFold.nativeElement.value == "") { return; }
-        this.midaxillaryFold.nativeElement.value = this.anthropometryService.round(+this.midaxillaryFold.nativeElement.value, 0);
+        this.midaxillaryFold.nativeElement.value = AnthropometryService.round(+this.midaxillaryFold.nativeElement.value, 0);
         break;
       case "tricipitalFold":
         if(this.tricipitalFold.nativeElement.value == "") { return; }
-        this.tricipitalFold.nativeElement.value = this.anthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
+        this.tricipitalFold.nativeElement.value = AnthropometryService.round(+this.tricipitalFold.nativeElement.value, 0);
         break;
       case "subscapularFold":
         if(this.subscapularFold.nativeElement.value == "") { return; }
-        this.subscapularFold.nativeElement.value = this.anthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
+        this.subscapularFold.nativeElement.value = AnthropometryService.round(+this.subscapularFold.nativeElement.value, 0);
         break;
       case "abdominalFold":
         if(this.abdominalFold.nativeElement.value == "") { return; }
-        this.abdominalFold.nativeElement.value = this.anthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
+        this.abdominalFold.nativeElement.value = AnthropometryService.round(+this.abdominalFold.nativeElement.value, 0);
         break;
       case "suprailiacFold":
         if(this.suprailiacFold.nativeElement.value == "") { return; }
-        this.suprailiacFold.nativeElement.value = this.anthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
+        this.suprailiacFold.nativeElement.value = AnthropometryService.round(+this.suprailiacFold.nativeElement.value, 0);
         break;
       case "anteriorThighFold":
         if(this.anteriorThighFold.nativeElement.value == "") { return; }
-        this.anteriorThighFold.nativeElement.value = this.anthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
+        this.anteriorThighFold.nativeElement.value = AnthropometryService.round(+this.anteriorThighFold.nativeElement.value, 0);
         break;
       default:
         throw new Error("Parámetro no válido");

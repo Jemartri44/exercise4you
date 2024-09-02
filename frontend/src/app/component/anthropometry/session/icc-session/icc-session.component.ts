@@ -54,11 +54,11 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
     let waistCircumference = +this.waistCircumference.nativeElement.value;
     let hipCircumference = +this.hipCircumference.nativeElement.value;
     if(waistCircumference) {
-      waistCircumference = this.anthropometryService.round(+this.waistCircumference.nativeElement.value, 1);
+      waistCircumference = AnthropometryService.round(+this.waistCircumference.nativeElement.value, 1);
       this.waistCircumference.nativeElement.value = waistCircumference
     }
     if(hipCircumference) {
-      hipCircumference = this.anthropometryService.round(+this.hipCircumference.nativeElement.value, 1);
+      hipCircumference = AnthropometryService.round(+this.hipCircumference.nativeElement.value, 1);
       this.hipCircumference.nativeElement.value = hipCircumference
     }
     if (!this.validate()) return false;

@@ -143,6 +143,25 @@ public class QuestionnaireService {
         }
     }
 
+    public void setWeight(Integer id, Integer session, String questionnaireType, Double weight) {
+        checkPatient(id);
+        checkSession(session);
+
+
+        System.out.println(questionnaireType);
+        System.out.println(questionnaireType.equals("IPAQ"));
+        switch (questionnaireType) {
+            case "IPAQ":
+                ipaqService.setWeight(id, session, weight);
+                break;
+            case "IPAQ-E":
+                ipaqeService.setWeight(id, session, weight);
+                break;
+            default:
+                throw new RuntimeException("Invalid questionnaire type");
+        }
+    }
+
 
     private void checkPatient(Integer id) {
         Optional<Patient> optional = patientRepository.findById(id);
