@@ -27,7 +27,7 @@ public class AwsController {
 
     @PostMapping("/uploadFile")
     public ResponseEntity<String> uploadFile(@RequestParam(value = "filePath") String filePath, @RequestParam(value = "file") MultipartFile file) throws IOException {
-        return new ResponseEntity<>(s3Service.uploadFile(filePath, file), HttpStatus.OK);
+        return new ResponseEntity<>(s3Service.uploadMultipartFile(filePath, file), HttpStatus.OK);
     }
 
 }

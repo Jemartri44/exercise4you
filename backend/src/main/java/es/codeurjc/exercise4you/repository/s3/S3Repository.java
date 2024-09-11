@@ -16,15 +16,17 @@ public interface S3Repository {
     String uploadFile(String bucketName, String fileName, File fileObj);
 
     String uploadMultipartFile(String bucketName, String fileName, MultipartFile fileObj) throws IOException, SdkClientException;
-/*
+
     List<Asset> listObjectsInBucket(String bucket);
 
     S3ObjectInputStream getObject(String bucketName, String fileName) throws IOException;
 
     byte[] downloadFile(String bucketName, String fileName) throws IOException;
 
+    MultipartFile downloadMultipartFile(String bucketName, String filepath, String fileName) throws IOException;
+
     void moveObject(String bucketName, String fileKey, String destinationFileKey);
 
     void deleteObject(String bucketName, String fileKey);
- */
+
 }

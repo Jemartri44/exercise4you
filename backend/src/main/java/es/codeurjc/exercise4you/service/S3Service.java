@@ -22,8 +22,12 @@ public class S3Service {
         this.s3Repository = s3Repository;
     }
     
-    public String uploadFile(String filePath, MultipartFile file) throws SdkClientException, IOException {
+    public String uploadMultipartFile(String filePath, MultipartFile file) throws SdkClientException, IOException {
         String fileName = file.getOriginalFilename();
         return s3Repository.uploadMultipartFile(bucketName, filePath + fileName, file);
+    }
+
+    public MultipartFile downloadMultipartFile(String filePath, String filename) throws IOException{
+        return s3Repository.downloadMultipartFile(bucketName, filePath, filename);
     }
 }

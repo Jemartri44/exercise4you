@@ -18,7 +18,7 @@ public interface ApalqRepository extends MongoRepository<Apalq, String>{
     Optional<Apalq> findById(String id);
 
     Optional<Apalq> findByPatientIdAndCompletionDate(Integer id, LocalDate localDate);
-
+    
     @Query("{ 'session' : ?0, 'patientId' : ?1 }")
     Optional<Apalq> findBySessionAndPatientId(Integer session, Integer id);
 

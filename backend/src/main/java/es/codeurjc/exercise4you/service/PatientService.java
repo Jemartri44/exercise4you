@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientService {
 
-    @Autowired
     private final PatientRepository patientRepository;
     private final AuthService authService;
 
@@ -52,5 +52,21 @@ public class PatientService {
 
     public Patient getPatient(String id) {
         return patientRepository.findById(Integer.valueOf(id)).orElseThrow();
+    }
+
+    public void checkPatient(Integer id) {
+        Optional<Patient> optional = patientRepository.findById(id);
+        if(!optional.isPresent()){
+            throw new RuntimeException("Patient not found");
+        }
+        if(!optional.get().getUsr().getId().equals(authService.getLoggedUser().getId())){
+            throw new RuntimeException("Not allowed");
+        }
+    }
+
+    public void checkSession(Integer session) {
+        if(session<1){
+            throw new RuntimeException("Invalid session number");
+        }
     }
 }

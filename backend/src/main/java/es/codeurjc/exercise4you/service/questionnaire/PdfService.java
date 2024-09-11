@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -47,14 +48,32 @@ import es.codeurjc.exercise4you.entity.questionnaire.results.IpaqResults;
 import es.codeurjc.exercise4you.entity.questionnaire.results.IpaqeResults;
 import es.codeurjc.exercise4you.entity.questionnaire.results.ParqResults;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
+import es.codeurjc.exercise4you.service.DataRecordService;
+import es.codeurjc.exercise4you.service.PatientService;
 import es.codeurjc.exercise4you.service.S3Service;
 
 @Service
 public class PdfService {
     @Autowired
+    private PatientService patientService;
+    @Autowired
     private PatientRepository patientRepository;
     @Autowired
     private S3Service s3Service;
+    @Autowired
+    private DataRecordService dataRecordService;
+
+    public MultipartFile getPdf(Integer id, String pdfType, Integer nSession) throws IOException{
+        patientService.checkSession(nSession);
+        patientService.checkPatient(id);
+        Patient patient = patientService.getPatient(String.valueOf(id));
+        LocalDate date = dataRecordService.getCompletionDateBySession(id, nSession);
+        String filepath = "pdfs/";
+        String filename = "";
+        filepath = filepath + pdfType + "/";
+        filename = patient.getName() + '_'+ patient.getSurnames().replace(' ','_') + "_" + pdfType.toUpperCase() + "_" + date + ".pdf";
+        return s3Service.downloadMultipartFile(filepath, filename);
+    }
 
     public String generateIpaqPdf(Ipaq ipaq) throws DocumentException, IOException {
         Optional<Patient> optional = patientRepository.findById(ipaq.getPatientId());
@@ -265,7 +284,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_IPAQ_" + ipaq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/ipaq/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/ipaq/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
@@ -481,7 +500,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_IPAQE_" + ipaqe.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/ipaqe/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/ipaqe/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
@@ -591,7 +610,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_CMTCEF_" + cmtcef.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/cmtcef/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/cmtcef/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
@@ -679,7 +698,7 @@ public class PdfService {
             document.close();
             PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
             try {
-                String returned = s3Service.uploadFile("pdfs/parq/", pdfMultipartFile);
+                String returned = s3Service.uploadMultipartFile("pdfs/parq/", pdfMultipartFile);
                 return returned.split(" ")[3];
             } catch (Exception e) {
                 throw new IOException("Error uploading file to S3");
@@ -759,7 +778,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/parq/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/parq/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
@@ -879,7 +898,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_EPARMED_" + eparmed.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/eparmed/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/eparmed/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
@@ -1054,7 +1073,7 @@ public class PdfService {
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_APALQ_" + apalq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
-            String returned = s3Service.uploadFile("pdfs/apalq/", pdfMultipartFile);
+            String returned = s3Service.uploadMultipartFile("pdfs/apalq/", pdfMultipartFile);
             return returned.split(" ")[3];
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
