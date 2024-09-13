@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="container">
-    <h1>Listado de pacientes</h1>
+    <h1 name="title">Listado de pacientes</h1>
 
     <ng-container *ngIf="(patientsState | async) as state" [ngSwitch]="state.appState">
         <ng-container *ngSwitchCase="'ERROR'">

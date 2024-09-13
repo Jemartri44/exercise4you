@@ -25,6 +25,9 @@ public class AuthController {
 
     @PostMapping(value = "login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
+        if(loginRequest.getEmail() == null || loginRequest.getPassword() == null){
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 

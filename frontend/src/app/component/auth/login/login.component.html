@@ -17,13 +17,13 @@
                                 <div *ngIf="email.errors?.['email']">El formato del correo electrónico no es válido</div>
                                 <div *ngIf="email.errors?.['maxlength']">El correo electrónico es demasiado largo</div>
                             </div>
-                            <div class="mb-3"><input ngModel autocomplete="on" class="form-control" type="email" formControlName="email" placeholder="Correo electrónico"></div>
+                            <div class="mb-3"><input ngModel name="email" autocomplete="on" class="form-control" type="email" formControlName="email" placeholder="Correo electrónico"></div>
                             <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
                                 <div *ngIf="password.errors?.['required']">Es obligatorio introducir una contraseña</div>
                                 <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres</div>
                                 <div *ngIf="password.errors?.['maxlength']">El email es demasiado largo</div>
                             </div>
-                            <div class="mb-3"><input ngModel class="form-control" type="password" formControlName="password" placeholder="Contraseña"></div>
+                            <div class="mb-3"><input ngModel name="password" class="form-control" type="password" formControlName="password" placeholder="Contraseña"></div>
 
                             <div *ngIf="loginState=='LOADING'" class="mb-3"><button class="btn btn-primary d-block w-100 disabled" type="submit">
                                 <div class="spinner-border next text-light justify-content-end me-2" role="status">

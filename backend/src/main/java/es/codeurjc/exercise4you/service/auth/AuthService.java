@@ -44,11 +44,12 @@ public class AuthService {
     }
 
     public LoginResponse refreshToken(String token) {
-        if (jwtService.isTokenValid(token, getLoggedUser())) {
+        try{
+            jwtService.isTokenValid(token, getLoggedUser());
             return LoginResponse.builder()
                 .token(jwtService.getToken(getLoggedUser()))
                 .build();
-        } else {
+        } catch (Exception e){
             throw new RuntimeException("Token no válido");
         }
     }
