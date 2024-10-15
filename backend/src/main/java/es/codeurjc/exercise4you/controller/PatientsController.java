@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +40,7 @@ public class PatientsController {
     }
 
     @GetMapping("/paciente/{id}")
-    public Collection<DataRecord> getPatient(){
-        return patientService.getPatient("1").getDataRecord();
+    public PatientDTO getPatient(@PathVariable Integer id){
+        return patientService.getPatient(id);
     }
 }

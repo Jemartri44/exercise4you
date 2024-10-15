@@ -23,6 +23,12 @@ export class PatientService {
     )
   }
 
+  getPatient(id: string):Observable<Patient>{
+    return this.http.get<Patient>(environment.apiUrl+"/paciente/"+id).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   private handleError(error: HttpErrorResponse){
     if(error.status == 0 ){
       console.error('Se ha producido un error en la conexión con el servidor', error.error);

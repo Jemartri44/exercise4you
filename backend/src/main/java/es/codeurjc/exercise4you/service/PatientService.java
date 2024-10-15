@@ -50,8 +50,8 @@ public class PatientService {
         return patient;
     }
 
-    public Patient getPatient(String id) {
-        return patientRepository.findById(Integer.valueOf(id)).orElseThrow();
+    public PatientDTO getPatient(Integer id) {
+        return new PatientDTO(patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found")));
     }
 
     public void checkPatient(Integer id) {
