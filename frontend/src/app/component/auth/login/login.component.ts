@@ -18,12 +18,20 @@ export class LoginComponent implements OnInit{
   loginError:string="";
   loginState: string='';
   expired: boolean = false;
+  registered: boolean = false;
+  verified: boolean = false;
+  forgottenPassword: boolean = false;
+  changedPassword: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.expired = params['expired'];
+      this.registered = params['registered'];
+      this.verified = params['verified'];
+      this.forgottenPassword = params['change-password'];
+      this.changedPassword = params['changed-password'];
     });
     if(this.expired){
       this.loginError = "La sesión ha expirado. Por favor, inicie sesión nuevamente.";

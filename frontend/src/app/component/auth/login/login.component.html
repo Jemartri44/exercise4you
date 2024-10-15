@@ -12,6 +12,10 @@
                     <div class="card-body d-flex flex-column align-items-center">
                         <form autocomplete="on" class="text-center" [formGroup]="loginForm" (ngSubmit)="login()">
                             <p *ngIf="loginError!=''" class="mb-4 alert alert-danger">{{loginError}}</p>
+                            <p *ngIf="this.registered" class="mb-4 alert alert-info">Revise su correo electrónico y la carpeta de spam para verificar su cuenta</p>
+                            <p *ngIf="this.verified" class="mb-4 alert alert-info">¡Cuenta verificada con éxito!</p>
+                            <p *ngIf="this.forgottenPassword" class="mb-4 alert alert-info">Revise su correo electrónico y la carpeta de spam para reestablecer su contraseña</p>
+                            <p *ngIf="this.changedPassword" class="mb-4 alert alert-info">¡Contraseña cambiada con éxito!</p>
                             <div *ngIf="email.invalid && (email.dirty || email.touched)" class="text-danger">
                                 <div *ngIf="email.errors?.['required']">Es obligatorio introducir un correo electrónico</div>
                                 <div *ngIf="email.errors?.['email']">El formato del correo electrónico no es válido</div>
@@ -33,7 +37,7 @@
                             <div *ngIf="loginState!=='LOADING'" class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Iniciar sesión</button></div>
                         </form>
                         <div class="form-options">
-                            <a class="text-muted">¿Olvidaste tu contraseña?</a>
+                            <a class="text-muted" routerLink="/solicitar-cambio-contrasena">¿Olvidaste tu contraseña?</a>
                             <span class="separator"> | </span>
                             <a class="text-muted" routerLink="/register">Registrarse</a>
                         </div>

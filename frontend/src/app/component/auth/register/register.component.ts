@@ -49,7 +49,7 @@ export class RegisterComponent {
       complete: () => {
         this.registerState = '';
         console.info("Registro completado");
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/login?registered=true');
         this.registerForm.reset();
       }
     });

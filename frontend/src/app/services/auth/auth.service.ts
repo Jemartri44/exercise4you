@@ -6,6 +6,8 @@ import { BehaviorSubject, Observable, catchError, map, tap, throwError } from 'r
 import { environment } from '../../../environments/environment.development';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ChangePasswordRequest } from './changePasswordRequest';
 
 const helper = new JwtHelperService();
 
@@ -16,7 +18,7 @@ export class AuthService {
 
   loggedIn:boolean = false;
 
-  constructor( private http:HttpClient, private router:Router ) {
+  constructor( private http:HttpClient, private router:Router, private location:Location ) {
     this.checkToken();
   }
 
@@ -35,13 +37,23 @@ export class AuthService {
   }
 
   register(credentials:RegisterRequest):Observable<any>{
-    return this.http.post<any>(environment.hostUrl + "/auth/register", credentials).pipe(
-      tap(userData => {
-        sessionStorage.setItem("token", userData.token);
-        this.loggedIn = true;
-      }),
-      map((userData) => userData.token)
-    )
+    return this.http.post<any>(environment.hostUrl + "/auth/register", credentials).pipe()
+  }
+
+  resendVerificationEmail(email:string):Observable<any>{
+    return this.http.post<any>(environment.hostUrl + "/auth/refresh-verification-token", email).pipe()
+  }
+
+  checkVerificationToken(token:string):Observable<any>{
+    return this.http.post<any>(environment.hostUrl + "/auth/email-verification", token).pipe()
+  }
+
+  forgottenPasswordEmail(email:string):Observable<any>{
+    return this.http.post<any>(environment.hostUrl + "/auth/forgotten-password", email).pipe()
+  }
+
+  changePassword(request: ChangePasswordRequest):Observable<any>{
+    return this.http.post<any>(environment.hostUrl + "/auth/change-password", request).pipe()
   }
 
   refreshToken():void{
@@ -63,8 +75,9 @@ export class AuthService {
   checkToken():void{
     const token = sessionStorage.getItem("token");
     const expired = helper.isTokenExpired(token);
+    const authRoutes = ['/login','/register','/confirmar-registro','/solicitar-cambio-contrasena','/cambiar-contrasena'];
     if (expired) {
-      if (this.router.url == '/login' || this.router.url == '/login?expired=true' || this.router.url == '/register') {
+      if (authRoutes.includes(this.location.path().split('?')[0])) {
         return;
       }
       this.logout(token != null);
@@ -76,4 +89,6 @@ export class AuthService {
   get userLoggedIn():boolean{
     return this.loggedIn;
   }
+
+
 }

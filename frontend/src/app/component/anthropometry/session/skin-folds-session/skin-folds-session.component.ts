@@ -358,7 +358,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
         if(!this.editable){
           this.james.nativeElement.disabled = true;
         }
-        console.debug("HOLA hume" + this.age)
+        console.debug("hume" + this.age)
         this.james.nativeElement.checked = false;
         this.hume.nativeElement.checked = true;
         console.debug("hume?" + this.hume.nativeElement.checked)
