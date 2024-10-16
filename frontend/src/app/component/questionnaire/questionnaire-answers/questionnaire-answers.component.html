@@ -15,7 +15,8 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'LOADED'" >
-            <u class="d-flex justify-content-center"><h2 class="pe-5 ps-5 m-5 text-justify" [innerHTML]="state.appData.session"></h2></u>
+            <u class="d-flex justify-content-center"><h2 class="pe-5 ps-5 mt-5 mb-5 text-justify" [innerHTML]="state.appData.session"></h2></u>
+
             <div *ngIf="this.title === 'Cuestionario internacional de actividad física (IPAQ)' || this.title === 'Cuestionario internacional de actividad física en personas mayores (IPAQ-E)'" class="me-3 mb-2">
                 <h3><li>Peso del paciente</li></h3>
                 <div class="d-flex align-items-center justify-content-center">
@@ -30,8 +31,12 @@
                     <input type="text" class="form-control ms-5" [value]="answer.answer" readonly>
                 </div>
             </div>
+            <div class="d-flex justify-content-end mb-5 mt-4">
+                <button class="btn btn-primary" (click)="volver()">Volver</button>
+            </div>
         </ng-container>
     </ng-container>
+
     <div style="height:100px"></div>
 </div>
 

@@ -65,4 +65,10 @@ export class QuestionnaireAnswersComponent implements OnInit {
         break;
     }
   }
+
+  volver(){
+    let routeParts = this.router.url.split('/');
+    let route = routeParts[1] + '/' + routeParts[2] + '/' + routeParts[3];
+    this.router.navigate([route])
+  }
 }

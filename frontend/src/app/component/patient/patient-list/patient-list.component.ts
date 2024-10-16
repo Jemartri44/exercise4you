@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../shared/header/header.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { PatientService } from '../../../services/patient/patient.service';
@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 export class PatientListComponent implements OnInit {
 
   hasPatients: boolean = false;
+  @ViewChild('search') searchBox: ElementRef;
   search:string = "";
   errorMessage: string = "";
   displayedColumns: string[] = ['id', 'name', 'surnames', 'gender', 'birthdate'];
@@ -44,15 +45,15 @@ export class PatientListComponent implements OnInit {
   }
 
   goToPage(name?:string, page?: number, data?: PatientPage) {
+    name = this.searchBox.nativeElement.value
     if(!name) {
-      name = this.search;
+      name = "";
     }
     if(!page) {
       page = 0;
     }else {
       page = page;
     }
-    this.search = name;
     this.patientsState = this.patientService.getPatients(name, page).pipe(
       map((patientPage: PatientPage) => {
         return ({ appState: 'LOADED', appData: patientPage })

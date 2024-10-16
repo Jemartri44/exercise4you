@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class PatientsController {
 
@@ -41,6 +41,6 @@ public class PatientsController {
 
     @GetMapping("/paciente/{id}")
     public PatientDTO getPatient(@PathVariable Integer id){
-        return patientService.getPatient(id);
+        return patientService.getPatientDto(id);
     }
 }

@@ -22,7 +22,7 @@
                 <div *ngIf="hasPatients" class="container">
                     <div class="col-md-12 mt-5">
                         <form #searchForm="ngForm" (ngSubmit)="goToPage(searchForm.value.name, 0, state.appData)" class="mb-4 d-flex justify-content-end" role="search">
-                            <input autocomplete="off" type="text" name="name" ngModel class="form-control me-2" type="search" placeholder="Buscar por nombre y/o apellidos"
+                            <input #search autocomplete="off" type="text" name="name" ngModel class="form-control me-2" type="search" placeholder="Buscar por nombre y/o apellidos"
                                 aria-label="Search">
                             <button class="btn btn-outline-primary" type="submit">Buscar</button>
                         </form>
