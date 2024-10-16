@@ -59,7 +59,7 @@ export const routes: Routes = [
     { path: 'pacientes/:id/circunferencia-cintura', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/peso-ideal', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/medición-pliegues-cutáneos', component: AnthropometryComponent, canActivate: [authGuard] },
-    //{ path: 'manual', component: ManualComponent, canActivate: [authGuard] },
+    
     { path: '', redirectTo: '/pacientes', pathMatch: 'full'},
     { path: '**', redirectTo: '/pacientes', pathMatch: 'full'}
  

@@ -25,6 +25,22 @@ public class PdfController {
 
     private final PdfService pdfService;
 
+    @GetMapping("/manual")
+    public ResponseEntity<Resource> downloadManual() throws IOException {   
+        MultipartFile multipartFile = pdfService.getManual();
+        byte[] array = multipartFile.getBytes();
+
+        ByteArrayResource resource = new ByteArrayResource(array);
+        return ResponseEntity.ok()
+                .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment()
+                            .filename(multipartFile.getName())
+                            .build().toString())
+                .body(resource);
+    }
+
     @GetMapping("/pdf/{id}/{pdfType}/{nSession}")
     public ResponseEntity<Resource> downloadPdf(@PathVariable Integer id, @PathVariable String pdfType, @PathVariable Integer nSession) throws IOException {   
         MultipartFile multipartFile = pdfService.getPdf(id, pdfType.replace("-X","").replace("-","").toLowerCase(), nSession);

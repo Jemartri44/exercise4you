@@ -12,4 +12,8 @@ export class PdfService {
   getPdf(id: string, pdfType: string, session: number) {
     return this.http.get(environment.apiUrl + "/pdf/" + id + "/" + pdfType + "/" + session, {observe: 'response', responseType: 'blob'});
   }
+
+  getManual() {
+    return this.http.get(environment.apiUrl + "/manual", {observe: 'response', responseType: 'blob'});
+  }
 }

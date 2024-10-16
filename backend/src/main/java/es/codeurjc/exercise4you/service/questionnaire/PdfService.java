@@ -75,6 +75,13 @@ public class PdfService {
         return s3Service.downloadMultipartFile(filepath, filename);
     }
 
+    public MultipartFile getManual() throws IOException{
+        String filepath = "pdfs/";
+        String filename = "manual.pdf";
+        System.out.println("Downloading manual");
+        return s3Service.downloadMultipartFile(filepath, filename);
+    }
+
     public String generateIpaqPdf(Ipaq ipaq) throws DocumentException, IOException {
         Optional<Patient> optional = patientRepository.findById(ipaq.getPatientId());
         if (!optional.isPresent()) {
