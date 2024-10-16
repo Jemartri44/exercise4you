@@ -13,11 +13,6 @@ export class HeaderComponent {
 
   constructor( private router:Router, private authService:AuthService, private pdfService:PdfService ) {  }
 
-  goToAccount() {
-    console.debug("Redirecting to account")
-    this.router.navigate(['/account']);
-  }
-
   goToLogout() {
     console.debug("Logging out and redirecting to login")
     this.authService.logout();
