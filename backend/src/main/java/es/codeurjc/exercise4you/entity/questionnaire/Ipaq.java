@@ -1,9 +1,6 @@
 package es.codeurjc.exercise4you.entity.questionnaire;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -39,7 +36,8 @@ public class Ipaq implements Questionnaire{
     private String lastQuestionCode = "ipaq1";
     @Embedded
     private List<Answer> answers;
-    private String pdfId;
+    private Double weight;
+    private String pdf;
 
     @Data
     @AllArgsConstructor
@@ -47,8 +45,8 @@ public class Ipaq implements Questionnaire{
     @Embeddable
     public static class Answer {
         private String code;
-        private String answer;
         private String question;
+        private String answer;
     }
 
     @Override

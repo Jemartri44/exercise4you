@@ -20,35 +20,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1")
 public class QuestionnaireController {
 
     private final QuestionnaireService questionnaireService;
 
     @GetMapping("/pacientes/{id}/{questionnaireType}")
-    public QuestionnairesInfo getQuestionnaireSessionsInfo(@PathVariable String id, @PathVariable String questionnaireType) {
-        return questionnaireService.getSessionsInfo(Integer.valueOf(id), questionnaireType);
+    public QuestionnairesInfo getQuestionnaireSessionsInfo(@PathVariable Integer id, @PathVariable String questionnaireType) {
+        return questionnaireService.getSessionsInfo(id, questionnaireType);
     }
 
     @GetMapping("/pacientes/{id}/{questionnaireType}/{nSession}/start")
-    public QuestionnaireInfo startQuestionnaire(@PathVariable String id, @PathVariable String nSession, @PathVariable String questionnaireType) {
-        return questionnaireService.startQuestionnaire(Integer.valueOf(id), Integer.valueOf(nSession), questionnaireType);
+    public QuestionnaireInfo startQuestionnaire(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType) {
+        return questionnaireService.startQuestionnaire(id, nSession, questionnaireType);
     }
 
     @GetMapping("/pacientes/{id}/{questionnaireType}/{nSession}/repeat")
-    public QuestionnaireInfo repeatQuestionnaire(@PathVariable String id, @PathVariable String nSession, @PathVariable String questionnaireType) {
-        return questionnaireService.repeatQuestionnaire(Integer.valueOf(id), Integer.valueOf(nSession), questionnaireType);
+    public QuestionnaireInfo repeatQuestionnaire(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType) {
+        return questionnaireService.repeatQuestionnaire(id, nSession, questionnaireType);
     }
 
     @GetMapping("/pacientes/{id}/{questionnaireType}/{nSession}/get-answers")
-    public QuestionnaireAnswers getAnswers(@PathVariable String id, @PathVariable String nSession, @PathVariable String questionnaireType) {
-        return questionnaireService.getQuestionnaireAnswers(Integer.valueOf(id), Integer.valueOf(nSession), questionnaireType);
+    public QuestionnaireAnswers getAnswers(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType) {
+        return questionnaireService.getQuestionnaireAnswers(id, nSession, questionnaireType);
     }
 
     @PostMapping("/pacientes/{id}/{questionnaireType}/{nSession}/next")
-    public Question nextQuestion(@PathVariable String id, @PathVariable String nSession, @PathVariable String questionnaireType, @RequestBody QuestionRequest questionRequest) {
-        return questionnaireService.nextQuestion(Integer.valueOf(id), Integer.valueOf(nSession), questionnaireType, questionRequest.getQuestionCode(), questionRequest.getQuestion(), questionRequest.getAnswer());
+    public Question nextQuestion(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType, @RequestBody QuestionRequest questionRequest) {
+        return questionnaireService.nextQuestion(id, nSession, questionnaireType, questionRequest.getQuestionCode(), questionRequest.getQuestion(), questionRequest.getAnswer());
+    }
+
+    @PostMapping("/pacientes/{id}/{questionnaireType}/{nSession}/set-weight")
+    public void setWeight(@PathVariable Integer id, @PathVariable Integer nSession, @PathVariable String questionnaireType, @RequestBody Double weight) {
+        questionnaireService.setWeight(id, nSession, questionnaireType, weight);
     }
 
 }

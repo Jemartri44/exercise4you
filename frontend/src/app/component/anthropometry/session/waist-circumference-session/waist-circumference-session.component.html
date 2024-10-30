@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li class="mt-4"><h3>Datos</h3></li>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="waistCircumference" class="me-5">Circunferencia cintura (centímetros):</label>
+                    <input #waistCircumference (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="waistCircumference" name="waistCircumference" min="0" max="999" maxlength="5" size="5">
+                </div>
+                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
+                <li class="mt-4"><h3>Resultados</h3></li>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="risk" class="me-5">Riesgo cardiovascular:</label>
+                    <input #risk class="form-control text" type="text" id="risk" name="risk" readonly>
+                </div>
+            </ul>
+        </div>
+        <div class="col align-content-end mb-2 ps-5 pe-5">
+            <table *ngIf="this.gender" class="table table-primary table-bordered text-center ">
+                <thead>
+                    <tr>
+                    <th colspan="2">Valores de referencia en hombres</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                    <th scope="col">Circunferencia cintura</th>
+                    <th scope="col">Índice cintura-cadera</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <th scope="row">&lt; 94 cm</th>
+                        <td>Bajo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">94 - 102 cm</th>
+                        <td>Moderado</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">&gt; 102 cm</th>
+                        <td>Alto</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table *ngIf="!this.gender" class="table table-primary table-bordered text-center">
+                <thead>
+                    <tr>
+                    <th colspan="2">Valores de referencia en mujeres</th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                    <th scope="col">Circunferencia cintura</th>
+                    <th scope="col">Índice cintura-cadera</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <tr>
+                        <th scope="row">&lt; 80 cm</th>
+                        <td>Bajo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">80 - 88 cm</th>
+                        <td>Moderado</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">&gt; 88 cm</th>
+                        <td>Alto</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

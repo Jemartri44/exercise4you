@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { PdfService } from '../../../services/pdf/pdf.service';
 
 declare let $:any;
 
@@ -15,9 +16,10 @@ export class SessionButtonsComponent {
   @Input() buttons: string[] = [];
   @Input() session: number = 0;
   @Input() date: string = "";
-  @ViewChild('modalRepeatQuestionnaire') modalRepeatQuestionnaire: ElementRef;
+  @ViewChild('modalPdfViewer') modalPdfViewer: ElementRef;
+  @ViewChild('modalRepeat') modalRepeat: ElementRef;
 
-  constructor( private router: Router ) { }
+  constructor( private router: Router, private pdfService: PdfService ) { }
 
   goToCompleteQuestionnaire(session: number) {
     console.debug("Redirecting to complete questionnaire "+ this.router.url.split('/')[3] + " session " + session);
@@ -40,4 +42,25 @@ export class SessionButtonsComponent {
     this.router.navigate(['/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + session + '/repetir']);
   }
 
+  showModal(modal: string) {
+    if(modal === "pdfViewer") {
+      $(this.modalPdfViewer.nativeElement).modal('show');
+    }
+    if(modal === "repeat") {
+      $(this.modalRepeat.nativeElement).modal('show');
+    }
+  }
+
+  openPdf(session: number) {
+    this.pdfService.getPdf(this.router.url.split('/')[2], this.router.url.split('/')[3], session).subscribe(response => {
+      if(response.body == null) {
+        console.error("Error: PDF is null");
+        return;
+      }
+      var file = new Blob([response.body], { type: 'application/pdf' });
+      var fileURL = URL.createObjectURL(file);
+      console.log(response.headers.keys());
+      window.open(fileURL, '_blank');
+    });
+  }
 }

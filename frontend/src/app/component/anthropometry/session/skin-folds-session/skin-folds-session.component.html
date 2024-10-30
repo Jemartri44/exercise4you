@@ -1,0 +1,178 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul>
+                <!-- DATOS -->
+                <li class="mt-4">
+                    <h3>Datos</h3>
+                </li>
+                <div class="row">
+                    <!-- PESO Y ALTURA -->
+                    <div class="col-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="weight" class="me-5">Peso (en kilogramos):</label>
+                            <input #weight (change)="roundParam('weight', false)" class="form-control number"
+                                [readonly]="!this.editable" type="number" id="weight" name="weight" min="0" max="999"
+                                step="0.1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="height" class="me-5">Estatura (en centímetros):</label>
+                            <input #height (change)="roundParam('height', false)" class="form-control number"
+                                [readonly]="!this.editable" type="number" id="height" name="height" min="0" max="999"
+                                step="1" maxlength="5">
+                        </div>
+                    </div>
+                    <!-- FÓRMULAS -->
+                    <div class="col">
+                        <!-- FÓRMULAS MASA GRASA -->
+                        <div class="ms-5" [ngClass]="this.age >= 18 ? '' : 'hidden'">
+                            <div class="form-check mb-2">
+                                <input #jackson3 class="form-check-input" type="radio"
+                                    (change)="chooseFormula1('Fórmula de Jackson-Pollock de 3 pliegues', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de Jackson-Pollock de 3 pliegues')">
+                                    Fórmula de Jackson-Pollock de 3 pliegues
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input #jackson7 class="form-check-input" type="radio"
+                                    (change)="chooseFormula1('Fórmula de Jackson-Pollock de 7 pliegues', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de Jackson-Pollock de 7 pliegues')">
+                                    Fórmula de Jackson-Pollock de 7 pliegues
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input #durnin class="form-check-input" type="radio"
+                                    (change)="chooseFormula1('Fórmula de Durnin-Womersley', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de Durnin-Womersley')">
+                                    Fórmula de Durnin-Womersley
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ms-3" [ngClass]="this.age < 18 ? '' : 'hidden'">
+                            <div class="form-check mb-2">
+                                <input #boileau class="form-check-input" type="radio"
+                                    (change)="chooseFormula1('Fórmula de Boileau et al.', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de Boileau et al.')">
+                                    Fórmula de Boileau et al.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <!-- FÓRMULAS MASA MAGRA -->
+                        <div>
+                            <div class="form-check mb-2">
+                                <input #james class="form-check-input" type="radio"
+                                    (change)="chooseFormula2('Fórmula de James', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de James')">
+                                    Fórmula de James
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input #hume class="form-check-input" type="radio"
+                                    (change)="chooseFormula2('Fórmula de Hume', false)">
+                                <label class="form-check-label" (click)="formulaClick('Fórmula de Hume')">
+                                    Fórmula de Hume
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- PLIEGUES CUTÁNEOS -->
+                <div>
+                    <div class="d-flex justify-content-around align-items-center mb-2 mt-4" [ngClass]="this.formula1 === 'Fórmula de Jackson-Pollock de 7 pliegues' ? '' : ' ms-5 me-5'">
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 == 'Fórmula de Jackson-Pollock de 3 pliegues' || this.formula1 == 'Fórmula de Jackson-Pollock de 7 pliegues' ? '' : 'hidden'">
+                            <label for="anteriorThighFold">Pliegue muslo:</label>
+                            <input #anteriorThighFold (change)="roundParam('anteriorThighFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="anteriorThighFold"
+                                name="anteriorThighFold" min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="(this.formula1 == 'Fórmula de Jackson-Pollock de 3 pliegues' && this.gender) || this.formula1 == 'Fórmula de Jackson-Pollock de 7 pliegues' ? '' : 'hidden'">
+                            <label for="abdominalFold">Pliegue abdominal:</label>
+                            <input #abdominalFold (change)="roundParam('abdominalFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="abdominalFold" name="abdominalFold"
+                                min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="(this.formula1 == 'Fórmula de Jackson-Pollock de 3 pliegues' && this.gender) || this.formula1 == 'Fórmula de Jackson-Pollock de 7 pliegues' ? '' : 'hidden'">
+                            <label for="pectoralFold">Pliegue pectoral:</label>
+                            <input #pectoralFold (change)="roundParam('pectoralFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="pectoralFold" name="pectoralFold"
+                                min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 === 'Fórmula de Jackson-Pollock de 7 pliegues' ? '' : 'hidden'">
+                            <label for="midaxillaryFold">Pliegue midaxilar:</label>
+                            <input #midaxillaryFold (change)="roundParam('midaxillaryFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="midaxillaryFold"
+                                name="midaxillaryFold" min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 === 'Fórmula de Jackson-Pollock de 7 pliegues' || (this.formula1 == 'Fórmula de Jackson-Pollock de 3 pliegues' && !this.gender) || this.formula1 === 'Fórmula de Durnin-Womersley' || this.formula1 === 'Fórmula de Boileau et al.'? '' : 'hidden'">
+                            <label for="tricipitalFold">Pliegue tricipital:</label>
+                            <input #tricipitalFold (change)="roundParam('tricipitalFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="tricipitalFold" name="tricipitalFold"
+                                min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 === 'Fórmula de Jackson-Pollock de 7 pliegues' || this.formula1 === 'Fórmula de Durnin-Womersley' || this.formula1 === 'Fórmula de Boileau et al.' ? '' : 'hidden'">
+                            <label for="subscapularFold">Pliegue subescapular:</label>
+                            <input #subscapularFold (change)="roundParam('subscapularFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="subscapularFold"
+                                name="subscapularFold" min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 === 'Fórmula de Jackson-Pollock de 7 pliegues' || (this.formula1 == 'Fórmula de Jackson-Pollock de 3 pliegues' && !this.gender) || this.formula1 === 'Fórmula de Durnin-Womersley' ? '' : 'hidden'">
+                            <label for="suprailiacFold">Pliegue suprailíaco:</label>
+                            <input #suprailiacFold (change)="roundParam('suprailiacFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="suprailiacFold" name="suprailiacFold"
+                                min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex flex-column align-items-center mb-2" [ngClass]="this.formula1 === 'Fórmula de Durnin-Womersley' ? '' : 'hidden'">
+                            <label for="bicipitalFold">Pliegue bicipital:</label>
+                            <input #bicipitalFold (change)="roundParam('bicipitalFold', false)" class="form-control number mt-2"
+                                [readonly]="!this.editable" type="number" id="bicipitalFold" name="bicipitalFold"
+                                min="0" max="999" step="1" maxlength="5" size="5">
+                        </div>
+                    </div>
+                </div> 
+                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
+
+                <!-- RESULTADOS -->
+                <li class="mt-4">
+                    <h3>Resultados</h3>
+                </li>
+                <div class="d-flex justify-content-center align-items-center mb-2">
+                    <div class="d-flex flex-column align-items-center mb-2 me-5" [ngClass]="this.age >= 18 ? '' : 'hidden'">
+                        <label for="density">Densidad corporal (g/ml):</label>
+                        <input #density class="form-control number mt-2"
+                            readonly type="number" id="density" name="density">
+                    </div>
+                    <div class="d-flex flex-column align-items-center mb-2 me-5">
+                        <label for="fatMass">Masa grasa (kg):</label>
+                        <input #fatMass class="form-control number mt-2"
+                            readonly type="number" id="fatMass" name="fatMass">
+                    </div>
+                    <div class="d-flex flex-column align-items-center mb-2">
+                        <label for="fatMassPercentage">Porcentaje de masa grasa (%):</label>
+                        <input #fatMassPercentage class="form-control number mt-2"
+                            readonly type="number" id="fatMassPercentage" name="fatMassPercentage">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center align-items-center mb-2">
+                    <div class="d-flex flex-column align-items-center mb-2 me-5">
+                        <label for="fatFreeMass">Masa libre de grasa (kg):</label>
+                        <input #fatFreeMass class="form-control number mt-2"
+                            readonly type="number" id="fatFreeMass" name="fatFreeMass">
+                    </div>
+                    <div class="d-flex flex-column align-items-center mb-2 me-5">
+                        <label for="fatLevel">Nivel de grasa:</label>
+                        <input #fatLevel class="form-control text mt-2"
+                            readonly type="text" id="fatLevel" name="fatLevel">
+                    </div>
+                    <div class="d-flex flex-column align-items-center mb-2">
+                        <label for="leanMass">Masa magra (kg):</label>
+                        <input #leanMass class="form-control number mt-2"
+                            readonly type="number" id="leanMass" name="leanMass">
+                    </div>
+                </div>
+            </ul>
+        </div>
+
+    </div>
+</div>

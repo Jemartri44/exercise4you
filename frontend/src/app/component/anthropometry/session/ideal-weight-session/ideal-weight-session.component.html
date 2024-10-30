@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <ul>
+                <li class="mt-4"><h3>Datos</h3></li>
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="weight" class="me-5">Peso (en kilogramos):</label>
+                            <input #weight (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="weight" name="weight" min="0" max="999" step="0.1" maxlength="5" size="5">
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="height" class="me-5">Estatura (en centímetros):</label>
+                            <input #height (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="height" name="height" min="0" max="999" step="1" maxlength="5">
+                        </div>
+                    </div>
+                    
+                </div>
+                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
+                <li class="mt-4"><h3>Resultados</h3></li>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="idealWeight" class="me-5">Peso ideal:</label>
+                    <input #idealWeight class="form-control number" type="text" id="idealWeight" name="idealWeight" readonly>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label for="difference" class="me-5">Diferencia con el peso ideal: </label>
+                    <input #difference class="form-control number" type="text" id="difference" name="difference" readonly>
+                </div>
+            </ul>
+        </div>
+        <div class="col mt-5 pt-4 ms-3">
+            <div class="ms-3">
+                <div class="form-check mb-2">
+                    <input #lorentz class="form-check-input" type="radio" (change)="chooseFormula('Fórmula de Lorentz')">
+                    <label class="form-check-label" (click)="formulaClick('Fórmula de Lorentz')">
+                        Fórmula de Lorentz
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input #metropolitan class="form-check-input" type="radio"(change)="chooseFormula('Fórmula de la Metropolitan Life Insurance Company')">
+                    <label class="form-check-label ms-2 mt-1" (click)="formulaClick('Fórmula de la Metropolitan Life Insurance Company')">
+                        Fórmula de la Metropolitan Life Insurance Company
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

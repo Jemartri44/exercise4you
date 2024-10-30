@@ -1,0 +1,82 @@
+h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 2rem;
+}
+
+table {
+  margin-bottom: 20px;
+}
+
+.alert {
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.pagination-spinner {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+td {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+label {
+  font-size: 1.4rem;
+}
+
+.text {
+  width:400px;
+}
+
+.date-picker {
+  width: 280px;
+}
+
+select {
+  width: 280px;
+}
+
+.ng-valid:not(form).ng-touched {
+  border-left: 5px solid #42A948;
+  /* green */
+}
+
+.ng-valid:not(form).ng-touched.date-picker {
+  border-left: 0px;
+  
+}
+
+.ng-valid:not(form).ng-touched.date {
+  border-left: 0px;
+  color: #42A948;
+}
+
+.ng-invalid:not(form).ng-touched {
+  border-left: 5px solid #a94442;;
+  /* red */
+}
+
+.ng-invalid:not(form).ng-touched.date-picker {
+  border-left: 0px;
+}
+
+.ng-invalid:not(form).ng-touched.date {
+  border-left: 0px;
+}
+
+.spinner-border {
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+  margin-top:3px;
+}
+
+form {
+  width: 400px;
+}

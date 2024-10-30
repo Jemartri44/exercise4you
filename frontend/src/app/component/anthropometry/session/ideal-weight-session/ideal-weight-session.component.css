@@ -1,0 +1,51 @@
+h3 {
+    font-size: 1.8em;
+    font-weight: 500;
+    margin-bottom: 0.7em;
+    margin-left: 0.3em;
+}
+
+p {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+label {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+ul {
+    font-size: 1em;
+    margin-left: 1.5em;
+}
+
+.inner-ul {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+.form-control.number {
+    width: 100px;
+}
+
+.form-control.text {
+    width: 250px;
+}
+
+.form-check {
+    font-size: 1.1em;
+}
+
+
+.form-check-input:hover {
+    cursor: pointer;
+}
+
+.form-check-input:selected {
+    border: 0px;
+}
+
+.form-check-label {
+    cursor: pointer;
+}

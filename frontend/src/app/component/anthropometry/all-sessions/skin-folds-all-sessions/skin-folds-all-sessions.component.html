@@ -1,0 +1,65 @@
+<ng-container>
+    <table class="table table-primary table-bordered text-center align-middle">
+        <thead class="align-middle">
+            <tr>
+                <th scope="col">Sesión</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Estatura</th>
+                <th scope="col">Peso</th>
+                <th scope="col">Densidad corporal</th>
+                <th scope="col">Masa grasa</th>
+                <th scope="col">Porcentaje de masa grasa</th>
+                <th scope="col">Masa libre de grasa</th>
+                <th scope="col">Nivel de grasa</th>
+                <th scope="col">Masa magra</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let session of this.sessions; index as i">
+                <th scope="row">{{session}}</th>
+                <td>{{this.data[i].age}} años</td>
+                <td>{{this.data[i].data.height}} cm</td>
+                <td>{{this.data[i].data.weight}} kg</td>
+                <td *ngIf="this.assign(this.data[i].age) >= 18">{{this.results[i].density}} g/ml</td>
+                <td *ngIf="this.assign(this.data[i].age) < 18">N/a</td>
+                <td>{{this.results[i].fatMass}} kg</td>
+                <td>{{this.results[i].fatMassPercentage}}%</td>
+                <td>{{this.results[i].fatFreeMass}} kg</td>
+                <td>{{this.results[i].fatLevel}}</td>
+                <td>{{this.results[i].leanMass}} kg</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-primary table-bordered text-center align-middle">
+        <thead class="align-middle">
+            <tr>
+                <th scope="col">Sesión</th>
+                <th scope="col">Fórmula 1</th>
+                <th scope="col">Fórmula 2</th>
+                <th scope="col">Pliegue muslo</th>
+                <th scope="col">Pliegue abdominal</th>
+                <th scope="col">Pliegue pectoral</th>
+                <th scope="col">Pliegue midaxilar</th>
+                <th scope="col">Pliegue tricipital</th>
+                <th scope="col">Pliegue subescapular</th>
+                <th scope="col">Pliegue suprailíaco</th>
+                <th scope="col">Pliegue bicipital</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let session of this.sessions; index as i">
+                <th scope="row">{{session}}</th>
+                <td>{{this.data[i].data.formula1}}</td>
+                <td>{{this.data[i].data.formula2}}</td>
+                <td>{{this.data[i].data.anteriorThighFold}}</td>
+                <td>{{this.data[i].data.abdominalFold}}</td>
+                <td>{{this.data[i].data.pectoralFold}}</td>
+                <td>{{this.data[i].data.midaxillaryFold}}</td>
+                <td>{{this.data[i].data.tricipitalFold}}</td>
+                <td>{{this.data[i].data.subscapularFold}}</td>
+                <td>{{this.data[i].data.suprailiacFold}}</td>
+                <td>{{this.data[i].data.bicipitalFold}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>

@@ -1,0 +1,24 @@
+<table class="table table-primary table-bordered text-center mt-4 mb-4">
+    <thead>
+        <tr>
+            <th scope="col">Sesión</th>
+            <th scope="col">Estatura</th>
+            <th scope="col">Peso</th>
+            <th scope="col">IMC</th>
+            <th scope="col">IMC principal</th>
+            <th scope="col">Categoría</th>
+            <th scope="col">Riesgo cardiovascular</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        <tr *ngFor="let session of this.sessions; index as i">
+            <th scope="row">{{session}}</th>
+            <td>{{this.data[i].data.height}} m</td>
+            <td>{{this.data[i].data.weight}} kg</td>
+            <td>{{this.results[i].imc}}</td>
+            <td>{{this.results[i].imcp}}</td>
+            <td>{{this.results[i].category}}</td>
+            <td>{{this.results[i].risk}}</td>
+        </tr>
+    </tbody>
+</table>

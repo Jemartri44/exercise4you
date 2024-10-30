@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientService {
 
-    @Autowired
     private final PatientRepository patientRepository;
     private final AuthService authService;
 
@@ -38,7 +38,7 @@ public class PatientService {
         return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate()));
     }
 
-    public String newPatient(PatientRequest patientRequest) {
+    public Patient newPatient(PatientRequest patientRequest) {
         Patient patient = Patient.builder()
             .usr(authService.getLoggedUser())
             .name(patientRequest.getName())
@@ -46,11 +46,31 @@ public class PatientService {
             .gender(patientRequest.getGender())
             .birthdate(patientRequest.getBirthdate())
             .build();
-        patientRepository.save(patient);
-        return "Paciente creado";
+        patient = patientRepository.save(patient);
+        return patient;
     }
 
     public Patient getPatient(String id) {
         return patientRepository.findById(Integer.valueOf(id)).orElseThrow();
+    }
+
+    public PatientDTO getPatientDto(Integer id) {
+        return new PatientDTO(patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found")));
+    }
+
+    public void checkPatient(Integer id) {
+        Optional<Patient> optional = patientRepository.findById(id);
+        if(!optional.isPresent()){
+            throw new RuntimeException("Patient not found");
+        }
+        if(!optional.get().getUsr().getId().equals(authService.getLoggedUser().getId())){
+            throw new RuntimeException("Not allowed");
+        }
+    }
+
+    public void checkSession(Integer session) {
+        if(session<1){
+            throw new RuntimeException("Invalid session number");
+        }
     }
 }

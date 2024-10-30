@@ -22,7 +22,7 @@ form {
 }
 
 .container {
-    padding-bottom: 1000px;
+    padding-bottom: 100px;
 }
 
 .ng-valid:not(form).ng-touched {

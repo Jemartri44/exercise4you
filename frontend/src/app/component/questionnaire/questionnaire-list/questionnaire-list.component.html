@@ -13,20 +13,21 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'LOADED'">
-            <h1>{{ state.appData?.title }}</h1>
+            <h1 [innerHTML]="state.appData?.title"></h1>
             <div class="container ps-5 pe-5 mt-5">
                 <ul>
                     <h2>
                         <li>Descripción</li>
                     </h2>
                 </ul>
-                <p>{{ state.appData?.description }}</p>
+                <p [innerHTML]="state.appData?.description"></p>
                 <app-session-buttons *ngIf="!state.appData?.todayCompleted" [buttons]="['toComplete']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-session-buttons>
 
             </div>
 
             <hr>
-            <div class="container ps-5 pe-5 mt-2">
+            <div *ngIf="state.appData?.allEmpty && !state.appData?.todayCompleted" class="alert alert-info m-5 ">Aún no hay cuestionarios completados</div>
+            <div *ngIf="!state.appData?.allEmpty || state.appData?.todayCompleted" class="container ps-5 pe-5 mt-2">
                 <app-session-buttons *ngIf="state.appData?.todayCompleted" [buttons]="['toRepeat', 'answered']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-session-buttons>
                 <app-session-buttons *ngFor="let session of state.appData?.sessions" [buttons]="['answered']" [session]="session.number" [date]="session.date"></app-session-buttons>
             </div>

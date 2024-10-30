@@ -45,9 +45,30 @@ export class QuestionnaireAnswersComponent implements OnInit {
   setTitle() {
     let questionnaire = this.router.url.split('/')[3];
     switch(questionnaire){
+      case 'APALQ':
+        this.title = 'Cuestionario de evaluación de los niveles de actividad física (APALQ)';
+        break;
       case 'IPAQ':
         this.title = 'Cuestionario internacional de actividad física (IPAQ)';
         break;
+      case 'IPAQ-E':
+        this.title = 'Cuestionario internacional de actividad física en personas mayores (IPAQ-E)';
+        break;
+      case 'CMTCEF':
+        this.title = 'Cuestionario del modelo transteórico del cambio de ejercicio físico';
+        break;
+      case 'PAR-Q':
+        this.title = 'Cuestionario de aptitud para la actividad física para todos (PAR-Q+)';
+        break;
+      case 'ePARmed-X':
+        this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
+        break;
     }
+  }
+
+  volver(){
+    let routeParts = this.router.url.split('/');
+    let route = routeParts[1] + '/' + routeParts[2] + '/' + routeParts[3];
+    this.router.navigate([route])
   }
 }

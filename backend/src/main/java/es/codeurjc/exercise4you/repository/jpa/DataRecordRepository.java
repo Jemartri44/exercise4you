@@ -21,4 +21,7 @@ public interface DataRecordRepository extends JpaRepository<DataRecord, Integer>
     List<DataRecord> findByPatientIdOrderByNSessionAsc(Integer id);
 
     Optional<DataRecord> findByPatientIdAndCompletionDate(Patient patient, LocalDate date);
+
+    @Query(value = "SELECT * FROM data_record d WHERE d.patient_id = :id AND d.n_session = :session", nativeQuery = true)
+    Optional<DataRecord> findByPatientIdAndNSession(Integer id, Integer session);
 }

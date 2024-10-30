@@ -1,0 +1,18 @@
+<ng-container>
+    <table class="table table-primary table-bordered text-center">
+        <thead>
+            <tr>
+                <th scope="col">Sesión</th>
+                <th scope="col">Cir. cintura (cm)</th>
+                <th scope="col">Riesgo cardiovascular</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr *ngFor="let session of this.sessions; index as i">
+                <th scope="row">{{session}}</th>
+                <td>{{this.data[i].data.waistCircumference}}</td>
+                <td>{{this.results[i].risk}}</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
