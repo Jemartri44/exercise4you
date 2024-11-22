@@ -8,6 +8,11 @@
     /* remove the gap so it doesn't close */
 }
 
+.dropdown-menu {
+    border: #00000054 solid 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
 .nav-link {
     font-size: large;
     font-weight: 400;
@@ -50,3 +55,9 @@
     font-weight: 500;
     background-color: rgb(210, 228, 255);
 }
+
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+    border-width: 3px;
+  }

@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QuestionnaireAnswers {
     private String session;
+    private Double weight;
     @Embedded
     private List<Answers> answers;
 
@@ -26,5 +27,11 @@ public class QuestionnaireAnswers {
     public static class Answers {
         private String question;
         private String answer;
+    }
+
+    public QuestionnaireAnswers(String session, List<Answers> answers) {
+        this.session = session;
+        this.weight = null;
+        this.answers = answers;
     }
 }

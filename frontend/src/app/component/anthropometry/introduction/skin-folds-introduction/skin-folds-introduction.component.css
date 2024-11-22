@@ -1,0 +1,51 @@
+h3 {
+    font-size: 1.8em;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 0.7em;
+    margin-left: 0.3em;
+}
+
+p {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+u {
+    color:rgb(61, 90, 185);
+}
+
+ul {
+    font-size: 1em;
+    margin-left: 1.5em;
+}
+
+ol {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+li {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.inner-ol li {
+    margin-top: 0em;
+    margin-bottom: 0em;
+}
+
+
+.inner-ol {
+    font-size: 1em;
+    margin-left:0;
+}
+
+.inner-ul {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}

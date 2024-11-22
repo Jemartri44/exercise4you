@@ -55,6 +55,11 @@ public class Usr implements UserDetails{
     private Integer experience;
     @Enumerated(EnumType.STRING)
     Role role;
+    @Column(name = "enabled")
+    @Builder.Default
+    private boolean enabled = false;
+    @Builder.Default
+    private boolean alertShown = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,6 +83,6 @@ public class Usr implements UserDetails{
     }
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 }

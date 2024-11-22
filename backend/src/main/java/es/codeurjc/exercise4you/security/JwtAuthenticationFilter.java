@@ -1,6 +1,8 @@
 package es.codeurjc.exercise4you.security;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,18 +26,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+        "/auth/login", "/auth/register", "/auth/email-verification", 
+        "/auth/refresh-verification-token", "/auth/forgotten-password", "/auth/change-password"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        
         final String token = getTokenFromRequest(request);
         final String email;
-
         if(token ==null){
             filterChain.doFilter(request, response);
         }
 
         email = jwtService.getEmailFromToken(token);
-
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);

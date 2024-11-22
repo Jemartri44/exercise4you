@@ -9,8 +9,8 @@ export interface QuestionnaireInfo {
         question: string,
         options: string[],
     },
-    alert?: {
+    alertList: {
         title: string,
         alert: string,
-    },
+    }[],
 }

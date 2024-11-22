@@ -5,8 +5,8 @@ import { inject } from '@angular/core';
 export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
-  const authRoutes = ['/login', '/login?expired=true','/register'];
-  if (authRoutes.includes(state.url)) {
+  const authRoutes = ['/login','/register','/confirmar-registro','/solicitar-cambio-contrasena','/cambiar-contrasena','/politica-de-privacidad'];
+  if (authRoutes.includes(state.url.split('?')[0])){
     if (!authService.loggedIn){
       return true;
     }

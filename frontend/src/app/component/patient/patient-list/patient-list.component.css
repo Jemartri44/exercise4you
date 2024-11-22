@@ -36,3 +36,21 @@ td {
 .pointer {
   cursor: pointer;
 }
+
+.form-check-input {
+  margin-bottom:5px;
+  height: 20px;
+  width: 20px;
+  box-shadow: 0px 0px 0.5px 0.5px #ccc;
+}
+
+.form-check-label {
+  font-size: 1rem;
+}
+
+.modal-spinner {
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+  margin-top:3px;
+}

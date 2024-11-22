@@ -1,0 +1,81 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+
+<div class="container">
+    <h1>Editar paciente</h1>
+
+    <ng-container *ngIf="(patientState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border global text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="state.appState==='LOADED'">
+            <form autocomplete="on" [formGroup]="editPatientForm" (ngSubmit)="editPatient()">
+                <p *ngIf="editPatientError!=''" class="mb-4 alert alert-danger">{{editPatientError}}</p>
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger mb-1 ms-1">
+                    <div *ngIf="name.errors?.['required']">Es obligatorio introducir un nombre</div>
+                    <div *ngIf="name.errors?.['maxlength']">El nombre es demasiado largo</div>
+                </div>
+                <div class="mb-4">
+                    <label for="name" class="mb-2">Nombre del paciente:</label>
+                    <input #nameInput ngModel class="form-control text" type="text" formControlName="name" [ngModel]="this.patientName">
+                </div>
+                <div *ngIf="surnames.invalid && (surnames.dirty || surnames.touched)" class="text-danger mb-1 ms-1">
+                    <div *ngIf="surnames.errors?.['required']">Es obligatorio introducir apellidos</div>
+                    <div *ngIf="surnames.errors?.['maxlength']">Los apellidos son demasiado largos</div>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="mb-2">Apellidos del paciente:</label>
+                    <input #surnamesInput ngModel class="form-control text" type="text" formControlName="surnames" [ngModel]="this.patientSurnames">
+                </div>
+                <div *ngIf="birthdate.invalid && (birthdate.dirty || birthdate.touched)" class="text-danger mb-1 ms-1">
+                    <div *ngIf="birthdate.errors?.['required']">Es obligatorio introducir la fecha de nacimiento</div>
+                    <div *ngIf="birthdate.errors?.['maxlength']">La fecha indicada no es válida</div>
+                </div>
+                <div class="mb-3 d-flex flex-column">
+                    <label for="picker" class="mb-2">Fecha de nacimiento del paciente:</label>
+                    <mat-form-field class="date-picker">
+                        <mat-label>Seleccione una fecha</mat-label>
+                        <input #birthdateInput matInput [matDatepicker]="picker" [max]="currentDate" formControlName="birthdate" class="date" [formControl]="this.patientBirthdate">
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="multi-year"></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div *ngIf="gender.invalid && (gender.dirty || gender.touched)" class="text-danger mb-1 ms-1">
+                    <div *ngIf="gender.errors?.['required']">Es obligatorio indicar el sexo del paciente</div>
+                    <div *ngIf="gender.errors?.['maxlength']">La opción indicada no es válida</div>
+                </div>
+                <div class="mb-3">
+                    <label for="gender" class="mb-2">Sexo del paciente:</label>
+                    <select class="form-select" id="gender" formControlName="gender">
+                        <option value="Femenino" [selected]="this.patientGender=='Femenino'">Femenino</option>
+                        <option value="Masculino" [selected]="this.patientGender=='Masculino'">Masculino</option>
+                    </select>
+                </div>
+
+                <div *ngIf="editPatientState=='LOADING'" class="mb-3 ms-5 mt-4">
+                    <button class="btn btn-primary disabled" type="submit">
+                        <div class="spinner-border next text-light justify-content-end me-2" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        Editar paciente
+                    </button>
+                </div>
+                <div *ngIf="editPatientState!=='LOADING'" class="mb-3 ms-5 mt-4">
+                    <button class="btn btn-primary" type="submit">Editar paciente</button>
+                    <button class="btn btn-secondary ms-2" (click)="goToPatient()">Volver</button>
+                </div>
+            </form>
+        </ng-container>
+    </ng-container>
+</div>
+<div style="height:100px"></div>
+
+<app-footer></app-footer>

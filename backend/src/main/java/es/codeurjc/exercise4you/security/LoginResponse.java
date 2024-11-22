@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginResponse {
     String token;
+    Boolean alertShown;
 }

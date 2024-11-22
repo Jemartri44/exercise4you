@@ -1,0 +1,19 @@
+<div class="d-flex">
+    <p>Registro de datos:</p>
+    <div class="ms-3">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" #flexRadioDefault1 (change)="change()" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+              <select class="form-select" #select (change)="selectChange()">
+                  <option *ngFor="let option of options" [value]="option">{{option}}</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" #flexRadioDefault2 (change)="change()">
+            <label class="form-check-label ms-2 mt-1" for="flexRadioDefault2" (click)="labelClick()">
+              Todos los registros
+            </label>
+          </div>
+    </div>
+</div>

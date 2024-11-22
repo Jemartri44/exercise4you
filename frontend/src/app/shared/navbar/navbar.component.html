@@ -11,34 +11,44 @@
                         pacientes</a>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link" [ngClass]="this.router.url.split('/').length === 3 ? 'active' : ''">Datos generales</a>
+                    <a class="nav-link" (click)="goToGeneral()" [ngClass]="(this.router.url.split('/').length === 3 || (this.router.url.split('/')[3]==='editar')) ? 'active' : ''">Datos generales</a>
                 </li>
                 <li class="nav-item dropdown me-4">
                     <a class="nav-link dropdown-toggle" [ngClass]="(this.router.url.split('/')[3]==='APALQ') || (this.router.url.split('/')[3]==='IPAQ') || (this.router.url.split('/')[3]==='IPAQ-E') || (this.router.url.split('/')[3]==='CMTCEF') || (this.router.url.split('/')[3]==='PAR-Q') || (this.router.url.split('/')[3]==='ePARmed-X') ? 'active' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Anamnesis
                     </a>
                     <ul class="dropdown-menu dropdown-main">
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" (click)="goToIpaq()" [ngClass]="this.router.url.split('/')[3]==='IPAQ' ? 'bold' : ''">Cuestionario internacional de actividad física (IPAQ) | <span>&#8805;</span>18 años y <span>&#8804;</span>65 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
+                        <ng-container *ngIf="(navbarState | async) as state" [ngSwitch]="state.appState">
+                            <ng-container *ngSwitchCase="'LOADING'">
+                                <li>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-primary justify-content-end" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="state.appState==='LOADED'">
+                                <li *ngIf="getAge(state.appData?.birthdate) < 18 "><a class="dropdown-item" (click)="goToApalq()" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) >= 18 && getAge(state.appData?.birthdate) <=65"><a class="dropdown-item" (click)="goToIpaq()" [ngClass]="this.router.url.split('/')[3]==='IPAQ' ? 'bold' : ''">Cuestionario internacional de actividad física (IPAQ) | <span>&#8805;</span>18 años y <span>&#8804;</span>65 años</a>
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) > 65"><a class="dropdown-item" (click)="goToIpaqe()" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ng-container>
+                        </ng-container>
+                        <li><a class="dropdown-item" (click)="goToCmtcef()" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
                                 ejercicio físico</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
+                        <li><a class="dropdown-item" (click)="goToParq()" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
                                 todos (PAR-Q+)</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -48,50 +58,26 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-4">
-                    <a class="nav-link dropdown-toggle" [ngClass]="(this.router.url.split('/')[3]==='IMC') || (this.router.url.split('/')[3]==='ICC') || (this.router.url.split('/')[3]==='circunferencia-cintura') || (this.router.url.split('/')[3]==='peso-ideal') || (this.router.url.split('/')[3]==='pliegues-cutáneos') || (this.router.url.split('/')[3]==='resistencia-cardiorrespiratoria') || (this.router.url.split('/')[3]==='fuerza-resistencia') || (this.router.url.split('/')[3]==='flexibilidad') ? 'bold' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Valoración condición física
+                    <a class="nav-link dropdown-toggle" [ngClass]="(this.router.url.split('/')[3]==='IMC') || (this.router.url.split('/')[3]==='ICC') || (this.router.url.split('/')[3]==='circunferencia-cintura') || (this.router.url.split('/')[3]==='peso-ideal') || (this.router.url.split('/')[3]==='pliegues-cutáneos') ? 'active' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Antropometría
                     </a>
                     <ul class="dropdown-menu dropdown-main">
-                        <li><a class="dropdown-item" [ngClass]="(this.router.url.split('/')[3]==='IMC') || (this.router.url.split('/')[3]==='ICC') || (this.router.url.split('/')[3]==='circunferencia-cintura') || (this.router.url.split('/')[3]==='peso-ideal') || (this.router.url.split('/')[3]==='pliegues-cutáneos') ? 'bold' : ''">
-                                Antropometría &raquo;
-                            </a>
-                            <ul class="dropdown-menu dropdown-submenu">
-                                <li>
-                                    <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='IMC' ? 'bold' : ''">Índice de masa corporal</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='ICC' ? 'bold' : ''">Índice cintura-cadera</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='circunferencia-cintura' ? 'bold' : ''">Circunferencia de la cintura</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='peso-ideal' ? 'bold' : ''">Peso ideal</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='pliegues-cutáneos' ? 'bold' : ''">Medición de los pliegues cutáneos</a>
-                                </li>
-                            </ul>
+                        <li>
+                            <a class="dropdown-item" (click)="goToIMC()" [ngClass]="this.router.url.split('/')[3]==='IMC' ? 'bold' : ''">Índice de masa corporal</a>
                         </li>
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" (click)="goToICC()" [ngClass]="this.router.url.split('/')[3]==='ICC' ? 'bold' : ''">Índice cintura-cadera</a>
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='resistencia-cardiorrespiratoria' ? 'bold' : ''">Pruebas de resistencia cardiorespiratoria</a></li>
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" (click)="goToWaistCircumference()" [ngClass]="this.router.url.split('/')[3]==='circunferencia-cintura' ? 'bold' : ''">Circunferencia de la cintura</a>
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='fuerza-resistencia' ? 'bold' : ''">Pruebas de fuerza-resistencia</a></li>
                         <li>
-                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" (click)="goToIdealWeight()" [ngClass]="this.router.url.split('/')[3]==='peso-ideal' ? 'bold' : ''">Peso ideal</a>
                         </li>
-                        <li><a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='flexibilidad' ? 'bold' : ''">Pruebas de flexibilidad</a></li>
+                        <li>
+                            <a class="dropdown-item" (click)="goToSkinFolds()" [ngClass]="this.router.url.split('/')[3]==='medición-pliegues-cutáneos' ? 'bold' : ''">Medición de los pliegues cutáneos</a>
+                        </li>
                     </ul>
-                </li>
-                <li class="nav-item me-4">
-                    <a class="nav-link" [ngClass]="this.router.url.split('/')[3]==='prescripción' ? 'active' : ''">Prescripción ejercicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" [ngClass]="this.router.url.split('/')[3]==='informe' ? 'active' : ''">Informe paciente</a>
                 </li>
             </ul>
         </div>

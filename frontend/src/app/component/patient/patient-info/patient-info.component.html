@@ -1,3 +1,29 @@
 <app-header></app-header>
 <app-navbar></app-navbar>
+<div class="container">
+    <h1 name="title">Datos del paciente</h1>
+
+    <ng-container *ngIf="(patientState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="state.appState==='LOADED'">
+            <div class="">
+                <p><b>Nombre:</b>   {{state.appData?.name}}</p>
+                <p><b>Apellidos:</b>   {{state.appData?.surnames}}</p>
+                <p><b>Género:</b>   {{state.appData?.gender}}</p>
+                <p><b>Fecha de nacimiento:</b>   {{state.appData?.birthdate | date: 'dd/MM/yyyy'}}</p>
+            </div>
+            <button class="btn btn-primary ms-4 mt-2" (click)="goToEditPatient()" type="submit">Editar paciente</button>
+        </ng-container>
+    </ng-container>
+</div>
+
 <app-footer></app-footer>

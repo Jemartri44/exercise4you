@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RegisterRequest } from '../../../services/auth/registerRequest';
@@ -17,6 +17,11 @@ export class RegisterComponent {
   registerError:string="";
   registerState: string='';
   expired: boolean = false;
+  
+  showPassword: boolean = false;
+  showRepeatPassword: boolean = false;
+
+  @ViewChild('privacyPolicyCheckbox') privacyPolicyCheckbox: ElementRef;
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
 
@@ -38,6 +43,10 @@ export class RegisterComponent {
       this.registerError = "Por favor, rellene todos los campos obligatorios correctamente";
       return;
     }
+    if(!this.privacyPolicyCheckbox.nativeElement.checked){
+      this.registerError = "Por favor, acepte la política de privacidad";
+      return;
+    }
     this.registerState = 'LOADING';
     this.authService.register(this.registerForm.value as RegisterRequest).subscribe({
       next: (userData) => {console.log(userData);},
@@ -49,10 +58,18 @@ export class RegisterComponent {
       complete: () => {
         this.registerState = '';
         console.info("Registro completado");
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/login?registered=true');
         this.registerForm.reset();
       }
     });
+  }
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleRepeatPasswordVisibility(){
+    this.showRepeatPassword = !this.showRepeatPassword;
   }
   
   get email(){
