@@ -43,4 +43,10 @@ export class PatientService {
       catchError(this.handleError)
     )
   }
+
+  editPatient(newPatient: NewPatientRequest, id:string):Observable<Patient>{
+    return this.http.post<Patient>(environment.apiUrl+"/paciente/" + id + "/editar", newPatient).pipe(
+      catchError(this.handleError)
+    )
+  }
 }

@@ -20,7 +20,6 @@ export class VerificationComponent {
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService ) { 
     let token = this.router.url.split('=')[1]
-    console.debug(token)
     if(token == undefined || token == null || token == '') {
       return
     }

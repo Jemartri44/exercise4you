@@ -21,7 +21,6 @@ export class NavigationComponent implements OnInit {
   }
 
   setOptions(currentOption: string) {
-    console.debug("Current option: " + currentOption);
     switch(currentOption) {
       case "IMC":
         this.leftOption = "";

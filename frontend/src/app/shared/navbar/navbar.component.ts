@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, map, startWith, catchError, of } from 'rxjs';
+import { Patient } from '../../model/patient/patient';
+import { PatientService } from '../../services/patient/patient.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,9 +12,40 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
 
-  constructor( protected router: Router ) { }
+  navbarState: Observable<{
+    appState: string;
+    appData?: Patient;
+    appError?: string;
+  }> | undefined;
+
+  constructor( protected router: Router, private patientService:PatientService ) { }
+
+  ngOnInit(): void {
+    let id = this.router.url.split('/')[2];
+    this.navbarState = this.patientService.getPatient(id).pipe(
+      map((patient: Patient) => {
+        return ({ appState: 'LOADED', appData: patient })
+      }),
+      startWith({ appState: 'LOADING' }),
+      catchError((error) => {
+        return of({ appState: 'ERROR', appError: error.message})
+      })
+    );
+  }
+
+  getAge(birthdate: Date | undefined): number {
+    if (!birthdate) return 0;
+    let today = new Date();
+    let birth = new Date(birthdate);
+    let age = today.getFullYear() - birth.getFullYear();
+    let m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  }
 
   goToGeneral() {
     console.debug("Redirecting to general");

@@ -27,7 +27,6 @@ export class ImcSessionComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let imc = this.data as Imc;
       if(imc.data) {
         this.weight.nativeElement.value = imc.data.weight;

@@ -49,15 +49,15 @@ public class AuthService {
             }
             throw new RuntimeException("Correo electrónico o contraseña incorrectos");
         }
-        UserDetails userDetails = userRepository.findByEmail(loginRequest.getEmail())
+        Usr usr = userRepository.findByEmail(loginRequest.getEmail())
             .orElseThrow(() -> new RuntimeException("Correo electrónico o contraseña incorrectos"));
-        if(!userDetails.isEnabled()){
+        if(!usr.isEnabled()){
             new RuntimeException("Cuenta no activada");
         }
-        System.out.println(userDetails.isEnabled());
-        String token = jwtService.getToken(userDetails);
+        String token = jwtService.getToken(usr);
         return LoginResponse.builder()
             .token(token)
+            .alertShown(usr.isAlertShown())
             .build();
     }
 
@@ -107,6 +107,13 @@ public class AuthService {
 
     public Usr getLoggedUser(){
         return userRepository.findByEmail(getLoggedUsername()).orElse(null);
+    }
+
+    public boolean alertShown() {
+        Usr user = getLoggedUser();
+        user.setAlertShown(true);
+        userRepository.save(user);
+        return true;
     }
 
     public void createVerificationToken(Usr user, String token, String verificationReason) {

@@ -27,18 +27,12 @@ public class PatientService {
         return patientRepository.findPatientDtoByUsrId(authService.getLoggedUser().getId());
     }
 
-        // Direct mapping to PatientDTO
-    /*public Page<PatientDTO> getPaginatedPatients(String name, int page, int size) {
-        System.out.println("Name: "+ name + " Page: " + page + " Size: " + size + " User: " + authService.getLoggedUser().getId());
-        return patientRepository.customFindPatientDtoByUsrIdAndNameContainingAndSurnamesContaining(authService.getLoggedUser().getId(), PageRequest.of(page, size));
-    }*/
-
     public Page<PatientDTO> getPaginatedPatients(String search, int page, int size) {
         Page<Patient> patients = patientRepository.findByUsrIdAndNameContaining(authService.getLoggedUser().getId(), search, PageRequest.of(page, size));
         return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate()));
     }
 
-    public Patient newPatient(PatientRequest patientRequest) {
+    public PatientDTO newPatient(PatientRequest patientRequest) {
         Patient patient = Patient.builder()
             .usr(authService.getLoggedUser())
             .name(patientRequest.getName())
@@ -47,7 +41,18 @@ public class PatientService {
             .birthdate(patientRequest.getBirthdate())
             .build();
         patient = patientRepository.save(patient);
-        return patient;
+        return new PatientDTO(patient);
+    }
+
+    public PatientDTO editPatient(Integer id, PatientRequest patientRequest) {
+        checkPatient(id);
+        Patient patient = patientRepository.findById(id).orElseThrow();
+        patient.setName(patientRequest.getName());
+        patient.setSurnames(patientRequest.getSurnames());
+        patient.setGender(patientRequest.getGender());
+        patient.setBirthdate(patientRequest.getBirthdate());
+        patient = patientRepository.save(patient);
+        return new PatientDTO(patient);
     }
 
     public Patient getPatient(String id) {
@@ -55,6 +60,7 @@ public class PatientService {
     }
 
     public PatientDTO getPatientDto(Integer id) {
+        checkPatient(id);
         return new PatientDTO(patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient not found")));
     }
 

@@ -384,7 +384,6 @@ public class AnthropometryService {
     public void saveIdealWeightData(IdealWeightDto idealWeightDto, Integer id, Integer nSession) {
         checkPatient(id);
         checkSession(nSession);
-        System.out.println(idealWeightDto);
         idealWeightRepository.deleteByPatientIdAndSession(id, nSession);
         IdealWeight idealWeight = IdealWeight.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(idealWeightDto.getData()).build();
         idealWeight = idealWeightRepository.save(idealWeight);

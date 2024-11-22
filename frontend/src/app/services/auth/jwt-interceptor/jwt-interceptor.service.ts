@@ -12,10 +12,8 @@ export class JwtInterceptorService implements HttpInterceptor{
   constructor(private authService:AuthService, private location:Location) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let token:String= sessionStorage.getItem("token") || "";
-    console.debug(this.location.path().split('/')[1].split('?')[0]);
-    const authRoutes = ['login','register','confirmar-registro','/solicitar-cambio-contrasena','cambiar-contrasena'];
+    const authRoutes = ['login','register','confirmar-registro','/solicitar-cambio-contrasena','cambiar-contrasena','politica-de-privacidad'];
     if(authRoutes.includes(this.location.path().split('/')[1].split('?')[0])){
-      console.debug("authRoutes");
       return next.handle(req);
     }
     if(token != ""){

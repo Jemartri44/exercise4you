@@ -41,4 +41,9 @@ export class PatientInfoComponent implements OnInit {
     );
   }
 
+  goToEditPatient() {
+    let id = this.router.url.split('/')[2];
+    this.router.navigate(['/pacientes/' + id + '/editar']);
+  }
+
 }

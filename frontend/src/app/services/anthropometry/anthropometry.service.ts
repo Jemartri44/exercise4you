@@ -111,7 +111,6 @@ export class AnthropometryService {
 
   calculateIdealWeight(formula: string, weight: number, height: number, gender: boolean): {idealWeight: number, difference: number} {
     let idealWeight;
-    console.debug("Formula: " + formula + ", weight: " + weight + ", height" + height);
     switch (formula) {
       case "Fórmula de Lorentz":
         if(gender) {
@@ -130,7 +129,6 @@ export class AnthropometryService {
 
   calculateSkinFolds(formula1: string, formula2: string, foldsSum:number, weight: number, height: number, gender: boolean, age: number | undefined): {density: number, fatMassPercentage: number, fatMass: number, fatFreeMass: number, fatLevel: string, leanMass: number} {
     if(age === undefined) throw new Error("No se pudo calcular.");
-    console.debug("Formula1: " + formula1 + ", formula2: " + formula2 + ", foldsSum: " + foldsSum + ", weight: " + weight + ", height" + height + ", gender: " + gender + ", age" + age);
     let density, fatMassPercentage, fatMass, fatFreeMass, fatLevel, leanMass;
     switch (formula1) {
       case "Fórmula de Jackson-Pollock de 3 pliegues":

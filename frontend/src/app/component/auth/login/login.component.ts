@@ -3,8 +3,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth/auth.service';
-import { LoginRequest } from '../../../services/auth/loginRequest';
+import { LoginResponse } from '../../../services/auth/loginResponse';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginRequest } from '../../../services/auth/loginRequest';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +23,8 @@ export class LoginComponent implements OnInit{
   verified: boolean = false;
   forgottenPassword: boolean = false;
   changedPassword: boolean = false;
+
+  showPassword: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService, private route: ActivatedRoute ) {  }
 
@@ -49,8 +52,12 @@ export class LoginComponent implements OnInit{
       return;
     }
     this.loginState = 'LOADING';
+    let alertShown = false;
     this.authService.login(this.loginForm.value as LoginRequest).subscribe({
-      next: (userData) => {console.log(userData);},
+      next: (loginData) => {
+        loginData = loginData as LoginResponse;
+        alertShown = loginData.alertShown;
+      },
       error: (errorData) => {
         this.loginState = 'ERROR';
         console.error(errorData);
@@ -60,9 +67,18 @@ export class LoginComponent implements OnInit{
         this.loginState = '';
         console.info("Login completo");
         this.router.navigate(['/']);
+        if(!alertShown){
+          this.router.navigateByUrl('/pacientes?alertShown=false')
+        }else{
+          this.router.navigateByUrl('/pacientes')
+        }
         this.loginForm.reset();
       }
     });
+  }
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
   }
 
   get email(){

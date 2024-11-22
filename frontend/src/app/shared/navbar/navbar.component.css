@@ -55,3 +55,9 @@
     font-weight: 500;
     background-color: rgb(210, 228, 255);
 }
+
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+    border-width: 3px;
+  }

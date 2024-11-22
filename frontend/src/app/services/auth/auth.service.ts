@@ -31,8 +31,7 @@ export class AuthService {
       tap(userData => {
         sessionStorage.setItem("token", userData.token);
         this.loggedIn = true;
-      }),
-      map((userData) => userData.token)
+      })
     )
   }
 
@@ -75,7 +74,7 @@ export class AuthService {
   checkToken():void{
     const token = sessionStorage.getItem("token");
     const expired = helper.isTokenExpired(token);
-    const authRoutes = ['/login','/register','/confirmar-registro','/solicitar-cambio-contrasena','/cambiar-contrasena'];
+    const authRoutes = ['/login','/register','/confirmar-registro','/solicitar-cambio-contrasena','/cambiar-contrasena','/politica-de-privacidad'];
     if (expired) {
       if (authRoutes.includes(this.location.path().split('?')[0])) {
         return;
@@ -90,5 +89,9 @@ export class AuthService {
     return this.loggedIn;
   }
 
+  alertShown():Observable<boolean>{
+    console.debug("Alert shown");
+    return this.http.get<boolean>(environment.hostUrl+"/auth/alert-shown")
+  }
 
 }

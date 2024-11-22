@@ -27,7 +27,6 @@ export class IdealWeightSessionComponent {
 
   ngAfterViewInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let idealWeight = this.data as IdealWeight;
       if(idealWeight.gender == undefined) {
         throw new Error ("No se pudo calcular el peso ideal");

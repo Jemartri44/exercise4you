@@ -31,7 +31,6 @@ public class AnthropometryController {
     // GENERIC ENDPOINTS
     @GetMapping("/pacientes/{id}/anthropometry/{type}")
     public AnthropometryGeneralData getAnthropometryGeneralData(@PathVariable Integer id, @PathVariable String type) {
-        System.out.println(type);
         switch(type){
             case "IMC":
                 return anthropometryService.getImcGeneralData(id);

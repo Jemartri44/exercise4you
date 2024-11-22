@@ -11,28 +11,38 @@
                         pacientes</a>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link" (click)="goToGeneral()" [ngClass]="this.router.url.split('/').length === 3 ? 'active' : ''">Datos generales</a>
+                    <a class="nav-link" (click)="goToGeneral()" [ngClass]="(this.router.url.split('/').length === 3 || (this.router.url.split('/')[3]==='editar')) ? 'active' : ''">Datos generales</a>
                 </li>
                 <li class="nav-item dropdown me-4">
                     <a class="nav-link dropdown-toggle" [ngClass]="(this.router.url.split('/')[3]==='APALQ') || (this.router.url.split('/')[3]==='IPAQ') || (this.router.url.split('/')[3]==='IPAQ-E') || (this.router.url.split('/')[3]==='CMTCEF') || (this.router.url.split('/')[3]==='PAR-Q') || (this.router.url.split('/')[3]==='ePARmed-X') ? 'active' : ''" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Anamnesis
                     </a>
                     <ul class="dropdown-menu dropdown-main">
-                        <li><a class="dropdown-item" (click)="goToApalq()" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" (click)="goToIpaq()" [ngClass]="this.router.url.split('/')[3]==='IPAQ' ? 'bold' : ''">Cuestionario internacional de actividad física (IPAQ) | <span>&#8805;</span>18 años y <span>&#8804;</span>65 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" (click)="goToIpaqe()" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
+                        <ng-container *ngIf="(navbarState | async) as state" [ngSwitch]="state.appState">
+                            <ng-container *ngSwitchCase="'LOADING'">
+                                <li>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-primary justify-content-end" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="state.appState==='LOADED'">
+                                <li *ngIf="getAge(state.appData?.birthdate) < 18 "><a class="dropdown-item" (click)="goToApalq()" [ngClass]="this.router.url.split('/')[3]==='APALQ' ? 'bold' : ''">Cuestionario de evaluación de los niveles de actividad física (APALQ) | <span>&#60;</span>18 años</a>
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) >= 18 && getAge(state.appData?.birthdate) <=65"><a class="dropdown-item" (click)="goToIpaq()" [ngClass]="this.router.url.split('/')[3]==='IPAQ' ? 'bold' : ''">Cuestionario internacional de actividad física (IPAQ) | <span>&#8805;</span>18 años y <span>&#8804;</span>65 años</a>
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) > 65"><a class="dropdown-item" (click)="goToIpaqe()" [ngClass]="this.router.url.split('/')[3]==='IPAQ-E' ? 'bold' : ''">Cuestionario internacional de actividad física en personas mayores (IPAQ-E) | <span>&#62;</span>65 años</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ng-container>
+                        </ng-container>
                         <li><a class="dropdown-item" (click)="goToCmtcef()" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
                                 ejercicio físico</a></li>
                         <li>

@@ -23,7 +23,6 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
 
   ngOnInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let waistCircumference = this.data as WaistCircumference;
       if(waistCircumference.gender == undefined){
         throw new Error ("No se pudo calcular el índice cintura-cadera")
@@ -34,7 +33,6 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
 
   ngAfterViewInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let waistCircumference = this.data as WaistCircumference;
       if(waistCircumference.data) {
         this.waistCircumference.nativeElement.value = waistCircumference.data.waistCircumference;

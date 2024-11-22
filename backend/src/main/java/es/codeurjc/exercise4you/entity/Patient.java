@@ -69,6 +69,7 @@ public class Patient implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Integer id;
+    @JoinColumn(nullable = false, updatable = false)
     @JsonBackReference
     @ManyToOne
     private Usr usr;

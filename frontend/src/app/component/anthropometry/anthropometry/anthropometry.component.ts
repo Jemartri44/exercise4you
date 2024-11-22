@@ -100,8 +100,6 @@ export class AnthropometryComponent implements OnInit {
         }
         this.sessions = sessions;
         this.session = "Sesión " + anthropometryGeneralData.today.number + " - " + anthropometryGeneralData.today.date + " (hoy)";
-        console.debug(anthropometryGeneralData);
-        console.debug(this.sessions);
         return ({ appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADED', data: anthropometryGeneralData.data })
       }),
       startWith({ appState: 'LOADING', dataState: 'LOADING', saveState: 'LOADING'}),
@@ -118,7 +116,6 @@ export class AnthropometryComponent implements OnInit {
         if(data === undefined || data === null) {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
-        console.debug(data);
         return ({ appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADED', data: data })
       }),
       startWith({ appState: 'LOADED', dataState: 'LOADING', saveState: 'LOADING'}),
@@ -136,7 +133,6 @@ export class AnthropometryComponent implements OnInit {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
         this.allSessionsData = data;
-        console.debug(data);
         return ({ appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADED', data: data })
       }),
       startWith({ appState: 'LOADED', dataState: 'LOADING', saveState: 'LOADING'}),
@@ -164,7 +160,6 @@ export class AnthropometryComponent implements OnInit {
     if(data === null) {
       return;
     }
-    console.debug(data);
     this.anthropometryState = this.anthropometryService.saveData(this.router.url.split('/')[3], this.router.url.split('/')[2], this.session.split(' ')[1] ,data).pipe(
       map(() => {
         return { appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADED' };
@@ -178,7 +173,6 @@ export class AnthropometryComponent implements OnInit {
   }
 
   setSubtitle(currentOption: string) {
-    console.debug("Current option: " + currentOption);
     switch (currentOption) {
       case "IMC":
         this.subtitle = "Índice de masa corporal";

@@ -53,10 +53,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
   ngOnInit() {
     this.setTitle();
     if(this.router.url.split('/')[5] === 'repetir') {
-      this.repeatQuestionnaire();
-      //console.debug('pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + this.router.url.split('/')[4] + '/completar');
-      //this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
-      //  this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + this.router.url.split('/')[4] + '/completar']); 
+      this.repeatQuestionnaire(); 
       return;
     }
     this.questionnaireState = this.questionnaireService.getQuestionnaireInfo( this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4]).pipe(
@@ -71,7 +68,6 @@ export class QuestionnaireCompleteComponent implements OnInit{
         this.setOptions(this.question.type, this.question.options);
         this.alreadyExists = questionnaireInfo.alreadyExists;
         this.modalShowed = false;
-        console.debug(questionnaireInfo);
         this.alertList = questionnaireInfo.alertList;
         return ({ appState: 'LOADED', questionState: 'LOADED', appData: questionnaireInfo })
       }),
@@ -108,7 +104,6 @@ export class QuestionnaireCompleteComponent implements OnInit{
   }
 
   showModal(modal: string) {
-    console.debug(modal);
     this.modalShowed = false;
     if(modal === "alreadyExists") {
       $(this.modalAlreadyExists.nativeElement).modal('show');
@@ -126,13 +121,11 @@ export class QuestionnaireCompleteComponent implements OnInit{
 
   showNextAlert(first: boolean = false) {
     first ? this.currentAlert = 0 : this.currentAlert++;
-    console.debug(this.currentAlert);
     if(this.alertList == undefined) {
       return;
     }
 
     if(this.currentAlert < this.alertList?.length) {
-      console.debug(this.alertList[this.currentAlert].title);
       this.alertList[this.currentAlert].title === "PESO DEL PACIENTE" ? this.showModal("weight") : this.showModal("alert");
     } else if(this.alertList.length === 1) {
       this.currentAlert = 0;
@@ -151,7 +144,6 @@ export class QuestionnaireCompleteComponent implements OnInit{
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
         this.question = question;
-        console.debug(question);
         if(question.code === "end") {
           return ({ appState: 'END', questionState: 'END', appData: question })
         }
@@ -174,7 +166,6 @@ export class QuestionnaireCompleteComponent implements OnInit{
         if(questionnaireInfo === undefined ) {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
-        console.debug(questionnaireInfo)
         this.alertList = questionnaireInfo.alertList;
         this.question = questionnaireInfo.question;
         this.alreadyExists = questionnaireInfo.alreadyExists;
@@ -194,7 +185,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
   end() {
     this.questionnaireState = this.questionnaireService.getNextQuestion( this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4], this.question.code, "", "").pipe(
       map((question: QuestionnaireInfo["question"]) => {
-        console.debug("Redirecting to: " + '/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] );
+        console.debug("Redirecting to: " + '/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] )
         this.router.navigateByUrl('pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3]);
         return ({ appState: 'END', questionState: 'END', appData: question })
       }),

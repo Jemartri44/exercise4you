@@ -12,6 +12,8 @@ import { QuestionnaireAnswersComponent } from './component/questionnaire/questio
 import { AnthropometryComponent } from './component/anthropometry/anthropometry/anthropometry.component';
 import { ForgottenPasswordComponent } from './component/auth/forgotten-password/forgotten-password.component';
 import { ChangePasswordComponent } from './component/auth/change-password/change-password.component';
+import { PatientEditComponent } from './component/patient/patient-edit/patient-edit.component';
+import { PrivacyPolicyComponent } from './component/auth/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [authGuard] },
@@ -19,10 +21,12 @@ export const routes: Routes = [
     { path: 'confirmar-registro', component: VerificationComponent, canActivate: [authGuard] },
     { path: 'solicitar-cambio-contrasena', component: ForgottenPasswordComponent, canActivate: [authGuard] },
     { path: 'cambiar-contrasena', component: ChangePasswordComponent, canActivate: [authGuard] },
+    { path: 'politica-de-privacidad', component: PrivacyPolicyComponent, canActivate: [authGuard] },
 
     { path: 'pacientes', component: PatientListComponent, canActivate: [authGuard] },
     { path: 'pacientes/nuevo', component: PatientNewComponent, canActivate: [authGuard]},
     { path: 'pacientes/:id', component: PatientInfoComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/editar', component: PatientEditComponent, canActivate: [authGuard]},
 
     { path: 'pacientes/:id/APALQ', component: QuestionnaireListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/APALQ/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },

@@ -58,6 +58,8 @@ public class Usr implements UserDetails{
     @Column(name = "enabled")
     @Builder.Default
     private boolean enabled = false;
+    @Builder.Default
+    private boolean alertShown = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -23,6 +23,8 @@
     "@angular/router": "^17.2.0",
     "@auth0/angular-jwt": "^5.2.0",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "date-fns": "^4.1.0",
     "frontend": "file:",
     "jquery": "^3.7.1",
     "moment": "^2.30.1",

@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "MailService",
-            "request": "launch",
-            "mainClass": "es.codeurjc.exercise4you.service.MailService",
-            "projectName": "exercise4you"
-        },
-        {
-            "type": "java",
             "name": "Exercise4youApplication",
             "request": "launch",
             "mainClass": "es.codeurjc.exercise4you.Exercise4youApplication",

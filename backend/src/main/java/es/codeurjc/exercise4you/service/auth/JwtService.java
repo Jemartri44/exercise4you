@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.*;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ import io.jsonwebtoken.Jwts;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY="exercise4youSecretKeyItHasToBeLongerThanThisButItIsJustForTestingPurposesSoItIsOk";
+    @Value("${jwt.secret-key}")
+    private static String secret_key;
 
     public String getToken(UserDetails userDetails){
         return getToken(new HashMap<>(), userDetails);
@@ -33,7 +35,7 @@ public class JwtService {
     }
 
     private Key getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secret_key);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

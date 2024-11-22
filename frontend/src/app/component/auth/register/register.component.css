@@ -6,19 +6,46 @@ form {
     text-align: left;
 }
 
+.invalid.ng-valid:not(form).ng-touched {
+    border-left: 5px solid #a94442;
+}
+
 .ng-valid:not(form).ng-touched {
     border-left: 5px solid #42A948;
-    /* green */
 }
 
 .ng-invalid:not(form).ng-touched {
     border-left: 5px solid #a94442;
-    /* red */
 }
+
 
 .spinner-border {
     width: 1rem;
     height: 1rem;
     border-width: 3px;
     margin-top:3px;
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+svg {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.form-check-input {
+    margin-left:1px;
+    margin-bottom:5px;
+    height: 15px;
+    width: 15px;
+    box-shadow: 0px 0px 0.5px 0.5px #ccc;
+}
+
+.form-check-label {
+    font-size: 1rem;
 }

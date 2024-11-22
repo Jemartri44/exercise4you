@@ -9,9 +9,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import es.codeurjc.exercise4you.entity.Usr;
-import es.codeurjc.exercise4you.entity.VerificationToken;
 import es.codeurjc.exercise4you.service.auth.AuthService;
-import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;

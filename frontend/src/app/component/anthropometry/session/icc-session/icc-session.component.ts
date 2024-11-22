@@ -26,7 +26,6 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let icc = this.data as Icc;
       if(icc.gender == undefined){
         throw new Error ("No se pudo calcular el índice cintura-cadera")
@@ -37,7 +36,6 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let icc = this.data as Icc;
       if(icc.data) {
         this.waistCircumference.nativeElement.value = icc.data.waistCircumference;

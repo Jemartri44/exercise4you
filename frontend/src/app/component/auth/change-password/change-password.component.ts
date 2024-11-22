@@ -17,6 +17,9 @@ export class ChangePasswordComponent {
   changePasswordError:string="";
   changePasswordState: string='';
   expired: boolean = false;
+  
+  showPassword: boolean = false;
+  showRepeatPassword: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private router:Router, private authService:AuthService ) {  };
   
@@ -45,6 +48,14 @@ export class ChangePasswordComponent {
         this.router.navigateByUrl('/login?changed-password=true');
       }
     });
+  }
+
+  togglePasswordVisibility(){
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleRepeatPasswordVisibility(){
+    this.showRepeatPassword = !this.showRepeatPassword;
   }
   
   get password(){

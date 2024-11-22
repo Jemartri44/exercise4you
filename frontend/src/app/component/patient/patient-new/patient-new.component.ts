@@ -10,9 +10,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
 import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
-import 'moment/locale/es';
 import { PatientService } from '../../../services/patient/patient.service';
 import { NewPatientRequest } from '../../../services/patient/newPatientRequest';
+import 'moment/locale/es';
+import moment from 'moment';
 
 
 @Component({
@@ -52,7 +53,11 @@ export class PatientNewComponent {
       return;
     }
     this.newPatientState = 'LOADING';
-    this.patientService.addNewPatient(this.newPatientForm.value as NewPatientRequest).subscribe({
+    let patientRequest = this.newPatientForm.value as NewPatientRequest;
+    if (patientRequest.birthdate) {
+      patientRequest.birthdate = moment(patientRequest.birthdate).format('YYYY-MM-DD');
+    }
+    this.patientService.addNewPatient(patientRequest).subscribe({
       next: (newPatientData) => {console.log(newPatientData);},
       error: (errorData) => {
         this.newPatientState = 'ERROR';

@@ -10,11 +10,10 @@ export class ErrorInterceptorService implements HttpInterceptor{
 
   constructor(private router:Router) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.debug('Petición interceptada');
     return next.handle(req).pipe(
       catchError(error => {
-        console.debug('Error en la respuesta del servidor');
-        console.debug(error);
+        console.error('Error en la respuesta del servidor');
+        console.error(error);
         if (error instanceof HttpErrorResponse) {
           switch (error.status) {
             case 0:
@@ -33,13 +32,10 @@ export class ErrorInterceptorService implements HttpInterceptor{
               }
               return throwError(() => Error(error.error));
             case 403:
-              console.debug('Se ha recibido el código de error: ' + error.status + ' ' + error.error + ' ' + error.message);
               return throwError(() => Error('La sesión ha expirado. Por favor, inicie sesión nuevamente.', error.error));
             case 409:
-              console.error('Se ha recibido el código de error: ' + error.status + ' ' + error.error + ' ' + error.message);
               return throwError(() => Error(error.error));
             default:
-              console.error('Se ha recibido el código de error: ' + error.status + ' ' + error.error + ' ' + error.message);
               return throwError(() => new Error('Algo falló. Por favor inténtelo de nuevo.'));
           }
         }

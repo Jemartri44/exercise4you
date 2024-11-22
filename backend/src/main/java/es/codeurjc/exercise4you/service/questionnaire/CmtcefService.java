@@ -297,7 +297,6 @@ public class CmtcefService {
         }
         int maxIndex = 0;
         for (int i = 0; i < stageCount.length; i++) {
-            System.out.println(stages[i] + ": " + stageCount[i]);
             stageCount[i] = stageCount[i] / codes[i].length;
             if(stageCount[i] > stageCount[maxIndex]){
                 maxIndex = i;

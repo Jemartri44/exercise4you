@@ -6,12 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import es.codeurjc.exercise4you.Exercise4youApplication;
 import es.codeurjc.exercise4you.security.LoginRequest;
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = Exercise4youApplication.class)
 public class AuthControllerTest {

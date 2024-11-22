@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,13 +30,13 @@ public class VerificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+    @Column(nullable = false)
     private String token;
   
     @OneToOne(targetEntity = Usr.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private Usr user;
-    
+    @Column(nullable = false)
     private Date expiryDate;
 
     private String verificationReason;

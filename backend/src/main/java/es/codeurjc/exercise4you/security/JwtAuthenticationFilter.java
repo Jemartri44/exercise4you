@@ -35,17 +35,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         
-        System.out.println("FILTERING TOKEN!!!!!!!!");
-        System.out.println(request.getRequestURL());
         final String token = getTokenFromRequest(request);
         final String email;
-        System.out.println("DEBUG");
         if(token ==null){
             filterChain.doFilter(request, response);
         }
 
         email = jwtService.getEmailFromToken(token);
-        System.out.println("DEBUG");
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
@@ -56,13 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        System.out.println("DEBUG");
         filterChain.doFilter(request, response);
-        System.out.println("DEBUG");
     }
 
     private String getTokenFromRequest(HttpServletRequest request){
-        System.out.println(request);
         final String bearerToken = request.getHeader("Authorization");
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7);

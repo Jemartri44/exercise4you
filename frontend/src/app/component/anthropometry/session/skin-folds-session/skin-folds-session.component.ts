@@ -52,7 +52,6 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
 
   ngOnInit(): void {
     if (this.data) {
-      console.debug(this.data);
       let skinFolds = this.data as SkinFolds;
       if(skinFolds.gender == undefined) {
         throw new Error ("No se pudo recuperar la información sobre el paciente");
@@ -344,7 +343,6 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
   }
 
   chooseFormula2(formula: string | undefined, throwError:boolean = true) {
-    console.debug("Choosing formula 2")
     switch (formula) {
       case "Fórmula de James":
         if(!this.editable){
@@ -358,10 +356,8 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
         if(!this.editable){
           this.james.nativeElement.disabled = true;
         }
-        console.debug("hume" + this.age)
         this.james.nativeElement.checked = false;
         this.hume.nativeElement.checked = true;
-        console.debug("hume?" + this.hume.nativeElement.checked)
         this.formula2 = formula;
         break;
       case undefined:

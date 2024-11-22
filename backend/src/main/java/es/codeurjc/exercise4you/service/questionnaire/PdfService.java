@@ -1,6 +1,7 @@
 package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -8,9 +9,11 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +30,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.ByteBuffer;
 import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfEncodings;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -66,19 +68,17 @@ public class PdfService {
     public MultipartFile getPdf(Integer id, String pdfType, Integer nSession) throws IOException{
         patientService.checkSession(nSession);
         patientService.checkPatient(id);
-        Patient patient = patientService.getPatient(String.valueOf(id));
         LocalDate date = dataRecordService.getCompletionDateBySession(id, nSession);
         String filepath = "pdfs/";
         String filename = "";
         filepath = filepath + pdfType + "/";
-        filename = patient.getName() + '_'+ patient.getSurnames().replace(' ','_') + "_" + pdfType.toUpperCase() + "_" + date + ".pdf";
+        filename = String.valueOf(id) + "_" + pdfType.toUpperCase() + "_" + date + ".pdf";
         return s3Service.downloadMultipartFile(filepath, filename);
     }
 
     public MultipartFile getManual() throws IOException{
         String filepath = "pdfs/";
         String filename = "manual.pdf";
-        System.out.println("Downloading manual");
         return s3Service.downloadMultipartFile(filepath, filename);
     }
 
@@ -105,12 +105,12 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), ipaq.getCompletionDate()) +" años", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), ipaq.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3 = new Paragraph("Peso: " + df.format(ipaq.getWeight()) + " kilogramos", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + ipaq.getCompletionDate() + " (Sesión " + ipaq.getSession() + ")", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + ipaq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + ipaq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -121,13 +121,14 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -289,7 +290,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_IPAQ_" + ipaq.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_IPAQ_" + ipaq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/ipaq/", pdfMultipartFile);
             return returned.split(" ")[3];
@@ -321,12 +322,12 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), ipaqe.getCompletionDate()) +" años", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), ipaqe.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3 = new Paragraph("Peso: " + df.format(ipaqe.getWeight()) + " kilogramos", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + ipaqe.getCompletionDate() + " (Sesión " + ipaqe.getSession() + ")", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + ipaqe.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + ipaqe.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -337,13 +338,14 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -505,7 +507,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_IPAQE_" + ipaqe.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_IPAQE_" + ipaqe.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/ipaqe/", pdfMultipartFile);
             return returned.split(" ")[3];
@@ -538,10 +540,10 @@ public class PdfService {
         
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), cmtcef.getCompletionDate()) +" años", leftColumnFont);
-        Paragraph p3 = new Paragraph("Fecha: " + cmtcef.getCompletionDate() + " (Sesión " + cmtcef.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), cmtcef.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p3= new Paragraph("Fecha: " + cmtcef.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + cmtcef.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -550,13 +552,14 @@ public class PdfService {
         ct.addElement(p3);
         ct.go();
         
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -615,7 +618,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_CMTCEF_" + cmtcef.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_CMTCEF_" + cmtcef.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/cmtcef/", pdfMultipartFile);
             return returned.split(" ")[3];
@@ -648,10 +651,10 @@ public class PdfService {
         
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), parq.getCompletionDate()) +" años", leftColumnFont);
-        Paragraph p3 = new Paragraph("Fecha: " + parq.getCompletionDate() + " (Sesión " + parq.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), parq.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p3 = new Paragraph("Fecha: " + parq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + parq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -660,13 +663,14 @@ public class PdfService {
         ct.addElement(p3);
         ct.go();
         
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -703,7 +707,7 @@ public class PdfService {
 
         if(!results.getIsAbleToExercise().booleanValue()){
             document.close();
-            PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
+            PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
             try {
                 String returned = s3Service.uploadMultipartFile("pdfs/parq/", pdfMultipartFile);
                 return returned.split(" ")[3];
@@ -783,7 +787,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_PARQ_" + parq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/parq/", pdfMultipartFile);
             return returned.split(" ")[3];
@@ -816,10 +820,10 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), eparmed.getCompletionDate()) +" años", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + eparmed.getCompletionDate() + " (Sesión " + eparmed.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), eparmed.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + eparmed.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + eparmed.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p4.setSpacingAfter(3);
@@ -828,13 +832,14 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -903,7 +908,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_EPARMED_" + eparmed.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_EPARMED_" + eparmed.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/eparmed/", pdfMultipartFile);
             return returned.split(" ")[3];
@@ -929,17 +934,16 @@ public class PdfService {
         title.setSpacingAfter(-10);
         title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
         Chunk linebreak = new Chunk(new LineSeparator());
-        
 
         document.add(title);
         document.add(linebreak);
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(100, 150, 296, 695); // coordinates for the left column
+        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Edad: "+ getYearsBetween(patient.getBirthdate(), apalq.getCompletionDate()) +" años", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + apalq.getCompletionDate() + " (Sesión " + apalq.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), apalq.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + apalq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + apalq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p4.setSpacingAfter(3);
@@ -948,13 +952,15 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 500, 695); // coordinates for the right column
+        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
         p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         ct.addElement(p5);
-        Image img = Image.getInstance("backend/src/main/resources/img/exercise4you.png");
+        
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         img.setSpacingBefore(4);
@@ -1078,7 +1084,7 @@ public class PdfService {
 
         document.close();
         
-        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(patient.getName() + '_'+patient.getSurnames().replace(' ','_') + "_APALQ_" + apalq.getCompletionDate() +".pdf", buffer.toByteArray());
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_APALQ_" + apalq.getCompletionDate() +".pdf", buffer.toByteArray());
         try {
             String returned = s3Service.uploadMultipartFile("pdfs/apalq/", pdfMultipartFile);
             return returned.split(" ")[3];

@@ -18,6 +18,7 @@ export class SessionButtonsComponent {
   @Input() date: string = "";
   @ViewChild('modalPdfViewer') modalPdfViewer: ElementRef;
   @ViewChild('modalRepeat') modalRepeat: ElementRef;
+  loading_pdf: boolean = false;
 
   constructor( private router: Router, private pdfService: PdfService ) { }
 
@@ -52,7 +53,9 @@ export class SessionButtonsComponent {
   }
 
   openPdf(session: number) {
+    this.loading_pdf = true;
     this.pdfService.getPdf(this.router.url.split('/')[2], this.router.url.split('/')[3], session).subscribe(response => {
+      this.loading_pdf = false;
       if(response.body == null) {
         console.error("Error: PDF is null");
         return;

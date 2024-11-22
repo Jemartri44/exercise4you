@@ -1,13 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../shared/header/header.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
 import { PatientService } from '../../../services/patient/patient.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PatientPage } from '../../../model/patient/patient-page';
 import { Observable, catchError, map, of, startWith } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth/auth.service';
 
+declare let $:any;
 
 @Component({
   selector: 'app-patient-list',
@@ -16,10 +18,13 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './patient-list.component.html',
   styleUrl: './patient-list.component.css'
 })
-export class PatientListComponent implements OnInit {
+export class PatientListComponent implements OnInit, AfterViewInit {
 
   hasPatients: boolean = false;
+  alertShown: Boolean;
   @ViewChild('search') searchBox: ElementRef;
+  @ViewChild('shownCheckbox') shownCheckbox: ElementRef;
+  @ViewChild('modalAlert') modalAlert: ElementRef;
   search:string = "";
   errorMessage: string = "";
   displayedColumns: string[] = ['id', 'name', 'surnames', 'gender', 'birthdate'];
@@ -28,10 +33,12 @@ export class PatientListComponent implements OnInit {
     appData?: PatientPage;
     appError?: string;
   }> | undefined;
+  modalLoading: boolean = false;
 
-  constructor(private patientService: PatientService, private router: Router) { }
+  constructor(private patientService: PatientService, private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {this.alertShown = params['alertShown']})
     this.patientsState = this.patientService.getPatients("").pipe(
       map((patientPage: PatientPage) => {
         this.hasPatients = patientPage.totalElements > 0;
@@ -42,6 +49,28 @@ export class PatientListComponent implements OnInit {
         return of({ appState: 'ERROR', appError: error.message})
       })
     );
+  }
+
+  ngAfterViewInit() {
+    if(this.alertShown){
+      $(this.modalAlert.nativeElement).modal('show');
+    }
+  }
+
+  closeModal() {
+    if(this.shownCheckbox.nativeElement.checked){
+      this.modalLoading = true;
+      this.authService.alertShown().subscribe(response => {
+        if(response != true) {
+          console.error("Error: inténtelo de nuevo");
+          return;
+        }
+        $(this.modalAlert.nativeElement).modal('hide');
+        this.modalLoading = false;
+      });
+    }else{
+      $(this.modalAlert.nativeElement).modal('hide');
+    }
   }
 
   goToPage(name?:string, page?: number, data?: PatientPage) {

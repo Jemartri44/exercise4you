@@ -147,9 +147,6 @@ public class QuestionnaireService {
         checkPatient(id);
         checkSession(session);
 
-
-        System.out.println(questionnaireType);
-        System.out.println(questionnaireType.equals("IPAQ"));
         switch (questionnaireType) {
             case "IPAQ":
                 ipaqService.setWeight(id, session, weight);

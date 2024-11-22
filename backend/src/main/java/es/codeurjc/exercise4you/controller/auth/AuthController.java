@@ -36,8 +36,6 @@ public class AuthController {
 
     @PostMapping(value = "login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
-        System.out.println(loginRequest.getEmail());
-        System.out.println(loginRequest.getPassword());
         if(loginRequest.getEmail() == null || loginRequest.getPassword() == null){
             return ResponseEntity.badRequest().build();
         }
@@ -52,6 +50,11 @@ public class AuthController {
     @PostMapping(value = "register")
     public ResponseEntity<Boolean> register(@RequestBody RegisterRequest registerRequest){
         return ResponseEntity.ok(authService.register(registerRequest));
+    }
+
+    @GetMapping(value = "alert-shown")
+    public ResponseEntity<Boolean> alertShown(){
+        return ResponseEntity.ok(authService.alertShown());
     }
 
     @PostMapping(value = "refresh-verification-token")
