@@ -612,9 +612,11 @@ public class PdfService {
         }
         document.add(actionList);
         Font bold = FontFactory.getFont("Helvetica", 10, Font.BOLD);
-        Paragraph conclusion = new Paragraph("Se recomienda que el paciente realice el cuestionario de aptitud para la actividad física para todos (PAR-Q+).", bold);
-        conclusion.setSpacingBefore(30);
-        document.add(conclusion);
+        if(results.getStage().equals("PREPARACIÓN") || results.getStage().equals("ACCIÓN") || results.getStage().equals("MANTENIMIENTO")){
+            Paragraph conclusion = new Paragraph("Se recomienda que el paciente realice el cuestionario de aptitud para la actividad física para todos (PAR-Q+).", bold);
+            conclusion.setSpacingBefore(30);
+            document.add(conclusion);
+        }
 
         document.close();
         
