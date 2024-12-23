@@ -198,7 +198,7 @@ public class EparmedService {
                     return "eparmed9a";
                 } else if (lastAnswer.equals("Cáncer (cualquier tipo)")) {
                     return "eparmed10a";
-                } else if (lastAnswer.equals("Insuficiencia cardíaca crónica")) {
+                } else if (lastAnswer.equals("Insuficiencia cardiaca crónica")) {
                     return "eparmed11a";
                 } else if (lastAnswer.equals("Enfermedad pulmonar obstructiva crónica")) {
                     return "eparmed12a";
