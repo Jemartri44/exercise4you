@@ -20,6 +20,7 @@
                 <p><b>Apellidos:</b>   {{state.appData?.surnames}}</p>
                 <p><b>Género:</b>   {{state.appData?.gender}}</p>
                 <p><b>Fecha de nacimiento:</b>   {{state.appData?.birthdate | date: 'dd/MM/yyyy'}}</p>
+                <p><b>Edad:</b>   {{state.appData?.age}} años</p>
             </div>
             <button class="btn btn-primary ms-4 mt-2" (click)="goToEditPatient()" type="submit">Editar paciente</button>
         </ng-container>

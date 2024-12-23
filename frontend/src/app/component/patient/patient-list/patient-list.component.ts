@@ -27,7 +27,7 @@ export class PatientListComponent implements OnInit, AfterViewInit {
   @ViewChild('modalAlert') modalAlert: ElementRef;
   search:string = "";
   errorMessage: string = "";
-  displayedColumns: string[] = ['id', 'name', 'surnames', 'gender', 'birthdate'];
+  displayedColumns: string[] = ['id', 'name', 'surnames', 'gender', 'birthdate', 'age'];
   patientsState: Observable<{
     appState: string;
     appData?: PatientPage;

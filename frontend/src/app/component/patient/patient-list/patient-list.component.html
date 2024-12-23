@@ -67,21 +67,23 @@
                         </form>
                         <div class="row">
                             <table class="table table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Apellidos</th>
-                                        <th scope="col">Género</th>
-                                        <th scope="col">Fecha de nacimiento</th>
+                                <thead>
+                                    <tr class="thead">
+                                        <th scope="col" class="fs-6">Nombre</th>
+                                        <th scope="col" class="fs-6">Apellidos</th>
+                                        <th scope="col" class="fs-6">Género</th>
+                                        <th scope="col" class="fs-6">Edad</th>
+                                        <th scope="col" class="fs-6">Fecha de nacimiento</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let patient of state.appData?.content;"
                                         (click)="goToPatient(patient.id)">
-                                        <td scope="row">{{ patient.name }}</td>
-                                        <td>{{ patient.surnames }}</td>
-                                        <td>{{ patient.gender }}</td>
-                                        <td>{{ patient.birthdate | date: 'dd/MM/yyyy'}}</td>
+                                        <td scope="row" class="fs-6">{{ patient.name }}</td>
+                                        <td class="fs-6">{{ patient.surnames }}</td>
+                                        <td class="fs-6">{{ patient.gender }}</td>
+                                        <td class="fs-6">{{ patient.age }} años</td>
+                                        <td class="fs-6">{{ patient.birthdate | date: 'dd/MM/yyyy'}}</td>
                                     </tr>
                                 </tbody>
                             </table>

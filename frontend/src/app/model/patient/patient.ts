@@ -4,4 +4,5 @@ export interface Patient {
     surnames :string;
     gender: string;
     birthdate: Date;
+    age: number;
 }
