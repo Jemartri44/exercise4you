@@ -100,6 +100,21 @@ export class QuestionnaireCompleteComponent implements OnInit{
       case 'IPAQ':
         this.title = 'Cuestionario internacional de actividad física (IPAQ)';
         break;
+      case 'CMTCEF':
+        this.title = 'Cuestionario del modelo transteórico del cambio de ejercicio físico';
+        break;
+      case 'PAR-Q':
+        this.title = 'Cuestionario de aptitud para la actividad física para todos (PAR-Q+)';
+        break;
+      case 'ePARmed-X':
+        this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
+        break;
+      case 'IPAQ-E':
+        this.title = 'Cuestionario internacional de actividad física en personas mayores (IPAQ-E)';
+        break;
+      case 'APALQ':
+        this.title = 'Cuestionario de evaluación de los niveles de actividad física (APALQ)';
+        break;
     }
   }
 

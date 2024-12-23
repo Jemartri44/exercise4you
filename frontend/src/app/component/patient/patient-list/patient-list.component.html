@@ -77,7 +77,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let patient of state.appData?.content;"
-                                        (click)="goToPatient(this.patient.id)">
+                                        (click)="goToPatient(patient.id)">
                                         <td scope="row">{{ patient.name }}</td>
                                         <td>{{ patient.surnames }}</td>
                                         <td>{{ patient.gender }}</td>
