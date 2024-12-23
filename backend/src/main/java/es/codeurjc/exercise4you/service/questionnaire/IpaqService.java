@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class IpaqService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!ipaqList.isEmpty()){
-            if(ipaqList.get(ipaqList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(ipaqList.get(ipaqList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(ipaqList.get(ipaqList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -59,7 +60,7 @@ public class IpaqService {
         for(Ipaq ipaq: ipaqList){
             sessions.add( new Session(ipaq.getSession(), ipaq.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario internacional de actividad física (IPAQ)";
         String description = "El Cuestionario Internacional de Actividad Física (IPAQ) en su versión corta es un instrumento diseñado para evaluar la actividad física de adultos entre 18 y 65 años. Consiste en 7 preguntas que capturan información sobre la frecuencia (días por semana) y duración (tiempo por día) de la actividad física realizada en tres niveles de intensidad: actividades vigorosas, moderadas y caminata. Además, incluye una pregunta sobre el tiempo dedicado a estar sentado, como indicador de comportamiento sedentario. Este formato breve facilita su aplicación y análisis, siendo ideal para estudios epidemiológicos, práctica clínica y programas de ejercicio terapéutico, al proporcionar una estimación rápida y fiable del nivel de actividad física de una persona.";
         return new QuestionnairesInfo(title, description, sessions, ipaqList.isEmpty(), isTodayCompleted, today);
@@ -78,7 +79,7 @@ public class IpaqService {
                 deleteIpaq(id, lastIpaq.getSession());
             }
             // Delete if the last ipaq is not completed and the date is different
-            if((!lastIpaq.getComplete()) && (!lastIpaq.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastIpaq.getComplete()) && (!lastIpaq.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteIpaq(id, lastIpaq.getSession());
             }
         }
@@ -87,7 +88,7 @@ public class IpaqService {
         Optional<Ipaq> optional = ipaqRepository.findBySessionAndPatientId(session, id);
         // If today's ipaq is not present, create a new one (we do not check if a data record exists, we will do so when the ipaq is completed)
         if(!optional.isPresent()){
-            Ipaq ipaq = Ipaq.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("ipaq1").answers(new ArrayList<>()).build();
+            Ipaq ipaq = Ipaq.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("ipaq1").answers(new ArrayList<>()).build();
             ipaqRepository.save(ipaq);
             Question question = questionRepository.findByCode("ipaq1");
             List<Alert> alerts = new ArrayList<>();

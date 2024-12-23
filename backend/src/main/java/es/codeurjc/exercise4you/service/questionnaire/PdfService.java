@@ -7,9 +7,11 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,9 @@ public class PdfService {
     @Autowired
     private DataRecordService dataRecordService;
 
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private Locale locale = new Locale("es", "ES");
+
     public MultipartFile getPdf(Integer id, String pdfType, Integer nSession) throws IOException{
         patientService.checkSession(nSession);
         patientService.checkPatient(id);
@@ -108,9 +113,9 @@ public class PdfService {
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), ipaq.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), ipaq.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3 = new Paragraph("Peso: " + df.format(ipaq.getWeight()) + " kilogramos", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + ipaq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + ipaq.getSession() + ")", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + ipaq.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + ipaq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -325,9 +330,9 @@ public class PdfService {
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), ipaqe.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), ipaqe.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3 = new Paragraph("Peso: " + df.format(ipaqe.getWeight()) + " kilogramos", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + ipaqe.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + ipaqe.getSession() + ")", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + ipaqe.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + ipaqe.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -542,8 +547,8 @@ public class PdfService {
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), cmtcef.getCompletionDate()) +" años)", leftColumnFont);
-        Paragraph p3= new Paragraph("Fecha: " + cmtcef.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + cmtcef.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), cmtcef.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p3= new Paragraph("Fecha: " + cmtcef.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + cmtcef.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -655,8 +660,8 @@ public class PdfService {
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), parq.getCompletionDate()) +" años)", leftColumnFont);
-        Paragraph p3 = new Paragraph("Fecha: " + parq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + parq.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), parq.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p3 = new Paragraph("Fecha: " + parq.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + parq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p3.setSpacingAfter(3);
@@ -777,7 +782,7 @@ public class PdfService {
         p1 = new Paragraph("Nombre del testigo:", bodyFont);
         p2 = new Paragraph("Firma del testigo: _____________", bodyFont);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm");
-        p3 = new Paragraph("Fecha y hora: " + dtf.format(ZonedDateTime.now()), bodyFont);
+        p3 = new Paragraph("Fecha y hora: " + dtf.format(ZonedDateTime.now(ZoneId.of("Europe/Madrid"))), bodyFont);
         p3.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(30);
@@ -824,8 +829,8 @@ public class PdfService {
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), eparmed.getCompletionDate()) +" años)", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + eparmed.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + eparmed.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), eparmed.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + eparmed.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + eparmed.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p4.setSpacingAfter(3);
@@ -898,7 +903,7 @@ public class PdfService {
         p1 = new Paragraph("Nombre del testigo:", bodyFont);
         p2 = new Paragraph("Firma del testigo: _____________", bodyFont);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm");
-        p3 = new Paragraph("Fecha y hora: " + dtf.format(ZonedDateTime.now()), bodyFont);
+        p3 = new Paragraph("Fecha y hora: " + dtf.format(ZonedDateTime.now(ZoneId.of("Europe/Madrid"))), bodyFont);
         p3.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(30);
@@ -944,8 +949,8 @@ public class PdfService {
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
         ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
-        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))  + " ("+ getYearsBetween(patient.getBirthdate(), apalq.getCompletionDate()) +" años)", leftColumnFont);
-        Paragraph p4 = new Paragraph("Fecha: " + apalq.getCompletionDate().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL)) + " (Sesión " + apalq.getSession() + ")", leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), apalq.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + apalq.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + apalq.getSession() + ")", leftColumnFont);
         p1.setSpacingAfter(3);
         p2.setSpacingAfter(3);
         p4.setSpacingAfter(3);

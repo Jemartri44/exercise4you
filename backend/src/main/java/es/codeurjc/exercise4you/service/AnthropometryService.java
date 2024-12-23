@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,11 +66,11 @@ public class AnthropometryService {
         List<Session> sessions = new ArrayList<>();
         boolean allEmpty = true;
         boolean todayCompleted = false;
-        Session today = Session.builder().date(LocalDate.now()).number(dataRecordService.getSessionNumber(id)).build();
+        Session today = Session.builder().date(LocalDate.now(ZoneId.of("Europe/Madrid"))).number(dataRecordService.getSessionNumber(id)).build();
         ImcDto data = null;
         if(!imcList.isEmpty()){
             allEmpty = false;
-            if(imcList.get(0).getCompletionDate().equals(LocalDate.now())){
+            if(imcList.get(0).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 data = new ImcDto(imcList.get(0));
                 todayCompleted = true;
                 imcList.remove(0);
@@ -87,11 +88,11 @@ public class AnthropometryService {
         List<Session> sessions = new ArrayList<>();
         boolean allEmpty = true;
         boolean todayCompleted = false;
-        Session today = Session.builder().date(LocalDate.now()).number(dataRecordService.getSessionNumber(id)).build();
+        Session today = Session.builder().date(LocalDate.now(ZoneId.of("Europe/Madrid"))).number(dataRecordService.getSessionNumber(id)).build();
         IccDto data = new IccDto();
         if(!iccList.isEmpty()){
             allEmpty = false;
-            if(iccList.get(0).getCompletionDate().equals(LocalDate.now())){
+            if(iccList.get(0).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 data = new IccDto(iccList.get(0));
                 todayCompleted = true;
                 iccList.remove(0);
@@ -111,11 +112,11 @@ public class AnthropometryService {
         List<Session> sessions = new ArrayList<>();
         boolean allEmpty = true;
         boolean todayCompleted = false;
-        Session today = Session.builder().date(LocalDate.now()).number(dataRecordService.getSessionNumber(id)).build();
+        Session today = Session.builder().date(LocalDate.now(ZoneId.of("Europe/Madrid"))).number(dataRecordService.getSessionNumber(id)).build();
         WaistCircumferenceDto data = new WaistCircumferenceDto();
         if(!waistCircumferenceList.isEmpty()){
             allEmpty = false;
-            if(waistCircumferenceList.get(0).getCompletionDate().equals(LocalDate.now())){
+            if(waistCircumferenceList.get(0).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 data = new WaistCircumferenceDto(waistCircumferenceList.get(0));
                 todayCompleted = true;
                 waistCircumferenceList.remove(0);
@@ -135,12 +136,12 @@ public class AnthropometryService {
         List<Session> sessions = new ArrayList<>();
         boolean allEmpty = true;
         boolean todayCompleted = false;
-        Session today = Session.builder().date(LocalDate.now()).number(dataRecordService.getSessionNumber(id)).build();
+        Session today = Session.builder().date(LocalDate.now(ZoneId.of("Europe/Madrid"))).number(dataRecordService.getSessionNumber(id)).build();
         IdealWeightDto data = new IdealWeightDto();
         data.setData(new IdealWeight.DataInfo("Fórmula de Lorentz"));
         if(!idealWeightList.isEmpty()){
             allEmpty = false;
-            if(idealWeightList.get(0).getCompletionDate().equals(LocalDate.now())){
+            if(idealWeightList.get(0).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 data = new IdealWeightDto(idealWeightList.get(0));
                 todayCompleted = true;
                 idealWeightList.remove(0);
@@ -164,11 +165,11 @@ public class AnthropometryService {
         List<Session> sessions = new ArrayList<>();
         boolean allEmpty = true;
         boolean todayCompleted = false;
-        Session today = Session.builder().date(LocalDate.now()).number(dataRecordService.getSessionNumber(id)).build();
+        Session today = Session.builder().date(LocalDate.now(ZoneId.of("Europe/Madrid"))).number(dataRecordService.getSessionNumber(id)).build();
         SkinFoldsDto data = new SkinFoldsDto();
         if(!skinFoldsList.isEmpty()){
             allEmpty = false;
-            if(skinFoldsList.get(0).getCompletionDate().equals(LocalDate.now())){
+            if(skinFoldsList.get(0).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 data = new SkinFoldsDto(skinFoldsList.get(0));
                 todayCompleted = true;
                 skinFoldsList.remove(0);
@@ -176,7 +177,7 @@ public class AnthropometryService {
         }
         boolean gender = getPatientGender(id);
         data.setGender(gender);
-        int age = getYearsBetween(getPatientBirthdate(id), LocalDate.now());
+        int age = getYearsBetween(getPatientBirthdate(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         data.setAge(age);
         for(SkinFolds skinFolds : skinFoldsList){
             sessions.add(Session.builder().date(skinFolds.getCompletionDate()).number(skinFolds.getSession()).build());
@@ -195,7 +196,7 @@ public class AnthropometryService {
         for(Imc imc : imcList){
             previousList.add(Previous.builder().session(Session.builder().date(imc.getCompletionDate()).number(imc.getSession()).build()).anthropometry(new ImcDto(imc)).build());
         }
-        return AnthropometryAllData.builder().empty(false).todayCompleted(imcList.get(imcList.size()-1).getCompletionDate().equals(LocalDate.now())).previous(previousList).build();
+        return AnthropometryAllData.builder().empty(false).todayCompleted(imcList.get(imcList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))).previous(previousList).build();
     }
 
     public AnthropometryAllData getIccAllData(Integer id) {
@@ -209,7 +210,7 @@ public class AnthropometryService {
         for(Icc icc : iccList){
             previousList.add(Previous.builder().session(Session.builder().date(icc.getCompletionDate()).number(icc.getSession()).build()).anthropometry(new IccDto(icc, gender)).build());
         }
-        return AnthropometryAllData.builder().empty(false).todayCompleted(iccList.get(iccList.size()-1).getCompletionDate().equals(LocalDate.now())).previous(previousList).build();
+        return AnthropometryAllData.builder().empty(false).todayCompleted(iccList.get(iccList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))).previous(previousList).build();
     }
 
     public AnthropometryAllData getWaistCircumferenceAllData(Integer id) {
@@ -223,7 +224,7 @@ public class AnthropometryService {
         for(WaistCircumference waistCircumference : waistCircumferenceList){
             previousList.add(Previous.builder().session(Session.builder().date(waistCircumference.getCompletionDate()).number(waistCircumference.getSession()).build()).anthropometry(new WaistCircumferenceDto(waistCircumference, gender)).build());
         }
-        return AnthropometryAllData.builder().empty(false).todayCompleted(waistCircumferenceList.get(waistCircumferenceList.size()-1).getCompletionDate().equals(LocalDate.now())).previous(previousList).build();
+        return AnthropometryAllData.builder().empty(false).todayCompleted(waistCircumferenceList.get(waistCircumferenceList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))).previous(previousList).build();
     }
 
     public AnthropometryAllData getIdealWeightAllData(Integer id) {
@@ -237,7 +238,7 @@ public class AnthropometryService {
         for(IdealWeight idealWeight : idealWeightList){
             previousList.add(Previous.builder().session(Session.builder().date(idealWeight.getCompletionDate()).number(idealWeight.getSession()).build()).anthropometry(new IdealWeightDto(idealWeight, gender)).build());
         }
-        return AnthropometryAllData.builder().empty(false).todayCompleted(idealWeightList.get(idealWeightList.size()-1).getCompletionDate().equals(LocalDate.now())).previous(previousList).build();
+        return AnthropometryAllData.builder().empty(false).todayCompleted(idealWeightList.get(idealWeightList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))).previous(previousList).build();
     }
 
     public AnthropometryAllData getSkinFoldsAllData(Integer id) {
@@ -252,7 +253,7 @@ public class AnthropometryService {
         for(SkinFolds skinFolds : skinFoldsList){
             previousList.add(Previous.builder().session(Session.builder().date(skinFolds.getCompletionDate()).number(skinFolds.getSession()).build()).anthropometry(new SkinFoldsDto(skinFolds, gender, getYearsBetween(birthdate, skinFolds.getCompletionDate()))).build());
         }
-        return AnthropometryAllData.builder().empty(false).todayCompleted(skinFoldsList.get(skinFoldsList.size()-1).getCompletionDate().equals(LocalDate.now())).previous(previousList).build();
+        return AnthropometryAllData.builder().empty(false).todayCompleted(skinFoldsList.get(skinFoldsList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))).previous(previousList).build();
     }
 
 
@@ -340,7 +341,7 @@ public class AnthropometryService {
                 } else {
                     data.setData(skinFoldsList.get(skinFoldsList.size()-1).getData());
                 }
-                data.setAge(getYearsBetween(getPatientBirthdate(id), LocalDate.now()));
+                data.setAge(getYearsBetween(getPatientBirthdate(id), LocalDate.now(ZoneId.of("Europe/Madrid"))));
                 return data;
             }
             throw new RuntimeException("Data not found");
@@ -358,7 +359,7 @@ public class AnthropometryService {
         checkPatient(id);
         checkSession(nSession);
         imcRepository.deleteByPatientIdAndSession(id, nSession);
-        Imc imc = Imc.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(imcDto.getData()).build();
+        Imc imc = Imc.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(nSession).data(imcDto.getData()).build();
         imc = imcRepository.save(imc);
         dataRecordService.setImc(imc);
     }
@@ -367,7 +368,7 @@ public class AnthropometryService {
         checkPatient(id);
         checkSession(nSession);
         iccRepository.deleteByPatientIdAndSession(id, nSession);
-        Icc icc = Icc.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(iccDto.getData()).build();
+        Icc icc = Icc.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(nSession).data(iccDto.getData()).build();
         icc = iccRepository.save(icc);
         dataRecordService.setIcc(icc);
     }
@@ -376,7 +377,7 @@ public class AnthropometryService {
         checkPatient(id);
         checkSession(nSession);
         waistCircumferenceRepository.deleteByPatientIdAndSession(id, nSession);
-        WaistCircumference waistCircumference = WaistCircumference.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(waistCircumferenceDto.getData()).build();
+        WaistCircumference waistCircumference = WaistCircumference.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(nSession).data(waistCircumferenceDto.getData()).build();
         waistCircumference = waistCircumferenceRepository.save(waistCircumference);
         dataRecordService.setWaistCircumference(waistCircumference);
     }
@@ -385,7 +386,7 @@ public class AnthropometryService {
         checkPatient(id);
         checkSession(nSession);
         idealWeightRepository.deleteByPatientIdAndSession(id, nSession);
-        IdealWeight idealWeight = IdealWeight.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(idealWeightDto.getData()).build();
+        IdealWeight idealWeight = IdealWeight.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(nSession).data(idealWeightDto.getData()).build();
         idealWeight = idealWeightRepository.save(idealWeight);
         dataRecordService.setIdealWeight(idealWeight);
     }
@@ -394,7 +395,7 @@ public class AnthropometryService {
         checkPatient(id);
         checkSession(nSession);
         skinFoldsRepository.deleteByPatientIdAndSession(id, nSession);
-        SkinFolds skinFolds = SkinFolds.builder().patientId(id).completionDate(LocalDate.now()).session(nSession).data(skinFoldsDto.getData()).build();
+        SkinFolds skinFolds = SkinFolds.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(nSession).data(skinFoldsDto.getData()).build();
         skinFolds = skinFoldsRepository.save(skinFolds);
         dataRecordService.setSkinFolds(skinFolds);
     }

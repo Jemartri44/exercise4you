@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,7 +48,7 @@ public class CmtcefService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!cmtcefList.isEmpty()){
-            if(cmtcefList.get(cmtcefList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(cmtcefList.get(cmtcefList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(cmtcefList.get(cmtcefList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -61,7 +62,7 @@ public class CmtcefService {
         for(Cmtcef cmtcef: cmtcefList){
             sessions.add( new Session(cmtcef.getSession(), cmtcef.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario del modelo transteórico del cambio de ejercicio físico";
         String description = "El modelo de cambio transteórico es un marco conceptual ampliamente utilizado en psicología de la salud para entender y\r\n" + //
                         "facilitar el cambio de comportamientos no saludables a saludables, como la adopción y mantenimiento del ejercicio físico. Este\r\n" + //
@@ -93,7 +94,7 @@ public class CmtcefService {
                 deleteCmtcef(id, lastCmtcef.getSession());
             }
             // Delete if the last cmtcef is not completed and the date is different
-            if((!lastCmtcef.getComplete()) && (!lastCmtcef.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastCmtcef.getComplete()) && (!lastCmtcef.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteCmtcef(id, lastCmtcef.getSession());
             }
         }
@@ -102,7 +103,7 @@ public class CmtcefService {
         Optional<Cmtcef> optional = cmtcefRepository.findBySessionAndPatientId(session, id);
         // If today's cmtcef is not present, create a new one (we do not check if a data record exists, we will do so when the cmtcef is completed)
         if(!optional.isPresent()){
-            Cmtcef cmtcef = Cmtcef.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("cmtcef0").answers(new ArrayList<>()).build();
+            Cmtcef cmtcef = Cmtcef.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("cmtcef0").answers(new ArrayList<>()).build();
             cmtcefRepository.save(cmtcef);
             Question question = questionRepository.findByCode("cmtcef0");
             List<Alert> alertList = new ArrayList<>();

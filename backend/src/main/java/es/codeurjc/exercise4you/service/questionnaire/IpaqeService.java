@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class IpaqeService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!ipaqeList.isEmpty()){
-            if(ipaqeList.get(ipaqeList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(ipaqeList.get(ipaqeList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(ipaqeList.get(ipaqeList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -61,7 +62,7 @@ public class IpaqeService {
         for(Ipaqe ipaqe: ipaqeList){
             sessions.add( new Session(ipaqe.getSession(), ipaqe.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario internacional de actividad física en personas mayores (IPAQ-E)";
         String description = "El Cuestionario Internacional de Actividad Física para Personas Mayores (International Physical Activity Questionnaire for the Elderly, IPAQ-E) es una versión adaptada culturalmente del IPAQ para ser utilizada en personas mayores de 65 años. <br><br>\r\n" + //
                         "Esta herramienta se utiliza para evaluar de forma estandarizada los niveles de actividad física, incluyendo ejercicios de caminata, de intensidad moderada y vigorosa, así como el tiempo dedicado a estar sentado. <br><br>\r\n" + //
@@ -84,7 +85,7 @@ public class IpaqeService {
                 deleteIpaqe(id, lastIpaqe.getSession());
             }
             // Delete if the last ipaqe is not completed and the date is different
-            if((!lastIpaqe.getComplete()) && (!lastIpaqe.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastIpaqe.getComplete()) && (!lastIpaqe.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteIpaqe(id, lastIpaqe.getSession());
             }
         }
@@ -96,7 +97,7 @@ public class IpaqeService {
         Optional<Ipaqe> optional = ipaqeRepository.findBySessionAndPatientId(session, id);
         // If today's ipaqe is not present, create a new one (we do not check if a data record exists, we will do so when the ipaqe is completed)
         if(!optional.isPresent()){
-            Ipaqe ipaqe = Ipaqe.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("ipaqe1").answers(new ArrayList<>()).build();
+            Ipaqe ipaqe = Ipaqe.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("ipaqe1").answers(new ArrayList<>()).build();
             ipaqeRepository.save(ipaqe);
             Question question = questionRepository.findByCode("ipaqe1");
             List<Alert> alerts = new ArrayList<>();

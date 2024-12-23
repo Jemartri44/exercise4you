@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class EparmedService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!eparmedList.isEmpty()){
-            if(eparmedList.get(eparmedList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(eparmedList.get(eparmedList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(eparmedList.get(eparmedList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -59,7 +60,7 @@ public class EparmedService {
         for(Eparmed eparmed: eparmedList){
             sessions.add( new Session(eparmed.getSession(), eparmed.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)";
         String description = "El ePARmed-X está diseñado para ser utilizado por profesionales de la salud en la evaluación de sus pacientes antes de la participación en actividades físicas o programas de ejercicio. A diferencia de herramientas más básicas como el PAR-Q+, que están pensadas para ser autoadministradas por los propios individuos, el ePARmed-X ofrece un enfoque más detallado y comprensivo, requiriendo la interpretación y el juicio clínico de un profesional.<br><br>El proceso implica que el profesional de la salud guíe al paciente a través del cuestionario, o que lo complete basándose en la información proporcionada por el paciente durante la consulta. Esto permite al profesional considerar de manera integral el estado de salud del paciente, incluyendo condiciones médicas preexistentes, medicaciones, historial clínico, y otros factores de riesgo que podrían influir en la seguridad y eficacia de la actividad física recomendada.<br><br>La necesidad de que un profesional de la salud esté involucrado en el uso del ePARmed-X subraya la importancia de una evaluación médica precisa y personalizada, asegurando que las recomendaciones de actividad física sean adecuadas para la situación específica de cada individuo y que se tomen en cuenta todas las precauciones necesarias para prevenir riesgos para la salud.";
         return new QuestionnairesInfo(title, description, sessions, eparmedList.isEmpty(), isTodayCompleted, today);
@@ -78,7 +79,7 @@ public class EparmedService {
                 deleteEparmed(id, lastEparmed.getSession());
             }
             // Delete if the last eparmed is not completed and the date is different
-            if((!lastEparmed.getComplete()) && (!lastEparmed.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastEparmed.getComplete()) && (!lastEparmed.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteEparmed(id, lastEparmed.getSession());
             }
         }
@@ -87,7 +88,7 @@ public class EparmedService {
         Optional<Eparmed> optional = eparmedRepository.findBySessionAndPatientId(session, id);
         // If today's eparmed is not present, create a new one (we do not check if a data record exists, we will do so when the eparmed is completed)
         if(!optional.isPresent()){
-            Eparmed eparmed = Eparmed.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("eparmed1").answers(new ArrayList<>()).build();
+            Eparmed eparmed = Eparmed.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("eparmed1").answers(new ArrayList<>()).build();
             eparmedRepository.save(eparmed);
             Question question = questionRepository.findByCode("eparmed1");
             List<Alert> alertList = new ArrayList<>();
