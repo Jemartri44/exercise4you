@@ -163,7 +163,8 @@ public class ParqService {
         for(Parq.Answer answer: parq.getAnswers()){
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
-        return new QuestionnaireAnswers("Sesión " + session + " - " + parq.getCompletionDate().toString().replaceAll("[\s-]","/"), answers);
+        String[] date = parq.getCompletionDate().toString().split("-");
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
     }
 
     private String nextQuestionCode(String lastQuestionCode, String lastAnswer) {

@@ -173,7 +173,8 @@ public class EparmedService {
         for(Eparmed.Answer answer: eparmed.getAnswers()){
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
-        return new QuestionnaireAnswers("Sesión " + session + " - " + eparmed.getCompletionDate().toString().replaceAll("[\s-]","/"), answers);
+        String[] date = eparmed.getCompletionDate().toString().split("-");
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
     }
 
     private static String nextQuestionCode(String lastQuestionCode, String lastAnswer) {

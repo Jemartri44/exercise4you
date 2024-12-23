@@ -167,7 +167,8 @@ public class ApalqService {
         for(Apalq.Answer answer: apalq.getAnswers()){
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
-        return new QuestionnaireAnswers("Sesión " + session + " - " + apalq.getCompletionDate().toString().replaceAll("[\s-]","/"), answers);
+        String[] date = apalq.getCompletionDate().toString().split("-");
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
     }
 
     private String nextQuestionCode(String lastQuestionCode, String lastAnswer) {
