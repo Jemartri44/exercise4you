@@ -1,7 +1,7 @@
 <app-header></app-header>
 <app-navbar></app-navbar>
 <div class="container">
-    <h1 name="title">Datos del paciente</h1>
+    <h1 name="title">Datos personales</h1>
 
     <ng-container *ngIf="(patientState | async) as state" [ngSwitch]="state.appState">
         <ng-container *ngSwitchCase="'ERROR'">
