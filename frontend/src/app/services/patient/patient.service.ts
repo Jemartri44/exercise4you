@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Patient } from '../../model/patient/patient';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { PatientPage } from '../../model/patient/patient-page';
 import { NewPatientRequest } from './newPatientRequest';
 

@@ -2,11 +2,12 @@
 <app-navbar></app-navbar>
 
 <div class="container">
+    <h1>{{this.title}}</h1>
     <ng-container *ngIf="(anthropometryState | async) as request" [ngSwitch]="request.appState">
         <!-- TÍTULO -->
         <div class="d-flex justify-content-between">
-            <h1>{{this.subtitle}}</h1>
-            <app-data-record *ngIf="request.appState==='LOADED'" class="mt-5" (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-data-record>
+            <h2>{{this.subtitle}}</h2>
+            <app-data-record *ngIf="request.appState==='LOADED'" (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-data-record>
         </div>
         <!-- APLICACIÓN ERROR -->
         <ng-container *ngSwitchCase="'ERROR'">

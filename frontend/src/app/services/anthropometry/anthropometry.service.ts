@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { Observable } from 'rxjs';
 import { AnthropometryData } from '../../model/anthropometry/anthropometry-data';
 import { HttpClient } from '@angular/common/http';

@@ -87,20 +87,42 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='resistencia-cardiorrespiratoria' ? 'bold' : ''">Pruebas de resistencia cardiorespiratoria</a>
+                            <a class="dropdown-item" (click)="goToCardiorespiratoryResistance()" [ngClass]="this.router.url.split('/')[3]==='resistencia-cardiorrespiratoria' ? 'bold' : ''">Pruebas de resistencia cardiorrespiratoria</a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='fuerza-resistencia' ? 'bold' : ''">Pruebas de fuerza-resistencia</a>
+                            <a class="dropdown-item" (click)="goToStrengthResistance()" [ngClass]="this.router.url.split('/')[3]==='fuerza-resistencia' ? 'bold' : ''">Pruebas de fuerza-resistencia</a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" [ngClass]="this.router.url.split('/')[3]==='flexibilidad' ? 'bold' : ''">Pruebas de flexibilidad</a>
+                            <a class="dropdown-item" (click)="goToFlexibility()" [ngClass]="this.router.url.split('/')[3]==='flexibilidad' ? 'bold' : ''">Pruebas de flexibilidad</a>
                         </li>
+                        <ng-container *ngIf="(navbarState | async) as state" [ngSwitch]="state.appState">
+                            <ng-container *ngSwitchCase="'LOADING'">
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-primary justify-content-end" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="state.appState==='LOADED'">
+                                <li *ngIf="getAge(state.appData?.birthdate) > 65">
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) > 65">
+                                    <a class="dropdown-item" (click)="goToNeuromuscular()" [ngClass]="this.router.url.split('/')[3]==='neuromuscular' ? 'bold' : ''">Pruebas neuromusculares</a>
+                                </li>
+                            </ng-container>
+                        </ng-container>
                     </ul>
                 </li>
                 <li class="nav-item me-4">

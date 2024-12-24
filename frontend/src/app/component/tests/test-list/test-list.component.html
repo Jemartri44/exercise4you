@@ -1,0 +1,236 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+
+<div class="container">
+    <ng-container *ngIf="(patientState | async) as request" [ngSwitch]="request.appState">
+        <!-- TÍTULO 
+        <div class="d-flex justify-content-between">
+            <h2>{{this.subtitle}}</h2>
+            <app-data-record *ngIf="request.appState==='LOADED'" (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-data-record>
+        </div>
+        APLICACIÓN ERROR -->
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ request.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <!-- APLICACIÓN CARGANDO -->
+        <ng-container *ngSwitchCase="'LOADING'">
+            <h1>{{this.title}}</h1>
+            <div class="d-flex justify-content-center mt-5">
+                <div class="spinner-border loading-spinner text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <!-- APLICACIÓN CARGADA -->
+        <ng-container *ngSwitchCase="'LOADED'" >
+            <h1>{{this.title}} {{getAge(request.appData?.birthdate) < 18 ? '- Niños y adolescentes (menos de 18 años)' : getAge(request.appData?.birthdate) <= 65 ? '- Adultos (18 hasta 64 años)' : '- Adultos mayores (más de 65 años)'}}</h1>
+            <hr>
+            <ng-container *ngIf="this.title=='Pruebas de resistencia cardiorrespiratoria'">
+                <ng-container *ngIf="getAge(request.appData?.birthdate) < 18">
+                    <h2 class="text-center mb-4"><u>Pruebas máximas</u></h2>
+                    <ul class="ms-5">
+                        <li><p>Prueba de Course Navette (20m shuttle run test)</p></li>
+                    </ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Pruebas submáximas</u></h2>
+                    <ul class="ms-5">
+                        <li><p>Prueba de 1 milla (1.6 km) – caminando/corriendo</p></li>
+                        <li><p>Prueba de 1 milla (1.6 km) – carrera estable</p></li>
+                        <li><p>Prueba de escalón de McArdle</p></li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) >= 18 && getAge(request.appData?.birthdate) <=65">
+                    <h2 class="text-center mb-4"><u>Pruebas máximas</u></h2>
+                    <div class="container">
+                        <div class="row align-items-start">
+                            <div class="col ms-5">
+                                <ul>
+                                    <li><h3>Pruebas en tapiz rodante</h3>
+                                    <ul>
+                                        <li><p>Protocolo de Balke & Ware</p></li>
+                                        <li><p>Protocolo de Bruce</p></li>
+                                        <li><p>Protocolo de Bruce modificado</p></li>
+                                        <li><p>Protocolo de Naughton</p></li>
+                                    </ul></li>
+                                    <li><h3>Pruebas en cicloergómetro</h3>
+                                    <ul>
+                                        <li><p>Protocolo de Astrand</p></li>
+                                        <li><p>Protocolo de Fox</p></li>
+                                    </ul></li>
+                                </ul>
+                            </div>
+                            <div class="col ms-5">
+                                <ul>
+                                    <li><h3>Pruebas en escalón</h3>
+                                    <ul>
+                                        <li><p>Protocolo de Nagle, Balke y Naughton</p></li>
+                                    </ul></li>
+                                    <li><h3>Pruebas de campo</h3>
+                                    <ul>
+                                        <li><p>Prueba de carrera de 15 minutos (Prueba de Balke)</p></li>
+                                        <li><p>Prueba de carrera de 12 minutos (Test de Cooper)</p></li>
+                                        <li><p>Prueba de Course Navette (20m shuttle run test)</p></li>
+                                    </ul></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Pruebas submáximas</u></h2>
+                    <div class="container">
+                        <div class="row align-items-start">
+                            <div class="col ms-5">
+                                <ul>
+                                    <li><h3>Pruebas en tapiz rodante</h3>
+                                    <ul>
+                                        <li><p>Estimación del VO2 máx a partir de una prueba máxima según el modelo de una sola etapa.</p></li>
+                                        <li><p>Prueba de caminata en tapiz rodante de una sola etapa.</p></li>
+                                        <li><p>Prueba de carrera en tapiz rodante de una sola etapa.</p></li>
+                                    </ul></li>
+                                    <li><h3>Pruebas en cicloergómetro</h3>
+                                    <ul>
+                                        <li><p>Prueba de Astrand-Ryhming en cicloergómetro</p></li>
+                                        <li><p>Prueba en cicloergómetro de una sola etapa de Fox</p></li>
+                                    </ul></li>
+                                </ul>
+                            </div>
+                            <div class="col ms-5">
+                                <ul>
+                                    <li><h3>Pruebas en escalón</h3>
+                                    <ul>
+                                        <li><p>Prueba de escalón de Astrand- Ryhming</p></li>
+                                        <li><p>Prueba de escalón de McArdle o Queens Collage Step Test</p></li>
+                                        <li><p>Prueba STEP (Step Test and Exercise Prescription)</p></li>
+                                        <li><p>Prueba de escalón de 3 minutos de la YMCA</p></li>
+                                    </ul></li>
+                                    <li><h3>Pruebas de campo</h3>
+                                    <ul>
+                                        <li><p>Prueba de trote de 1 milla</p></li>
+                                        <li><p>Prueba de carrera o caminata de 1.5 millas</p></li>
+                                        <li><p>Test de Rockport – 1 milla caminando</p></li>
+                                        <li><p>Prueba de 2 kilómetros caminando</p></li>
+                                        <li><p>Prueba de 6 minutos marcha (6MWT)</p></li>
+                                        <li><p>Shuttle walking test – Prueba de ida y vuelta caminando</p></li>
+                                    </ul></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) > 65">
+                    <h2 class="text-center mb-4"><u>Pruebas submáximas</u></h2>
+                    <ul class="ms-5"><ul>
+                        <li><p>Prueba de escalón autocontrolada "Self-Paced Step Test"</p></li>
+                        <li><p>Prueba de Rockport (1 milla caminado)</p></li>
+                        <li><p>Prueba de 6 minutos marcha (6MWT)</p></li>
+                        <li><p>Prueba de marcha estacionaria de 2 minutos (2 min step test)</p></li>
+                    </ul></ul>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="this.title=='Pruebas de fuerza-resistencia'">
+                <ng-container *ngIf="getAge(request.appData?.birthdate) < 18">
+                    <h2 class="text-center mb-4"><u>Fuerza muscular</u></h2>
+                    <ul class="ms-5">
+                        <li><h3>Fuerza estática o isométrica</h3>
+                        <ul>
+                            <li><p>Fuerza de prensión</p></li>
+                        </ul></li>
+                    </ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Potencia muscular</u></h2>
+                    <ul class="ms-5">
+                        <ul>
+                            <li><p>Extremidad inferior - Prueba de salto de longitud a pies juntos</p></li>
+                        </ul>
+                    </ul>
+
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) >= 18 && getAge(request.appData?.birthdate) <=65">
+                    <h2 class="text-center mb-4"><u>Fuerza muscular</u></h2>
+                    <ul class="ms-5">
+                        <li><h3>Fuerza estática o isométrica</h3>
+                        <ul>
+                            <li><p>Fuerza de prensión</p></li>
+                        </ul></li>
+                        <li><h3>Fuerza dinámica o isotónica</h3>
+                        <ul>
+                            <li><p>Extremidad superior - Press de banca</p></li>
+                            <li><p>Extremidad inferior - Press de piernas</p></li>
+                        </ul></li>
+                    </ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Resistencia muscular</u></h2>
+                    <ul class="ms-5">
+                        <ul>
+                            <li><p>Extremidad superior - Flexión de brazos</p></li>
+                        </ul>
+                    </ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Potencia muscular</u></h2>
+                    <ul class="ms-5">
+                        <ul>
+                            <li><p>Extremidad inferior - Prueba de salto vertical</p></li>
+                        </ul>
+                    </ul>
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) > 65">
+                    <h2 class="text-center mb-4"><u>Fuerza estática o isométrica</u></h2>
+                    <ul class="ms-5"><ul>
+                        <li><p>Fuerza de prensión</p></li>
+                    </ul></ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Resistencia muscular</u></h2>
+                    <ul class="ms-5"><ul>
+                        <li><p>Extremidad inferior - Chair Stand Test</p></li>
+                        <li><p>Extremidad superior - Flexión de brazos</p></li>
+                    </ul></ul>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="this.title=='Pruebas de flexibilidad'">
+                
+                <ng-container *ngIf="getAge(request.appData?.birthdate) < 18">
+                    <ul class="ms-5"><ul>
+                        <li><p>Rango articular</p></li>
+                        <li><p>Prueba de Sit and Reach</p></li>
+                    </ul></ul>
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) >= 18 && getAge(request.appData?.birthdate) <=65">
+                    <ul class="ms-5"><ul>
+                        <li><p>Rango articular</p></li>
+                        <li><p>Prueba de Sit and Reach</p></li>
+                    </ul></ul>
+                </ng-container>
+                <ng-container *ngIf="getAge(request.appData?.birthdate) > 65">
+                    <h2 class="text-center mb-4"><u>Flexibilidad del tren inferior</u></h2>
+                    <ul class="ms-5"><ul>
+                        <li><p>Chair Sit-and-Reach Test</p></li>
+                    </ul></ul>
+                    <hr>
+                    <h2 class="text-center mb-4"><u>Flexibilidad del tren superior</u></h2>
+                    <ul class="ms-5"><ul>
+                        <li><p>Back Scratch Test</p></li>
+                    </ul></ul>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="this.title=='Pruebas neuromusculares'">
+                <h2 class="text-center mb-4"><u>Equilibrio estático</u></h2>
+                <ul class="ms-5"><ul>
+                    <li><p>Test de equilibrio monopodal con visión</p></li>
+                </ul></ul>
+                <hr>
+                <h2 class="text-center mb-4"><u>Agilidad y equilibrio dinámico</u></h2>
+                <ul class="ms-5"><ul>
+                    <li><p>8 Foot Up and Go Test</p></li>
+                </ul></ul>
+                <hr>
+                <h2 class="text-center mb-4"><u>Coordinación óculo-manual</u></h2>
+                <ul class="ms-5"><ul>
+                    <li><p>Plate Tapping Test</p></li>
+                </ul></ul>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+    <div style="height:100px"></div>
+</div>
+
+<app-footer></app-footer>
