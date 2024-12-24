@@ -1,6 +1,6 @@
 { 
  "/api/v1/*": { 
- "target": "https://exercise4you.es", 
+ "target": "", 
  "secure": false, 
  "logLevel": "debug", 
  "changeOrigin": true 

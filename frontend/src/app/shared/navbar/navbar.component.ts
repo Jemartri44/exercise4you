@@ -111,4 +111,24 @@ export class NavbarComponent implements OnInit {
     console.debug("Redirecting to skinfold measurement");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/medición-pliegues-cutáneos']);
   }
+
+  goToCardiorespiratoryResistance() {
+    console.debug("Redirecting to cardiorespiratory resistance");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/resistencia-cardiorrespiratoria']);
+  }
+
+  goToStrengthResistance() {
+    console.debug("Redirecting to strength resistance");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/fuerza-resistencia']);
+  }
+
+  goToFlexibility() {
+    console.debug("Redirecting to flexibility");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/flexibilidad']);
+  }
+
+  goToNeuromuscular() {
+    console.debug("Redirecting to neuromuscular");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/neuromuscular']);
+  }
 }

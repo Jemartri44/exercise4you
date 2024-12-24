@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
-    hostUrl:'',
-    apiUrl: '/api/v1'
+    production: true,
+    hostUrl:'https://exercise4you.es',
+    apiUrl: 'https://exercise4you.es/api/v1'
 };

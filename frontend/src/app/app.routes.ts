@@ -14,6 +14,7 @@ import { ForgottenPasswordComponent } from './component/auth/forgotten-password/
 import { ChangePasswordComponent } from './component/auth/change-password/change-password.component';
 import { PatientEditComponent } from './component/patient/patient-edit/patient-edit.component';
 import { PrivacyPolicyComponent } from './component/auth/privacy-policy/privacy-policy.component';
+import { TestListComponent } from './component/tests/test-list/test-list.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [authGuard] },
@@ -63,6 +64,11 @@ export const routes: Routes = [
     { path: 'pacientes/:id/circunferencia-cintura', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/peso-ideal', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/medición-pliegues-cutáneos', component: AnthropometryComponent, canActivate: [authGuard] },
+
+    { path: 'pacientes/:id/resistencia-cardiorrespiratoria', component: TestListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/fuerza-resistencia', component: TestListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/flexibilidad', component: TestListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/neuromuscular', component: TestListComponent, canActivate: [authGuard] },
     
     { path: '', redirectTo: '/pacientes', pathMatch: 'full'},
     { path: '**', redirectTo: '/pacientes', pathMatch: 'full'}
