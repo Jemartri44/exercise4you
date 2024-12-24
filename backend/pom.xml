@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>es.codeurjc</groupId>
 	<artifactId>exercise4you</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<name>exercise4you</name>
 	<description>API Rest - exercise4you</description>
 	<properties>
