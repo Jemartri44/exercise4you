@@ -1,6 +1,9 @@
 package es.codeurjc.exercise4you.service;
 
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,7 @@ public class PatientService {
 
     public Page<PatientDTO> getPaginatedPatients(String search, int page, int size) {
         Page<Patient> patients = patientRepository.findByUsrIdAndNameContaining(authService.getLoggedUser().getId(), search, PageRequest.of(page, size));
-        return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate()));
+        return patients.map(patient -> new PatientDTO(patient.getId(), patient.getName(), patient.getSurnames(), patient.getGender(), patient.getBirthdate(), Period.between(patient.getBirthdate(), LocalDate.now(ZoneId.of("Europe/Madrid"))).getYears()));
     }
 
     public PatientDTO newPatient(PatientRequest patientRequest) {

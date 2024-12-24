@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class ApalqService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!apalqList.isEmpty()){
-            if(apalqList.get(apalqList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(apalqList.get(apalqList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(apalqList.get(apalqList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -58,7 +59,7 @@ public class ApalqService {
         for(Apalq apalq: apalqList){
             sessions.add( new Session(apalq.getSession(), apalq.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario de evaluación de los niveles de actividad física (APALQ)";
         String description = "El Cuestionario de Evaluación de los Niveles de Actividad Física (Assessment of Physical Activity Levels Questionnaire, APALQ) en su versión española es una herramienta utilizada para medir los niveles de actividad física en niños y adolescentes. <br><br>\r\n" + //
                         "Este cuestionario consta de cinco preguntas, cada una con cuatro opciones específicas, que se miden en una escala Likert de 4 puntos, variando de 1 (valor más bajo) a 4 (valor más alto). No obstante, para las preguntas 3 y 4, se utiliza un sistema de puntuación diferente, con puntuaciones que van de 1 a 5 puntos. <br><br>\r\n" + //
@@ -82,7 +83,7 @@ public class ApalqService {
                 deleteApalq(id, lastApalq.getSession());
             }
             // Delete if the last apalq is not completed and the date is different
-            if((!lastApalq.getComplete()) && (!lastApalq.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastApalq.getComplete()) && (!lastApalq.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteApalq(id, lastApalq.getSession());
             }
         }
@@ -91,7 +92,7 @@ public class ApalqService {
         Optional<Apalq> optional = apalqRepository.findBySessionAndPatientId(session, id);
         // If today's apalq is not present, create a new one (we do not check if a data record exists, we will do so when the apalq is completed)
         if(!optional.isPresent()){
-            Apalq apalq = Apalq.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("apalq1").answers(new ArrayList<>()).build();
+            Apalq apalq = Apalq.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("apalq1").answers(new ArrayList<>()).build();
             apalqRepository.save(apalq);
             Question question = questionRepository.findByCode("apalq1");
             List<Alert> alertList = new ArrayList<>();
@@ -167,7 +168,8 @@ public class ApalqService {
         for(Apalq.Answer answer: apalq.getAnswers()){
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
-        return new QuestionnaireAnswers("Sesión " + session + " - " + apalq.getCompletionDate().toString().replaceAll("[\s-]","/"), answers);
+        String[] date = apalq.getCompletionDate().toString().split("-");
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
     }
 
     private String nextQuestionCode(String lastQuestionCode, String lastAnswer) {

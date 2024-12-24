@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.service.questionnaire;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class ParqService {
         List<Session> sessions = new ArrayList<>();
         Boolean isTodayCompleted = false;
         if(!parqList.isEmpty()){
-            if(parqList.get(parqList.size()-1).getCompletionDate().equals(LocalDate.now())){
+            if(parqList.get(parqList.size()-1).getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
                 if(parqList.get(parqList.size()-1).getComplete()){
                     isTodayCompleted = true;
                 }
@@ -59,7 +60,7 @@ public class ParqService {
         for(Parq parq: parqList){
             sessions.add( new Session(parq.getSession(), parq.getCompletionDate()));
         }
-        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now());
+        Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario de aptitud para la actividad física para todos (PAR-Q+)";
         String description = "El Cuestionario de Preparación para la Actividad Física, más conocido por sus siglas en inglés PAR-Q+ (Physical Activity Readiness Questionnaire for Everyone), es una herramienta ampliamente reconocida y utilizada para la evaluación preliminar del riesgo asociado a la participación en actividades físicas o programas de ejercicio.<br><br>Consiste en un cuestionario autoadministrado que incluye preguntas sobre la historia médica, síntomas de enfermedades cardiovasculares, metabólicas y renales, así como otros aspectos de la salud que podrían influir en la seguridad al realizar ejercicio físico.<br><br>El objetivo principal del PAR-Q+ es identificar a aquellas personas para las cuales un aumento en su actividad física podría representar un riesgo para su salud, sugiriendo la necesidad de una evaluación adicional por parte de un profesional de la salud antes de comenzar un programa de ejercicio.<br><br>Además, contribuye a la personalización del ejercicio, adaptando las actividades a las necesidades y condiciones de salud de cada individuo, lo cual es fundamental en el contexto de la fisioterapia y el ejercicio terapéutico para enfermedades crónicas y poblaciones especiales.";
         return new QuestionnairesInfo(title, description, sessions, parqList.isEmpty(), isTodayCompleted, today);
@@ -78,7 +79,7 @@ public class ParqService {
                 deleteParq(id, lastParq.getSession());
             }
             // Delete if the last parq is not completed and the date is different
-            if((!lastParq.getComplete()) && (!lastParq.getCompletionDate().equals(LocalDate.now()))){
+            if((!lastParq.getComplete()) && (!lastParq.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid"))))){
                 deleteParq(id, lastParq.getSession());
             }
         }
@@ -87,7 +88,7 @@ public class ParqService {
         Optional<Parq> optional = parqRepository.findBySessionAndPatientId(session, id);
         // If today's parq is not present, create a new one (we do not check if a data record exists, we will do so when the parq is completed)
         if(!optional.isPresent()){
-            Parq parq = Parq.builder().patientId(id).completionDate(LocalDate.now()).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("parq1").answers(new ArrayList<>()).build();
+            Parq parq = Parq.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("parq1").answers(new ArrayList<>()).build();
             parqRepository.save(parq);
             Question question = questionRepository.findByCode("parq1");
             List<Alert> alertList = new ArrayList<>();
@@ -163,7 +164,8 @@ public class ParqService {
         for(Parq.Answer answer: parq.getAnswers()){
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
-        return new QuestionnaireAnswers("Sesión " + session + " - " + parq.getCompletionDate().toString().replaceAll("[\s-]","/"), answers);
+        String[] date = parq.getCompletionDate().toString().split("-");
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
     }
 
     private String nextQuestionCode(String lastQuestionCode, String lastAnswer) {

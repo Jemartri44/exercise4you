@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavigationComponent } from '../navigation/navigation.component';
 import { HeaderComponent } from '../../../shared/header/header.component';
 import { NavbarComponent } from '../../../shared/navbar/navbar.component';
 import { FooterComponent } from '../../../shared/footer/footer.component';
@@ -37,7 +36,6 @@ import { SkinFoldsAllSessionsComponent } from '../all-sessions/skin-folds-all-se
   standalone: true,
   imports: [
     CommonModule,
-    NavigationComponent,
     HeaderComponent,
     NavbarComponent,
     FooterComponent,

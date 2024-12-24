@@ -11,7 +11,7 @@
                     <h2 class="modal-title fs-4 mt-3 mb-2" id="staticBackdropLabel">Aplicación con fines de investigación</h2>
                 </div>
                 <div class="modal-body ms-4 me-4 pb-1">
-                    <h3 class="fs-6 text-center">Esta aplicación ha sido desarrollado con fines de investigación. Por favor, rogamos que se recuerde y no introduzcan datos sensibles durante su uso.</h3>
+                    <h3 class="fs-6 text-center">Este software es un prototipo desarrollado con fines de investigación y se proporciona sin garantía alguna. Se asume que el usuario está capacitado para prescribir ejercicio terapéutico a personas con enfermedades crónicas. El usuario es el único responsable de la viabilidad y seguridad de dicha prescripción, así como de cualquier daño que pueda derivarse del uso o aplicación de la información proporcionada por este software.</h3>
                 </div>
                 <div class="modal-footer">
                     <ng-container *ngIf="modalLoading==true">
@@ -67,21 +67,23 @@
                         </form>
                         <div class="row">
                             <table class="table table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Nombre</th>
-                                        <th scope="col">Apellidos</th>
-                                        <th scope="col">Género</th>
-                                        <th scope="col">Fecha de nacimiento</th>
+                                <thead>
+                                    <tr class="thead">
+                                        <th scope="col" class="fs-6">Nombre</th>
+                                        <th scope="col" class="fs-6">Apellidos</th>
+                                        <th scope="col" class="fs-6">Género</th>
+                                        <th scope="col" class="fs-6">Edad</th>
+                                        <th scope="col" class="fs-6">Fecha de nacimiento</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let patient of state.appData?.content;"
-                                        (click)="goToPatient(this.patient.id)">
-                                        <td scope="row">{{ patient.name }}</td>
-                                        <td>{{ patient.surnames }}</td>
-                                        <td>{{ patient.gender }}</td>
-                                        <td>{{ patient.birthdate | date: 'dd/MM/yyyy'}}</td>
+                                        (click)="goToPatient(patient.id)">
+                                        <td scope="row" class="fs-6">{{ patient.name }}</td>
+                                        <td class="fs-6">{{ patient.surnames }}</td>
+                                        <td class="fs-6">{{ patient.gender }}</td>
+                                        <td class="fs-6">{{ patient.age }} años</td>
+                                        <td class="fs-6">{{ patient.birthdate | date: 'dd/MM/yyyy'}}</td>
                                     </tr>
                                 </tbody>
                             </table>

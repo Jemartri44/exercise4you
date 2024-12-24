@@ -31,6 +31,7 @@ export class IdealWeightSessionComponent {
       if(idealWeight.gender == undefined) {
         throw new Error ("No se pudo calcular el peso ideal");
       }
+      this.gender = idealWeight.gender;
       if(idealWeight.data) {
         this.weight.nativeElement.value = idealWeight.data.weight;
         this.height.nativeElement.value = idealWeight.data.height;

@@ -120,6 +120,9 @@
                                     </div>
                                 </form>
                             </div>
+                            <div *ngIf="this.router.url.split('/')[3]=='CMTCEF'" class="progress" style="height: 30px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" [style]="'width: '+this.percentage+'%'">{{this.percentage}}%</div>
+                            </div>
                         </div>
                     </div>
                 </div>

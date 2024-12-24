@@ -8,6 +8,6 @@ RUN mvn clean package -DskipTests
 # Stage 2: Build the final image
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=build /app/target/exercise4you-1.0.0.jar app.jar
+COPY --from=build /app/target/exercise4you-1.1.0.jar app.jar
 EXPOSE 80
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -2,13 +2,11 @@
 <app-navbar></app-navbar>
 
 <div class="container">
-    <app-navigation></app-navigation>
-    <h1>{{this.title}}</h1>
     <ng-container *ngIf="(anthropometryState | async) as request" [ngSwitch]="request.appState">
         <!-- TÍTULO -->
         <div class="d-flex justify-content-between">
-            <h2>{{this.subtitle}}</h2>
-            <app-data-record *ngIf="request.appState==='LOADED'" (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-data-record>
+            <h1>{{this.subtitle}}</h1>
+            <app-data-record *ngIf="request.appState==='LOADED'" class="mt-5" (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-data-record>
         </div>
         <!-- APLICACIÓN ERROR -->
         <ng-container *ngSwitchCase="'ERROR'">
@@ -31,6 +29,12 @@
             <app-waist-circumference-introduction *ngIf="this.router.url.split('/')[3] === 'circunferencia-cintura'"></app-waist-circumference-introduction>
             <app-ideal-weight-introduction *ngIf="this.router.url.split('/')[3] === 'peso-ideal'"></app-ideal-weight-introduction>
             <app-skin-folds-introduction *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'"></app-skin-folds-introduction>
+            <!-- CONCLUSIONES -->
+            <app-imc-ending *ngIf="this.router.url.split('/')[3] === 'IMC'"></app-imc-ending>
+            <app-icc-ending *ngIf="this.router.url.split('/')[3] === 'ICC'"></app-icc-ending>
+            <app-waist-circumference-ending *ngIf="this.router.url.split('/')[3] === 'circunferencia-cintura'"></app-waist-circumference-ending>
+            <app-ideal-weight-ending *ngIf="this.router.url.split('/')[3] === 'peso-ideal'"></app-ideal-weight-ending>
+            <app-skin-folds-ending *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'"></app-skin-folds-ending>
             <hr>
             <!-- DATOS ERROR -->
             <ng-container *ngIf="request.dataState === 'ERROR'">
@@ -62,7 +66,6 @@
                     <button *ngIf="(request.saveState === 'LOADED' || request.saveState === 'ERROR') && this.session === this.sessions[0]" class="btn btn-primary" (click)="save()">Guardar resultados</button>
                     <p *ngIf="request.saveState === 'ERROR'" class="mb-4 alert alert-danger">Ha ocurrido un error al guardar los datos</p>
                 </div>
-                <hr>
             </ng-container>
             <!-- TODAS LAS SESIONES CARGADAS -->
             <ng-container *ngIf="request.dataState === 'LOADED' && this.session=='allSessions' && !this.allSessionsData.empty">
@@ -74,7 +77,7 @@
                     <app-ideal-weight-all-sessions *ngIf="this.router.url.split('/')[3] === 'peso-ideal'" [allData]="this.allSessionsData"></app-ideal-weight-all-sessions>
                     <app-skin-folds-all-sessions *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'" [allData]="this.allSessionsData"></app-skin-folds-all-sessions>
                 </ng-container>
-                <hr>
+                <!-- MOSTRAR INFORMACIÓN DETALLADA DE CADA SESIÓN
                 <ng-container *ngFor="let session of this.allSessionsData.previous">
                     <p class="session-title text-center mt-4"><u>Sesión {{session.session.number}} - {{session.session.date}}</u></p>
                     <app-imc-session *ngIf="this.router.url.split('/')[3] === 'IMC'" [data]="session.anthropometry" [editable]="false"></app-imc-session>
@@ -84,17 +87,13 @@
                     <app-skin-folds-session *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'" [data]="session.anthropometry" [editable]="false"></app-skin-folds-session>
                     <hr>
                 </ng-container>
+                -->
             </ng-container>
 
             <!-- TODAS LAS SESIONES CARGADAS -->
             <div *ngIf="request.dataState === 'LOADED' && this.session=='allSessions' && this.allSessionsData.empty" class="alert alert-info mt-5 ms-5 me-5">Aún no hay sesiones registradas</div>
-            <hr *ngIf="request.dataState === 'LOADED' && this.session=='allSessions' && this.allSessionsData.empty" class="mt-4">
-            <!-- CONCLUSIONES -->
-            <app-imc-ending *ngIf="this.router.url.split('/')[3] === 'IMC'"></app-imc-ending>
-            <app-icc-ending *ngIf="this.router.url.split('/')[3] === 'ICC'"></app-icc-ending>
-            <app-waist-circumference-ending *ngIf="this.router.url.split('/')[3] === 'circunferencia-cintura'"></app-waist-circumference-ending>
-            <app-ideal-weight-ending *ngIf="this.router.url.split('/')[3] === 'peso-ideal'"></app-ideal-weight-ending>
-            <app-skin-folds-ending *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'"></app-skin-folds-ending>
+
+
         </ng-container>
     </ng-container>
     <div style="height:100px"></div>

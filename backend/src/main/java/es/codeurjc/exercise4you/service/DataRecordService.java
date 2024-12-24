@@ -1,6 +1,7 @@
 package es.codeurjc.exercise4you.service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class DataRecordService {
             return 1;
         }
         DataRecord dataRecord = dataRecordList.get(dataRecordList.size()-1);
-        if(dataRecord.getCompletionDate().equals(LocalDate.now())){
+        if(dataRecord.getCompletionDate().equals(LocalDate.now(ZoneId.of("Europe/Madrid")))){
             return dataRecord.getNSession();
         }
         return dataRecord.getNSession()+1;
@@ -57,12 +58,12 @@ public class DataRecordService {
             throw new InternalError("Patient not found");
         }
         Patient patient = optionalPatient.get();
-        Optional<DataRecord> optionalDataRecord = dataRecordRepository.findByPatientIdAndCompletionDate(patient, LocalDate.now());
+        Optional<DataRecord> optionalDataRecord = dataRecordRepository.findByPatientIdAndCompletionDate(patient, LocalDate.now(ZoneId.of("Europe/Madrid")));
         DataRecord dataRecord;
         if(!optionalDataRecord.isPresent()){
             dataRecord = DataRecord.builder()
                 .patientId(patient)
-                .completionDate(LocalDate.now())
+                .completionDate(LocalDate.now(ZoneId.of("Europe/Madrid")))
                 .nSession(session).build();
             dataRecordRepository.save(dataRecord);
         } else {
