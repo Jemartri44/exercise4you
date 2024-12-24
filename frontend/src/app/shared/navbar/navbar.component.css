@@ -8,6 +8,10 @@
     /* remove the gap so it doesn't close */
 }
 
+.dropdown-menu > li > a:hover {
+    background-color: #00000027; /* This doesn't... why? */
+}
+
 .dropdown-menu {
     border: #00000054 solid 2px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
@@ -16,6 +20,9 @@
 .nav-link {
     font-size: large;
     font-weight: 400;
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
 .active {
@@ -60,4 +67,4 @@
     width: 2rem;
     height: 2rem;
     border-width: 3px;
-  }
+}
