@@ -131,4 +131,9 @@ export class NavbarComponent implements OnInit {
     console.debug("Redirecting to neuromuscular");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/neuromuscular']);
   }
+
+  goToObjectives() {
+    console.debug("Redirecting to objectives");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/objetivos']);
+  }
 }

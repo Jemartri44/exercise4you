@@ -15,6 +15,7 @@ import es.codeurjc.exercise4you.entity.anthropometry.IdealWeight;
 import es.codeurjc.exercise4you.entity.anthropometry.Imc;
 import es.codeurjc.exercise4you.entity.anthropometry.SkinFolds;
 import es.codeurjc.exercise4you.entity.anthropometry.WaistCircumference;
+import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
 import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
@@ -235,6 +236,16 @@ public class DataRecordService {
         // We get the data record we should update
         DataRecord dataRecord = getCurrentDataRecord(skinFolds.getPatientId(), skinFolds.getSession());
         dataRecord.setSkinFolds(skinFolds.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void setObjectives(ObjectivesResponse objectivesResponse) {
+        if(objectivesResponse == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(objectivesResponse.getPatientId(), objectivesResponse.getSession());
+        dataRecord.setObjective(Boolean.TRUE);
         dataRecordRepository.save(dataRecord);
     }
 

@@ -2,7 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { QuestionnaireListInfo } from '../../model/questionnaires/questionnaire-list-info';
-import { PatientPage } from '../../model/patient/patient-page';
 import { environment } from '../../../environments/environment.prod';
 import { QuestionnaireInfo } from '../../model/questionnaires/questionnaire-info';
 import { QuestionnaireAnswers } from '../../model/questionnaires/questionnaire-answers';

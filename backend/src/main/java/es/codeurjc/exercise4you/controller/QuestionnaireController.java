@@ -28,6 +28,7 @@ public class QuestionnaireController {
 
     @GetMapping("/pacientes/{id}/{questionnaireType}")
     public QuestionnairesInfo getQuestionnaireSessionsInfo(@PathVariable Integer id, @PathVariable String questionnaireType) {
+        System.out.println("CUESTIONARIOS");
         return questionnaireService.getSessionsInfo(id, questionnaireType);
     }
 

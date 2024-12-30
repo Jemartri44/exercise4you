@@ -126,7 +126,7 @@
                     </ul>
                 </li>
                 <li class="nav-item me-4">
-                    <a class="nav-link text-center" [ngClass]="this.router.url.split('/')[3]==='objetivos' ? 'active' : ''">Objetivos</a>
+                    <a class="nav-link text-center" (click)="goToObjectives()" [ngClass]="this.router.url.split('/')[3]==='objetivos' ? 'active' : ''">Objetivos</a>
                 </li>
                 <li class="nav-item me-4">
                     <a class="nav-link text-center" [ngClass]="this.router.url.split('/')[3]==='prescripción' ? 'active' : ''">Prescripción de<br>ejercicio físico</a>

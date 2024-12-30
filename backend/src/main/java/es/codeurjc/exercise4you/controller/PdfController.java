@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.controller;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ContentDisposition;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 public class PdfController {
 
+    @Autowired
     private final PdfService pdfService;
 
     @GetMapping("/manual")

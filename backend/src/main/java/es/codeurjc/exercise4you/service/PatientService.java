@@ -23,7 +23,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PatientService {
 
+    @Autowired
     private final PatientRepository patientRepository;
+    @Autowired
     private final AuthService authService;
 
     public List<PatientDTO> getPatients() {

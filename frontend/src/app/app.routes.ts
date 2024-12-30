@@ -15,6 +15,9 @@ import { ChangePasswordComponent } from './component/auth/change-password/change
 import { PatientEditComponent } from './component/patient/patient-edit/patient-edit.component';
 import { PrivacyPolicyComponent } from './component/auth/privacy-policy/privacy-policy.component';
 import { TestListComponent } from './component/tests/test-list/test-list.component';
+import { ObjectiveListComponent } from './component/objectives/objective-list/objective-list.component';
+import { ObjectiveCompleteComponent } from './component/objectives/objective-complete/objective-complete.component';
+import { SeeObjectivesComponent } from './component/objectives/see-objectives/see-objectives.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [authGuard] },
@@ -69,6 +72,10 @@ export const routes: Routes = [
     { path: 'pacientes/:id/fuerza-resistencia', component: TestListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/flexibilidad', component: TestListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/neuromuscular', component: TestListComponent, canActivate: [authGuard] },
+
+    { path: 'pacientes/:id/objetivos', component: ObjectiveListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/objetivos/:session/completar', component: ObjectiveCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/objetivos/:session/ver-objetivos', component: SeeObjectivesComponent, canActivate: [authGuard] },
     
     { path: '', redirectTo: '/pacientes', pathMatch: 'full'},
     { path: '**', redirectTo: '/pacientes', pathMatch: 'full'}

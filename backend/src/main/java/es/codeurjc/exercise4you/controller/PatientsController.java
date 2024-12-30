@@ -2,6 +2,7 @@ package es.codeurjc.exercise4you.controller;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1")
 public class PatientsController {
 
+    @Autowired
     private final PatientService patientService;
 
     @GetMapping("/pacientes")
