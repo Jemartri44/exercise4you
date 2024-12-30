@@ -52,9 +52,13 @@ public class DataRecord implements Serializable{
     private String cmtcef;
     private String parq;
     private String eparmed;
+
     private String imc;
     private String icc;
     private String waistCircumference;
     private String idealWeight;
     private String skinFolds;
+
+    @Column(columnDefinition="Boolean default 0")
+    private Boolean objective = false;
 }
