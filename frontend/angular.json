@@ -27,12 +27,16 @@
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-select/dist/css/bootstrap-select.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"
             ]
           },
           "configurations": {
@@ -103,9 +107,11 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap-select/dist/css/bootstrap-select.min.css"
             ],
-            "scripts": [ "../node_modules/jquery/dist/jquery.min.js", "../node_modules/bxslider/dist/jquery.bxslider.min.js", "../node_modules/owl-carousel/owl-carousel/owl.carousel.js" ]
+            "scripts": [ "../node_modules/jquery/dist/jquery.min.js", "../node_modules/bxslider/dist/jquery.bxslider.min.js", "../node_modules/owl-carousel/owl-carousel/owl.carousel.js", "node_modules/jquery/dist/jquery.min.js", "node_modules/bootstrap-select/dist/js/bootstrap-select.min.js", "node_modules/bootstrap/dist/js/bootstrap.min.js", "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           }
         }
       }

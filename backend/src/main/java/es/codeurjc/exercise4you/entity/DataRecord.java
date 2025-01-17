@@ -61,4 +61,7 @@ public class DataRecord implements Serializable{
 
     @Column(columnDefinition="Boolean default 0")
     private Boolean objective = false;
+
+    @Column(columnDefinition="Boolean default 0")
+    private Boolean prescription = false;
 }

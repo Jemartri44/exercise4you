@@ -16,7 +16,6 @@ import es.codeurjc.exercise4you.entity.objectives.PossibleObjectivesRequest;
 import es.codeurjc.exercise4you.entity.objectives.Objective;
 import es.codeurjc.exercise4you.service.objectives.ObjectivesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController

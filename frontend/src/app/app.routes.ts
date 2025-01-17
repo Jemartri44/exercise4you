@@ -18,6 +18,9 @@ import { TestListComponent } from './component/tests/test-list/test-list.compone
 import { ObjectiveListComponent } from './component/objectives/objective-list/objective-list.component';
 import { ObjectiveCompleteComponent } from './component/objectives/objective-complete/objective-complete.component';
 import { SeeObjectivesComponent } from './component/objectives/see-objectives/see-objectives.component';
+import { PrescriptionListComponent } from './component/prescriptions/prescription-list/prescription-list.component';
+import { PrescriptionCompleteComponent } from './component/prescriptions/prescription-complete/prescription-complete.component';
+import { SeePrescriptionsComponent } from './component/prescriptions/see-prescriptions/see-prescriptions.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent, canActivate: [authGuard] },
@@ -76,6 +79,10 @@ export const routes: Routes = [
     { path: 'pacientes/:id/objetivos', component: ObjectiveListComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/objetivos/:session/completar', component: ObjectiveCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/objetivos/:session/ver-objetivos', component: SeeObjectivesComponent, canActivate: [authGuard] },
+
+    { path: 'pacientes/:id/prescripciones', component: PrescriptionListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/prescripciones/:session/completar', component: PrescriptionCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/prescripciones/:session/ver-prescripciones', component: SeePrescriptionsComponent, canActivate: [authGuard] },
     
     { path: '', redirectTo: '/pacientes', pathMatch: 'full'},
     { path: '**', redirectTo: '/pacientes', pathMatch: 'full'}

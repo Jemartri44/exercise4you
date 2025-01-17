@@ -16,6 +16,7 @@ import es.codeurjc.exercise4you.entity.anthropometry.Imc;
 import es.codeurjc.exercise4you.entity.anthropometry.SkinFolds;
 import es.codeurjc.exercise4you.entity.anthropometry.WaistCircumference;
 import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
+import es.codeurjc.exercise4you.entity.prescriptions.PrescriptionsResponse;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
 import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
@@ -241,11 +242,21 @@ public class DataRecordService {
 
     public void setObjectives(ObjectivesResponse objectivesResponse) {
         if(objectivesResponse == null){
-            throw new InternalError("Questionnaire is not valid");
+            throw new InternalError("Objectives are not valid");
         }
         // We get the data record we should update
         DataRecord dataRecord = getCurrentDataRecord(objectivesResponse.getPatientId(), objectivesResponse.getSession());
         dataRecord.setObjective(Boolean.TRUE);
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void setPrescriptions(PrescriptionsResponse prescriptionsResponse) {
+        if(prescriptionsResponse == null){
+            throw new InternalError("Prescriptions are not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(prescriptionsResponse.getPatientId(), prescriptionsResponse.getSession());
+        dataRecord.setPrescription(Boolean.TRUE);
         dataRecordRepository.save(dataRecord);
     }
 

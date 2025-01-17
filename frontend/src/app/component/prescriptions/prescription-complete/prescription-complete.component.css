@@ -1,0 +1,62 @@
+h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 2rem;
+}
+
+.alert {
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.loading-spinner {
+  width: 4rem;
+  height: 4rem;
+  border-width: 6px;
+  margin-top: 8%;
+  margin-bottom: 12%;
+}
+
+.save-spinner {
+  width: 1rem;
+  height: 1rem;
+  border-width: 3px;
+  margin-top:3px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+p {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: large;
+}
+
+label {
+  font-size: 1.4rem;
+}
+
+.form-check-label {
+  font-size: 1.1rem;
+}
+
+.form-check-input {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.form-check {
+  display: flex;
+  align-items: flex-start; /* Alinea el radio al inicio del texto */
+  gap: 0.5rem; /* Espacio entre el radio y el texto */
+}
+
+.form-check-input {
+  margin-top: 0.4rem; /* Ajusta la posición del radio */
+}
+
+.form-check-label {
+  line-height: 1.5; /* Espaciado entre líneas del texto */
+}

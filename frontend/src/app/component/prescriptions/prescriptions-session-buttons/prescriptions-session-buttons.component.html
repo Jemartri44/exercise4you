@@ -1,0 +1,33 @@
+<div>
+    <!-- Alert: Repetir cuestionario -->
+    <div #modalRepeat  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex align-items-center">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5 mt-3 mb-2" id="staticBackdropLabel">¿Repetir prescripción?</h2>
+                </div>
+                <div class="modal-body ms-4 me-4">
+                    <h3>¿Está seguro de que desea repetir la prescripción de ejercicio?<br>Si continúa con esta acción, se borrará el ejercicio prescrito en esta sesión.</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Cancelar">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Repetir cuestionario" (click)="goToSetPrescriptions(session)">Repetir prescripción</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="d-flex align-items-center  mt-4 ">
+        <span class="me-4 ms-5 session-info">Sesión {{session}} - {{date}}:</span>
+        <button *ngIf="buttons.includes('toComplete')" class="btn btn-primary me-3" (click)="goToSetPrescriptions(session)">Realizar prescripción</button>
+        <button *ngIf="buttons.includes('answered')" class="btn btn-info me-3" (click)="goToAnswers(session)"><img class="icon me-2" src="/assets/img/icons/buttons/seeAnswers.png">Ver prescripción</button>
+        <button *ngIf="buttons.includes('answered') && this.loading_pdf==false" class="btn btn-info me-3" (click)="openPdf(session)"><img class="icon me-2" src="/assets/img/icons/buttons/seeReport.png">Ver informe</button>
+        <button *ngIf="buttons.includes('answered') && this.loading_pdf==true" class="btn btn-info me-3 disabled" (click)="openPdf(session)">
+            <div class="spinner-border next text-light justify-content-end me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            Ver informe
+        </button>
+        <button *ngIf="buttons.includes('toRepeat')" class="btn btn-secondary" (click)="showModal('repeat')">Repetir prescripción</button>
+    </div>
+</div>

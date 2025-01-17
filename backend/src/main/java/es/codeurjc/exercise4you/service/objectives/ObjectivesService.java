@@ -3,6 +3,8 @@ package es.codeurjc.exercise4you.service.objectives;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -17,6 +19,7 @@ import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -60,10 +63,12 @@ public class ObjectivesService {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = "";
         try {
-            ClassPathResource resource = new ClassPathResource("data/objectives.json");
-            jsonString = Files.readLines(resource.getFile(), Charsets.UTF_8).stream().collect(Collectors.joining());
+            ClassPathResource resource = new ClassPathResource("objectives.json");
+            try (InputStream inputStream = resource.getInputStream()) {
+                // Read the file content from the InputStream
+                jsonString = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+            }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         try {
@@ -85,8 +90,10 @@ public class ObjectivesService {
         System.out.println("Data records size: " + dataRecordList.size());
         List<DataRecord> objectiveList = new ArrayList<>();
         for(DataRecord dataRecord: dataRecordList){
-            if(dataRecord.getObjective()){
-                objectiveList.add(dataRecord);
+            if (dataRecord.getObjective() != null) {
+                if(dataRecord.getObjective()){
+                    objectiveList.add(dataRecord);
+                }
             }
         }
         System.out.println("Objective records size: " + objectiveList.size());

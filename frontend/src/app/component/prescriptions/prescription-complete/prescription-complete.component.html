@@ -1,0 +1,287 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+
+<div class="container">
+    <h1>Realizar prescripción de ejercicio</h1>
+
+    <ng-container *ngIf="this.patientState === 'ERROR'">
+        <p class="alert alert-danger">Ocurrió un error recuperando los datos del paciente. Inténtelo de nuevo.</p>
+    </ng-container>
+    <ng-container *ngIf="this.patientState === 'LOADING'">
+        <div class="d-flex justify-content-center mt-5">
+            <div class="spinner-border loading-spinner text-primary justify-content-end" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="this.patientState === 'LOADED'" >
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-xl-8">
+                    <div class="card text-dark bg-light p-3">
+                        <div class="card-body">
+                            <ng-container>
+                                <div *ngIf="this.askPregnant" class="mb-4">
+                                    <label for="pregnant" class="mb-3">¿La paciente está embarazada?:</label>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkPregnant()" class="form-select" id="pregnant" formControlName="pregnant">
+                                        <option selected>No</option>
+                                        <option>Sí</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="populationGroup" class="mb-3">Grupo poblacional {{patient.gender == "Masculino" ? "del" : "de la"}} paciente:</label>
+                                    <select class="form-select" id="populationGroup" formControlName="populationGroup" disabled>
+                                        <option selected>{{this.populationGroup}}</option>
+                                    </select>
+                                </div>
+                                <p *ngIf="this.populationGroup=='Niños y adolescentes (5-17 años)'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a niños y adolescentes con enfermedades crónicas. Por favor, consulte con un médico si {{patient.gender == "Masculino" ? "el" : "la"}} padece alguna.</p>
+                                <p *ngIf="this.populationGroup=='Embarazadas'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a embarazadas con enfermedades crónicas. Por favor, consulte con un médico si la paciente padece alguna.</p>
+                                <div class="mb-4">
+                                    <label for="hasDisease" class="mb-3">¿{{patient.gender == "Masculino" ? "El" : "La"}} paciente padece enfermedades crónicas?:</label>
+                                    <select *ngIf="populationGroup=='Niños y adolescentes (5-17 años)' || populationGroup=='Embarazadas'" class="form-select" id="hasDisease" formControlName="hasDisease" disabled>
+                                        <option selected>No</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasDisease()" *ngIf="populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)'" class="form-select" id="hasDisease" formControlName="hasDisease">
+                                        <option [selected]="!this.hasDisease">No</option>
+                                        <option [selected]="this.hasDisease">Sí</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="diseaseGroup" class="mb-3">Grupo de enfermedades {{patient.gender == "Masculino" ? "del" : "de la"}} paciente:</label>
+                                    <select *ngIf="populationGroup=='Niños y adolescentes (5-17 años)' || populationGroup=='Embarazadas'" class="form-select" id="diseaseGroup" formControlName="diseaseGroup" disabled>
+                                        <option selected>Ninguno</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && !this.hasDisease" class="form-select" id="diseaseGroup" formControlName="diseaseGroup">
+                                        <option selected>Ninguno</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkDiseaseGroup()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease" class="form-select" id="diseaseGroup" formControlName="diseaseGroup">
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades cardiovasculares'">Enfermedades cardiovasculares</option>
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades metabólicas y factores de riesgo cardiovascular'">Enfermedades metabólicas y factores de riesgo cardiovascular</option>
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades musculares'">Enfermedades musculares</option>
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades neurológicas'">Enfermedades neurológicas</option>
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades oncológicas'">Enfermedades oncológicas</option>
+                                        <option [selected]="this.diseaseGroup == 'Enfermedades pulmonares'">Enfermedades pulmonares</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="disease" class="mb-3">Enfermedad que padece {{patient.gender == "Masculino" ? "el" : "la"}} paciente:</label>
+                                    <select (click)="checkHasAlzheimer()" *ngIf="populationGroup=='Niños y adolescentes (5-17 años)' || populationGroup=='Embarazadas'" class="form-select" id="disease" formControlName="disease" disabled>
+                                        <option selected>Ninguna</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && !this.hasDisease" class="form-select" id="disease" formControlName="disease">
+                                        <option selected>Ninguna</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades cardiovasculares'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Accidente Cerebrovascular</option>
+                                        <option>Arteriopatía periférica</option>
+                                        <option>Cardiopatía Isquémica</option>
+                                        <option>Insuficiencia Cardiaca</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades metabólicas y factores de riesgo cardiovascular'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Diabetes</option>
+                                        <option>Dislipemia</option>
+                                        <option>Hipertensión</option>
+                                        <option>Síndrome metabóllico</option>
+                                        <option>Sobrepeso y Obesidad</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades musculares'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Artritis</option>
+                                        <option>Fibromialgia</option>
+                                        <option>Osteoporosis</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades neurológicas'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Alzheimer</option>
+                                        <option>Esclerosis Múltiple</option>
+                                        <option>Parkinson</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades oncológicas'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Cáncer</option>
+                                    </select>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasAlzheimer()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades pulmonares'" class="form-select" id="disease" formControlName="disease">
+                                        <option>Asma</option>
+                                        <option>EPOC</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="this.hasAlzheimer && this.hasDisease && this.populationGroup!=='Embarazadas'" class="mb-4">
+                                    <label for="level" class="mb-3">Nivel de actividad física del paciente:</label>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkPregnant()" class="form-select" id="level" formControlName="level">
+                                        <option selected>Principiante</option>
+                                        <option>Principiante (Enfermedad de Parkinson avanzada o mala condición física)</option>
+                                        <option>Experimentado</option>
+                                        <option>Experimentado (Enfermedad de Parkinson de leve a moderada)</option>
+                                    </select>
+                                </div>
+                                <div *ngIf="!this.hasAlzheimer || !this.hasDisease || this.populationGroup=='Embarazadas'" class="mb-4">
+                                    <label for="level" class="mb-3">Nivel de actividad física del paciente:</label>
+                                    <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkPregnant()" class="form-select" id="level" formControlName="level">
+                                        <option selected>Principiante</option>
+                                        <option>Experimentado</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-center me-5">
+                                    <button (click)="getPossiblePrescriptions()" *ngIf="this.prescriptionSelectionState==''" type="button" class="btn btn-primary">
+                                        Siguiente
+                                    </button>
+                                    <button *ngIf="this.prescriptionSelectionState=='LOADING'" type="button" class="btn btn-primary disabled">
+                                        <div class="spinner-border save-spinner next text-light justify-content-end" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        Siguiente
+                                    </button>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="this.prescriptionSelectionState === 'LOADED' || this.prescriptionSelectionState === 'ENDING'">
+                                <p class="mt-4 mb-4 fs-3 text-center"><u>Seleccione uno o más ejercicios</u></p>
+                                <ng-container *ngFor="let prescriptionInfo of this.selectedPrescriptions; index as i">
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <ng-container>
+                                                <div class="mb-4 mt-2">
+                                                    <label [for]="'exercise'+i" class="mb-3">Ejercicio {{i+1}}</label>
+                                                    <select class="form-select" (click)="checkExercise(i)" [id]="'exercise'+i" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                        <ng-container *ngFor="let exercise of prescriptionInfo.possibleExercises">
+                                                            <option [value]="exercise" [selected]="prescriptionInfo.exercise==exercise">{{exercise}}</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label [for]="'modality'+i" class="mb-3">Modalidad</label>
+                                                    <select class="form-select" (click)="checkModality(i)" [id]="'modality'+i" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                        <ng-container *ngFor="let modality of prescriptionInfo.possibleModalities">
+                                                            <option [value]="modality" [selected]="prescriptionInfo.modality==modality">{{modality}}</option>
+                                                        </ng-container>
+                                                    </select>
+                                                </div>
+                                                <div class="text-center">
+                                                    <label class="mb-3">Características del ejercicio</label>
+                                                </div>
+                                                <div *ngIf="prescriptionInfo.possibleFrequencies.length>0" class="mb-4">
+                                                    <label [for]="'frequency'+i" class="mb-3">Frecuencia</label>
+                                                    <div *ngIf="prescriptionInfo.possibleFrequencies.length>1" class="ms-3">
+                                                        <ng-container *ngFor="let frequency of prescriptionInfo.possibleFrequencies; index as j">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" (click)="checkFrequency(i, frequency)" type="radio" name="frequencyRadio" [id]="'frequency'+i+'-'+j" [checked]="prescriptionInfo.frequency==frequency" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                                <label class="form-check-label" for="frequencyRadio">
+                                                                    {{frequency}}
+                                                                </label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="prescriptionInfo.possibleFrequencies.length==1" class="ms-3">
+                                                        <label class="form-check-label">
+                                                            {{prescriptionInfo.possibleFrequencies[0]}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="prescriptionInfo.possibleIntensities.length>0" class="mb-4">
+                                                    <label [for]="'intensity'+i" class="mb-3">Intensidad</label>
+                                                    <div *ngIf="prescriptionInfo.possibleIntensities.length>1" class="ms-3">
+                                                        <ng-container *ngFor="let intensity of prescriptionInfo.possibleIntensities; index as j">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" (click)="checkIntensity(i, intensity)" type="radio" name="intensityRadio" [id]="'intensity'+i+'-'+j" [checked]="prescriptionInfo.intensity==intensity" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                                <label class="form-check-label" for="intensityRadio">
+                                                                    {{intensity}}
+                                                                </label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="prescriptionInfo.possibleIntensities.length==1" class="ms-3">
+                                                        <label class="form-check-label">
+                                                            {{prescriptionInfo.possibleIntensities[0]}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="prescriptionInfo.possibleTimes[0] != null" class="mb-4">
+                                                    <label [for]="'time'+i" class="mb-3">Tiempo</label>
+                                                    <div *ngIf="prescriptionInfo.possibleTimes.length>1" class="ms-3">
+                                                        <ng-container *ngFor="let time of prescriptionInfo.possibleTimes; index as j">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" (click)="checkTime(i, time)" type="radio" name="timeRadio" [id]="'time'+i+'-'+j" [checked]="prescriptionInfo.time==time" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                                <label class="form-check-label" for="timeRadio">
+                                                                    {{time}}
+                                                                </label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="prescriptionInfo.possibleTimes.length==1" class="ms-3">
+                                                        <label class="form-check-label">
+                                                            {{prescriptionInfo.possibleTimes[0]}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="prescriptionInfo.possibleTypes.length>0" class="mb-4">
+                                                    <label [for]="'type'+i" class="mb-3">Tipo</label>
+                                                    <div *ngIf="prescriptionInfo.possibleTypes.length>1" class="ms-3">
+                                                        <ng-container *ngFor="let type of prescriptionInfo.possibleTypes; index as j">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" (click)="checkType(i, type)" type="radio" name="typeRadio" [id]="'type'+i+'-'+j" [checked]="prescriptionInfo.type==type" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                                <label class="form-check-label" for="typeRadio">
+                                                                    {{type}}
+                                                                </label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="prescriptionInfo.possibleTypes.length==1" class="ms-3">
+                                                        <label class="form-check-label">
+                                                            {{prescriptionInfo.possibleTypes[0]}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="prescriptionInfo.possibleVolumes.length>0" class="mb-4">
+                                                    <label [for]="'volume'+i" class="mb-3">Volumen</label>
+                                                    <div *ngIf="prescriptionInfo.possibleVolumes.length>1" class="ms-3">
+                                                        <ng-container *ngFor="let volume of prescriptionInfo.possibleVolumes; index as j">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" (click)="checkVolume(i, volume)" type="radio" name="volumeRadio" [id]="'volume'+i+'-'+j" [checked]="prescriptionInfo.volume==volume" [disabled]="this.prescriptionSelectionState=='ENDING'">
+                                                                <label class="form-check-label" for="volumeRadio">
+                                                                    {{volume}}
+                                                                </label>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div *ngIf="prescriptionInfo.possibleVolumes.length==1" class="ms-3">
+                                                        <label class="form-check-label">
+                                                            {{prescriptionInfo.possibleVolumes[0]}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="this.selectedPrescriptions.length > 1" class="d-flex justify-content-center mt-3">
+                                                    <button type="button" class="btn btn-danger" (click)="deletePrescription(i)">
+                                                        Eliminar ejercicio
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                            
+                            <div *ngIf="this.prescriptionSelectionState=='LOADED' || this.prescriptionSelectionState=='ENDING'" class="d-flex justify-content-center me-5">
+                                <button (click)="newPrescription()" type="button" class="btn btn-secondary me-3" [disabled]="this.prescriptionsLeft.length==0 || this.prescriptionSelectionState=='ENDING'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                    </svg>
+                                    Añadir ejercicio
+                                </button>
+                                <button (click)="setPrescriptions()" *ngIf="this.prescriptionSelectionState=='LOADED'" type="button" class="btn btn-primary">
+                                    Establecer ejercicios
+                                </button>
+                                <button *ngIf="this.prescriptionSelectionState=='ENDING'" type="button" class="btn btn-primary disabled">
+                                    <div class="spinner-border save-spinner next text-light justify-content-end" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    Establecer ejercicios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <div style="height:100px"></div>
+</div>
+
+
+<app-footer></app-footer>

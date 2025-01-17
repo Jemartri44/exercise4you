@@ -1,0 +1,53 @@
+<app-header></app-header>
+<app-navbar></app-navbar>
+<div class="container">
+    <h1>Prescripciones de ejercicio</h1>
+    <ng-container *ngIf="(prescriptionsState | async) as state" [ngSwitch]="state.appState">
+        <ng-container *ngSwitchCase="'ERROR'">
+            <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADING'">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary justify-content-end" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'LOADED'">
+            <div class="container ps-5 pe-5 mt-5">
+                <ul>
+                    <h2>
+                        <li>Descripción</li>
+                    </h2>
+                </ul>
+                <p>La prescripción de ejercicio consiste en diseñar programas personalizados que mejoren la salud, prevengan complicaciones y optimicen el manejo de enfermedades crónicas. Este software permite adaptar la intervención según la población objetivo, patologías crónicas, nivel funcional y capacidad del paciente, seleccionando el tipo, modalidad, frecuencia, intensidad y duración del ejercicio. La progresión se ajusta gradualmente para mejorar resultados sin comprometer la seguridad, integrando objetivos concretos como mejorar fuerza o capacidad aeróbica. Además, incluye consideraciones especiales como contraindicaciones, supervisión médica y ajustes técnicos según la situación clínica. Así, se crea un plan individualizado, flexible y basado en evidencia, optimizando la adherencia y calidad de vida.</p>
+                <a class="btn btn-outline-primary ms-5 mb-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <h2 class="mb-1 mt-1 ms-1 me-1">Ver más detalles</h2>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <p>La prescripción de ejercicio es el proceso mediante el cual se diseñan programas de ejercicio físico adaptados a las necesidades, características y objetivos de cada persona, con el fin de mejorar su salud, prevenir complicaciones y optimizar la gestión de enfermedades crónicas. En el presente software, esta prescripción se establece a partir de distintos filtros que permiten personalizar el programa de ejercicio en función de la población, la enfermedad crónica de base y diversos parámetros específicos.</p>
+                        <p>En primer lugar, se selecciona la población objetivo (adultos, personas mayores, niños/adolescentes o embarazadas), de modo que la intervención sea coherente con la etapa de la vida en la que se encuentre la persona y sus particularidades fisiológicas. A continuación, se consideran las enfermedades crónicas que pueden agruparse por sistemas o grupos patológicos, atendiendo a sus características clínicas y a las recomendaciones de ejercicio específicas para cada condición (cardiovasculares, metabólicas, pulmonares, neurológicas, musculoesqueléticas, etc.). Este filtro inicial permite adaptar la intervención a la evolución de la enfermedad y a los posibles factores de riesgo que requieran una atención especial.</p>
+                        <p>Posteriormente, se determina el nivel del paciente, valorando su estado funcional, su experiencia previa con la actividad física y su capacidad para tolerar ejercicios de distinta intensidad o complejidad. Con esta información, se selecciona el tipo de ejercicio (aeróbico, fortalecimiento muscular, fortalecimiento muscular y óseo o neuromuscular) y, a continuación, se define la modalidad (por ejemplo, continuo, dinámico, estático, balístico, fuerza dinámica, fuerza isométrica, etc.). Además, se indica la frecuencia semanal con la que se deben realizar las sesiones y la intensidad recomendada, ya sea mediante parámetros objetivos (frecuencia cardiaca máxima, consumo de oxígeno) o escalas subjetivas de esfuerzo, siguiendo siempre las guías clínicas y la evidencia disponible.</p>
+                        <p>A partir de ahí, se determina el tiempo o duración de cada sesión y el tipo de entrenamiento que se llevará a cabo (por ejemplo, caminar, trotar, andar en bicicleta, nadar, ejercicio de resistencia con máquinas, pesas libres, bandas de resistencia, peso corporal, ejercicios de estiramiento, etc.). Junto a estos elementos, se señala el volumen total de trabajo, que integra tanto la duración de las sesiones como su frecuencia a lo largo de la semana, de forma que se alcance la dosis de ejercicio recomendada para cada condición. Es importante contemplar la progresión, de modo que el plan de ejercicio incremente gradualmente su exigencia conforme el paciente mejore su capacidad física o controle mejor sus síntomas, ajustando así la intensidad, el tiempo o el volumen para fomentar la adaptación sin comprometer la seguridad.</p>
+                        <p>Es importante destacar que toda esta configuración de la prescripción se fundamenta en los objetivos específicos de cada paciente. De ese modo, la elección de la modalidad de ejercicio, la intensidad o el volumen total de trabajo no se realiza de forma aislada, sino con la finalidad de satisfacer objetivos concretos, tales como mejorar la fuerza, reducir el dolor o incrementar la capacidad aeróbica. Esta orientación basada en objetivos permite evaluar el progreso de manera continua y realizar ajustes oportunos para optimizar los resultados clínicos y la calidad de vida del individuo.</p>
+                        <p>Finalmente, en el apartado de consideraciones especiales, se incluyen recomendaciones puntuales que puedan influir en la ejecución de la rutina, como contraindicaciones específicas, signos de alarma durante la práctica, necesidades de supervisión médica, pautas de hidratación y nutrición o posibles modificaciones técnicas en función de la patología. Este factor resulta esencial para garantizar tanto la eficacia como la seguridad del programa, ya que cada paciente puede presentar limitaciones o requerir adaptaciones concretas derivadas de su situación clínica.</p>
+                        <p>La combinación de estos filtros —población, enfermedades crónicas y su agrupación, enfermedad específica, nivel de la persona, tipo de ejercicio, modalidad, frecuencia, intensidad, tiempo, tipo de entrenamiento, volumen, progresión y consideraciones especiales— permite diseñar una prescripción individualizada, flexible y basada en la evidencia. De esta forma, cada programa se adecua a los objetivos y necesidades concretas de la persona, favoreciendo la adherencia a largo plazo, la optimización de los resultados de salud y la mejora de la calidad de vida.</p>
+                    </div>
+                  </div>
+                <app-prescriptions-session-buttons *ngIf="!state.appData?.todayCompleted" [buttons]="['toComplete']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-prescriptions-session-buttons>
+
+            </div>
+
+            <hr>
+            <div *ngIf="state.appData?.allEmpty && !state.appData?.todayCompleted" class="alert alert-info m-5 ">Aún no hay prescripciones realizadas</div>
+            <div *ngIf="!state.appData?.allEmpty || state.appData?.todayCompleted" class="container ps-5 pe-5 mt-2">
+                <app-prescriptions-session-buttons *ngIf="state.appData?.todayCompleted" [buttons]="['toRepeat', 'answered']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-prescriptions-session-buttons>
+                <app-prescriptions-session-buttons *ngFor="let session of state.appData?.sessions" [buttons]="['answered']" [session]="session.number" [date]="session.date"></app-prescriptions-session-buttons>
+            </div>
+            <div style="height:100px"></div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<app-footer></app-footer>

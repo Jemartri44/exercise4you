@@ -1,3 +1,6 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/bootstrap-select/dist/css/bootstrap-select.min.css";
+
 .text-danger{
   text-align: left;
 }

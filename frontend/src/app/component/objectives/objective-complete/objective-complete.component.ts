@@ -255,10 +255,4 @@ export class ObjectiveCompleteComponent implements OnInit{
     });
   }
 
-  showModal(modal: string) {
-    if(modal === "repeat") {
-      $(this.modalRepeat.nativeElement).modal('show');
-    }
-  }
-
 }

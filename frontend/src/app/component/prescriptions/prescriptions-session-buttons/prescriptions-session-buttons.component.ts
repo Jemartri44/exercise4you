@@ -1,18 +1,18 @@
-import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { PdfService } from '../../../services/pdf/pdf.service';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
-declare let $:any;
+declare var $: any;
 
 @Component({
-  selector: 'app-objectives-session-buttons',
+  selector: 'app-prescriptions-session-buttons',
   standalone: true,
   imports: [ CommonModule ],
-  templateUrl: './objectives-session-buttons.component.html',
-  styleUrl: './objectives-session-buttons.component.css'
+  templateUrl: './prescriptions-session-buttons.component.html',
+  styleUrl: './prescriptions-session-buttons.component.css'
 })
-export class ObjectivesSessionButtonsComponent {
+export class PrescriptionsSessionButtonsComponent {
   @Input() buttons: string[] = [];
   @Input() session: number = 0;
   @Input() date: string = "";
@@ -22,15 +22,15 @@ export class ObjectivesSessionButtonsComponent {
 
   constructor( private router: Router, private pdfService: PdfService ) { }
 
-  goToSetObjectives(session: number) {
-    console.debug("Redirecting to set objectives "+ this.router.url.split('/')[3] + " session " + session);
+  goToSetPrescriptions(session: number) {
+    console.debug("Redirecting to set prescriptions "+ this.router.url.split('/')[3] + " session " + session);
     console.debug("Redirecting to: " + '/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + session + '/completar');
     this.router.navigate(['/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + session + '/completar']);
   }
 
   goToAnswers(session: number) {
     console.debug("Redirecting to see answers of "+ this.router.url.split('/')[3] + " session " + session);
-    this.router.navigate(['/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + session + '/ver-objetivos']);
+    this.router.navigate(['/pacientes/' + this.router.url.split('/')[2] + '/' + this.router.url.split('/')[3] + '/' + session + '/ver-prescripciones']);
   }
 
   goToSeeReport(session: number) {

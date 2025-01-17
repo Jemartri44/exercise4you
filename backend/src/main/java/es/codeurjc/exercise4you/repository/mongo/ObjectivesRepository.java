@@ -21,6 +21,4 @@ public interface ObjectivesRepository extends MongoRepository<ObjectivesResponse
     
     @Query("{ 'session' : ?0, 'patientId' : ?1 }")
     Optional<ObjectivesResponse> findBySessionAndPatientId(Integer session, Integer id);
-
-    Long deleteApalqByPatientIdAndSession(Integer patientId, Integer session);
 }
