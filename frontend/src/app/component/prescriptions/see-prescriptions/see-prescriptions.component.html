@@ -52,62 +52,62 @@
             <!-- PRESCRIPCIONES DEL PACIENTE -->
             <div *ngFor="let prescription of state.appData.prescriptions; index as i" class="me-3 mb-2">
                 <h2 class="text-center mb-4">Ejercicio {{i+1}}</h2>
-                <div class="d-flex row align-items-center justify-content-center">
+                <div class="d-flex row justify-content-center">
                     <div class="col">
                         <h3 class="fw-bold mt-2"><li>Ejercicio:</li></h3>
                     </div><div class="col">
                         <h3 class="fw-bold ms-5 mt-2"><li>Modalidad:</li></h3>
                     </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
+                <div class="d-flex justify-content-center">
                     <div class="col">
-                        <div class="col answer ps-5 text-justify" [innerHTML]="prescription.exercise.replace('\n', '<div><br></div>')"></div>
+                        <div class="col answer ps-5 text-justify" [innerHTML]="prescription.exercise.replaceAll('\n', '<div><br></div>')"></div>
                     </div><div class="col">
-                        <div class="col answer ps-5 ms-5 text-justify" [innerHTML]="prescription.modality.replace('\n', '<div><br></div>')"></div>
+                        <div class="col answer ps-5 ms-5 text-justify" [innerHTML]="prescription.modality.replaceAll('\n', '<div><br></div>')"></div>
                     </div>
                 </div>
 
-                <div class="d-flex row align-items-center justify-content-center">
+                <div class="d-flex row justify-content-center">
                     <div class="col">
                         <h3 class="fw-bold mt-3"><li>Frecuencia:</li></h3>
-                    </div><div class="col">
+                    </div><div *ngIf="prescription.intensity!==''" class="col">
                         <h3 class="fw-bold ms-5 mt-3"><li>Intensidad:</li></h3>
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div class="col">
-                        <div class="col answer ps-5 text-justify" [innerHTML]="prescription.frequency.replace('\n', '<div><br></div>')"></div>
-                    </div><div class="col">
-                        <div class="col answer ps-5 ms-5 text-justify" [innerHTML]="prescription.intensity.replace('\n', '<div><br></div>')"></div>
+                        <div class="col answer ps-5 text-justify" [innerHTML]="prescription.frequency.replaceAll('\n', '<div><br></div>')"></div>
+                    </div><div *ngIf="prescription.intensity!==''" class="col">
+                        <div class="col answer ps-5 ms-5 text-justify" [innerHTML]="prescription.intensity.replaceAll('\n', '<div><br></div>')"></div>
                     </div>
                 </div>
 
                 <div *ngIf="prescription.time!=null" class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-3"><li>Tiempo:</li></h3>
                 </div>
-                <div *ngIf="prescription.time!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.time.replace('\n', '<br><br>')"></div>
+                <div *ngIf="prescription.time!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.time.replaceAll('\n', '<br><br>')"></div>
 
                 <div *ngIf="prescription.type!=null" class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-3"><li>Tipo:</li></h3>
                 </div>
-                <div *ngIf="prescription.type!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.type.replace('\n', '<br><br>')"></div>
+                <div *ngIf="prescription.type!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.type.replaceAll('\n', '<br><br>')"></div>
 
-                <div *ngIf="prescription.volume!=null" class="d-flex row align-items-center justify-content-center">
+                <div *ngIf="prescription.volume!=''" class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-3"><li>Volumen:</li></h3>
                 </div>
-                <div *ngIf="prescription.volume!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.volume.replace('\n', '<br><br>')"></div>
+                <div *ngIf="prescription.volume!=''" class="answer ps-5 text-justify" [innerHTML]="prescription.volume.replaceAll('\n', '<br><br>')"></div>
 
                 <div *ngIf="prescription.progression!=null" class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-3"><li>Progresión:</li></h3>
                 </div>
-                <div *ngIf="prescription.progression!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.progression.replace('\n', '<br><br>')"></div>
+                <div *ngIf="prescription.progression!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.progression.replaceAll('\n', '<br><br>')"></div>
                 
                 <hr class="mb-4 mt-4">
             </div>
             <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="d-flex row align-items-center justify-content-center">
                 <h2 class="text-center mb-4">Consideraciones especiales</h2>
             </div>
-            <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="answer ps-5 text-justify" [innerHTML]="state.appData.prescriptions[0].specialConsiderations.replace('\n', '<div><br></div>')"></div>
+            <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="answer ps-5 text-justify" [innerHTML]="state.appData.prescriptions[0].specialConsiderations.replaceAll('\n', '<div><br></div>')"></div>
             <hr *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="mb-4 mt-4">
             <div class="d-flex justify-content-end mb-5 mt-4">
                 <button class="btn btn-primary" (click)="volver()">Volver</button>

@@ -135,6 +135,8 @@ public class PrescriptionService {
         System.out.println(test.size());
         System.out.println(test.toString());
         for(PrescriptionRequest prescriptionRequest: prescriptionRequests){
+            System.out.println("\n\n\nPrescriptionRequest:\n\n\n");
+            System.out.println(prescriptionRequest.toString());
             List<Prescription> prescriptionsFiltered = prescriptions.stream().filter(o -> o.getPopulationGroup().equals(prescriptionRequest.getPopulationGroup()) && o.getDisease().equals(prescriptionRequest.getDisease()) && o.getLevel().equals(prescriptionRequest.getLevel()) && o.getExercise().equals(prescriptionRequest.getExercise()) && o.getModality().equals(prescriptionRequest.getModality()) && o.getIntensity().equals(prescriptionRequest.getIntensity()) && o.getVolume().equals(prescriptionRequest.getVolume())).collect(Collectors.toList());
             if(prescriptionsFiltered.isEmpty()){
                 throw new RuntimeException("Prescription not found: " + prescriptionRequest.toString());

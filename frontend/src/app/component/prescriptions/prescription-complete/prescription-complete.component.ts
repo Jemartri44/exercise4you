@@ -8,27 +8,23 @@ import { Router } from '@angular/router';
 import { Patient } from '../../../model/patient/patient';
 import { PatientService } from '../../../services/patient/patient.service';
 import { PrescriptionsService } from '../../../services/prescriptions/prescriptions.service';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
 import { PrescriptionRequest } from '../../../model/prescriptions/prescription-request';
 
-
-declare var $: any;
 
 @Component({
   selector: 'app-prescription-complete',
   standalone: true,
-  imports: [ HeaderComponent, NavbarComponent, FooterComponent, CommonModule, NgSelectModule ],
+  imports: [ HeaderComponent, NavbarComponent, FooterComponent, CommonModule ],
   templateUrl: './prescription-complete.component.html',
   styleUrl: './prescription-complete.component.css'
 })
 
-export class PrescriptionCompleteComponent implements AfterViewInit {
+export class PrescriptionCompleteComponent {
   populationGroup: string = "";
   askPregnant: boolean = false;
   hasDisease: boolean = false;
   diseaseGroup: string = "Enfermedades cardiovasculares";
-  hasAlzheimer: boolean = false;
+  hasParkinson: boolean = false;
   selectedPrescriptions: {
     exercise: string,
     possibleExercises: string[],
@@ -82,17 +78,14 @@ export class PrescriptionCompleteComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    ($('.selectpicker') as any).selectpicker();
-  }
-
   checkPregnant() {
     let pregnant = (<HTMLInputElement>document.getElementById('pregnant')).value === "Sí" ? true : false;
+    if((this.populationGroup == "Embarazadas" && pregnant) || (this.populationGroup !== "Embarazadas" && !pregnant)) {
+      return;
+    }
+    this.hasParkinson = false;
     if(pregnant) {
       this.populationGroup = "Embarazadas";
-      if(this.diseaseGroup === "Enfermedades neurológicas") {
-        this.hasAlzheimer = true;
-      }
     } else {
       this.populationGroup = "Adultos (18-65 años)";
     }
@@ -100,11 +93,12 @@ export class PrescriptionCompleteComponent implements AfterViewInit {
 
   checkHasDisease() {
     let hasDiseases = (<HTMLInputElement>document.getElementById('hasDisease')).value === "Sí" ? true : false;
+    if((this.hasDisease && hasDiseases)) {
+      return;
+    }
+    this.hasParkinson = false;
     if(hasDiseases) {
       this.hasDisease = true;
-      if(this.diseaseGroup === "Enfermedades neurológicas") {
-        this.hasAlzheimer = true;
-      }
     } else {
       this.hasDisease = false;
     }
@@ -112,21 +106,20 @@ export class PrescriptionCompleteComponent implements AfterViewInit {
   }
 
   checkDiseaseGroup() {
-    this.diseaseGroup = (<HTMLInputElement>document.getElementById('diseaseGroup')).value;
-    let hasAlzheimer = this.diseaseGroup ? true : false;
-    if(hasAlzheimer) {
-      this.hasAlzheimer = true;
-    } else {
-      this.hasAlzheimer = false;
+    let diseaseGroup = (<HTMLInputElement>document.getElementById('diseaseGroup')).value;
+    if(this.diseaseGroup === diseaseGroup) {
+      return;
     }
+    this.diseaseGroup = (<HTMLInputElement>document.getElementById('diseaseGroup')).value;
+    this.hasParkinson = false;
   }
 
-  checkHasAlzheimer() {
-    let hasAlzheimer = (<HTMLInputElement>document.getElementById('disease')).value === "Alzheimer" ? true : false;
+  checkHasParkinson() {
+    let hasAlzheimer = (<HTMLInputElement>document.getElementById('disease')).value === "Parkinson" ? true : false;
     if(hasAlzheimer) {
-      this.hasAlzheimer = true;
+      this.hasParkinson = true;
     } else {
-      this.hasAlzheimer = false;
+      this.hasParkinson = false;
     }
   }
 
