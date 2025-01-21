@@ -38,3 +38,8 @@ p {
     margin-top: 8%;
     margin-bottom: 12%;
 }
+
+.icon {
+    width: 36px;
+    height: auto;
+}

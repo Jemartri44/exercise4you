@@ -25,6 +25,10 @@
         <ng-container *ngSwitchCase="'LOADED'" >
             <h1>{{this.title}} {{getAge(request.appData?.birthdate) < 18 ? '- Niños y adolescentes (menos de 18 años)' : getAge(request.appData?.birthdate) <= 65 ? '- Adultos (18 hasta 64 años)' : '- Adultos mayores (más de 65 años)'}}</h1>
             <hr>
+            <div class="d-flex justify-content-center">
+                <p class="alert alert-warning"><img class="icon me-4" src="/assets/img/icons/under-construction.png">En desarrollo: Aún no se pueden completar las pruebas desde la plataforma.<img class="icon ms-4" src="/assets/img/icons/under-construction.png"></p>
+            </div>
+            <hr>
             <ng-container *ngIf="this.title=='Pruebas de resistencia cardiorrespiratoria'">
                 <ng-container *ngIf="getAge(request.appData?.birthdate) < 18">
                     <h2 class="text-center mb-4"><u>Pruebas máximas</u></h2>
