@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <!-- FÓRMULAS -->
-                    <div class="col">
+                    <div class="col d-flex justify-content-center me-5">
                         <!-- FÓRMULAS MASA GRASA -->
                         <div class="ms-5" [ngClass]="this.age >= 18 ? '' : 'hidden'">
                             <div class="form-check mb-2">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-3">
+                    <div [ngClass]="this.age >= 18 ? 'col-3' : 'hidden col-1'">
                         <!-- FÓRMULAS MASA MAGRA -->
                         <div>
                             <div class="form-check mb-2">

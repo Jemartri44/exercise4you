@@ -29,7 +29,7 @@
             <app-icc-introduction *ngIf="this.router.url.split('/')[3] === 'ICC'"></app-icc-introduction>
             <app-waist-circumference-introduction *ngIf="this.router.url.split('/')[3] === 'circunferencia-cintura'"></app-waist-circumference-introduction>
             <app-ideal-weight-introduction *ngIf="this.router.url.split('/')[3] === 'peso-ideal'"></app-ideal-weight-introduction>
-            <app-skin-folds-introduction *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'"></app-skin-folds-introduction>
+            <app-skin-folds-introduction *ngIf="this.router.url.split('/')[3] === 'medici%C3%B3n-pliegues-cut%C3%A1neos'" [data]="request.data"></app-skin-folds-introduction>
             <!-- CONCLUSIONES -->
             <app-imc-ending *ngIf="this.router.url.split('/')[3] === 'IMC'"></app-imc-ending>
             <app-icc-ending *ngIf="this.router.url.split('/')[3] === 'ICC'"></app-icc-ending>
