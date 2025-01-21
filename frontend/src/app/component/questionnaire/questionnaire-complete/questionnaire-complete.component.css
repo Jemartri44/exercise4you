@@ -39,6 +39,11 @@ h3 {
   font-weight: 500;
 }
 
+.question b {
+  color: #5362a3;
+  font-weight: 600 !important;
+}
+
 .number {
   width: 125px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
