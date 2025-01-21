@@ -15,7 +15,7 @@
                 </li>
                 <li class="nav-item dropdown me-4">
                     <a class="nav-link dropdown-toggle text-center" [ngClass]="(this.router.url.split('/')[3]==='APALQ') || (this.router.url.split('/')[3]==='IPAQ') || (this.router.url.split('/')[3]==='IPAQ-E') || (this.router.url.split('/')[3]==='CMTCEF') || (this.router.url.split('/')[3]==='PAR-Q') || (this.router.url.split('/')[3]==='ePARmed-X') ? 'active' : ''" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                        Anamnesis
+                        Cuestionarios
                     </a>
                     <ul class="dropdown-menu dropdown-main">
                         <ng-container *ngIf="(navbarState | async) as state" [ngSwitch]="state.appState">

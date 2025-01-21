@@ -35,8 +35,8 @@
                                         <option selected>{{this.populationGroup}}</option>
                                     </select>
                                 </div>
-                                <p *ngIf="this.populationGroup=='Niños y adolescentes (5-17 años)'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a niños y adolescentes con enfermedades crónicas. Por favor, consulte con un médico si {{patient.gender == "Masculino" ? "el" : "la"}} padece alguna.</p>
-                                <p *ngIf="this.populationGroup=='Embarazadas'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a embarazadas con enfermedades crónicas. Por favor, consulte con un médico si la paciente padece alguna.</p>
+                                <p *ngIf="this.populationGroup=='Niños y adolescentes (5-17 años)'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a niños y adolescentes con enfermedades crónicas desde esta plataforma. Por favor, consulte con un médico si {{patient.gender == "Masculino" ? "el" : "la"}} padece alguna.</p>
+                                <p *ngIf="this.populationGroup=='Embarazadas'" class="mb-4 text-center alert alert-warning">Aviso: No es posible prescribir ejercicio a embarazadas con enfermedades crónicas desde esta plataforma. Por favor, consulte con un médico si la paciente padece alguna.</p>
                                 <div class="mb-4">
                                     <label for="hasDisease" class="mb-3">¿{{patient.gender == "Masculino" ? "El" : "La"}} paciente padece enfermedades crónicas?:</label>
                                     <select *ngIf="populationGroup=='Niños y adolescentes (5-17 años)' || populationGroup=='Embarazadas'" class="form-select" id="hasDisease" formControlName="hasDisease" disabled>

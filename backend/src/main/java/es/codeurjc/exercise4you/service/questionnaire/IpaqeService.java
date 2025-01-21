@@ -64,11 +64,16 @@ public class IpaqeService {
         }
         Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario internacional de actividad física en personas mayores (IPAQ-E)";
-        String description = "El Cuestionario Internacional de Actividad Física para Personas Mayores (International Physical Activity Questionnaire for the Elderly, IPAQ-E) es una versión adaptada culturalmente del IPAQ para ser utilizada en personas mayores de 65 años. <br><br>\r\n" + //
-                        "Esta herramienta se utiliza para evaluar de forma estandarizada los niveles de actividad física, incluyendo ejercicios de caminata, de intensidad moderada y vigorosa, así como el tiempo dedicado a estar sentado. <br><br>\r\n" + //
-                        "La adaptación del Cuestionario Internacional de Actividad Física (IPAQ) para personas mayores (IPAQ-E) considera las particularidades de este grupo etario. Se enfoca en medir de forma precisa y relevante los niveles de actividad física, adaptando sus preguntas para reflejar mejor las capacidades y tipos de actividades físicas más comunes entre los mayores.<br><br>\r\n" + //
-                        "El IPAQ-E es útil para investigaciones en salud pública y para profesionales de la salud que trabajan con poblaciones mayores, ayudando a identificar niveles de actividad física y a diseñar intervenciones adecuadas para mejorar la salud y el bienestar en esta etapa de la vida. <br><br>\r\n" + //
-                        "El IPAQ-E muestra propiedades similares a otras versiones del IPAQ dirigidas a adultos de 18 a 65 años, con correlaciones moderadas entre los datos autoinformados y los obtenidos por acelerómetros.";
+        String description = "<p>El <b>Cuestionario Internacional de Actividad Física para Personas Mayores</b> (<i>International Physical Activity Questionnaire for the Elderly</i>, <b>IPAQ-E</b>) es una versión adaptada culturalmente del <b>IPAQ</b> para ser utilizada en <b>personas mayores de 65 años</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Esta herramienta se utiliza para evaluar de forma estandarizada los <b>niveles de actividad física</b>, incluyendo ejercicios de <b>caminata</b>, de <b>intensidad moderada y vigorosa</b>, así como el <b>tiempo dedicado a estar sentado</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>La adaptación del <b>Cuestionario Internacional de Actividad Física</b> (<b>IPAQ</b>) para personas mayores (<b>IPAQ-E</b>) considera las <b>particularidades de este grupo etario</b>. Se enfoca en medir de forma precisa y relevante los <b>niveles de actividad física</b>, adaptando sus preguntas para reflejar mejor las <b>capacidades</b> y los <b>tipos de actividades físicas</b> más comunes entre los mayores.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>El <b>IPAQ-E</b> es útil para <b>investigaciones en salud pública</b> y para <b>profesionales de la salud</b> que trabajan con <b>poblaciones mayores</b>, ayudando a identificar niveles de actividad física y a diseñar <b>intervenciones adecuadas</b> para mejorar la <b>salud</b> y el <b>bienestar</b> en esta etapa de la vida.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>El <b>IPAQ-E</b> muestra propiedades similares a otras versiones del <b>IPAQ</b> dirigidas a <b>adultos de 18 a 65 años</b>, con <b>correlaciones moderadas</b> entre los datos autoinformados y los obtenidos por <b>acelerómetros</b>.</p>\r\n" + //
+                        "";
         return new QuestionnairesInfo(title, description, sessions, ipaqeList.isEmpty(), isTodayCompleted, today);
     }
 

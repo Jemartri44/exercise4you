@@ -61,12 +61,24 @@ public class ApalqService {
         }
         Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario de evaluación de los niveles de actividad física (APALQ)";
-        String description = "El Cuestionario de Evaluación de los Niveles de Actividad Física (Assessment of Physical Activity Levels Questionnaire, APALQ) en su versión española es una herramienta utilizada para medir los niveles de actividad física en niños y adolescentes. <br><br>\r\n" + //
-                        "Este cuestionario consta de cinco preguntas, cada una con cuatro opciones específicas, que se miden en una escala Likert de 4 puntos, variando de 1 (valor más bajo) a 4 (valor más alto). No obstante, para las preguntas 3 y 4, se utiliza un sistema de puntuación diferente, con puntuaciones que van de 1 a 5 puntos. <br><br>\r\n" + //
-                        "Por medio de estas respuestas, se calcula un Índice de Actividad Física, en inglés denominado Physical Activity Index (PAI) con una puntuación máxima total de 22 puntos, sumando las puntuaciones máximas de cada pregunta en el APALQ. <br><br>\r\n" + //
-                        "Los niveles de actividad física se clasifican en tres categorías según el PAI: inactivo (5-10 puntos), moderadamente activo (11-16 puntos) y altamente activo (≥17 puntos). <br><br>\r\n" + //
-                        "El APALQ ha demostrado tener una validez de criterio moderada (r = 0.47) y una buena fiabilidad (coeficiente de correlación intraclase / intraclass correlation coefficient (ICC)) (ICC: 0.74-0.77) entre los niños españoles. <br><br>\r\n" + //
-                        "Es importante destacar que, aunque el APALQ es una herramienta válida para medir la actividad física en niños y adolescentes españoles de 9 a 17 años, su principal fortaleza radica en la capacidad de ofrecer una estimación general de la actividad física, especialmente en contextos donde el tiempo es limitado, como por ejemplo en centros de atención primaria y en estudios epidemiológicos de gran tamaño o en aquellos que intentan evaluar una larga lista de indicadores de salud.";
+        String description = "<p>El <b>Cuestionario de Evaluación de los Niveles de Actividad Física</b> (<i>Assessment of Physical Activity Levels Questionnaire</i>, <b>APALQ</b>) en su versión española es una herramienta utilizada para medir los <b>niveles de actividad física</b> en <b>niños y adolescentes</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Este cuestionario consta de <b>cinco preguntas</b>, cada una con cuatro opciones específicas, que se miden en una <b>escala Likert de 4 puntos</b>, variando de 1 (valor más bajo) a 4 (valor más alto). No obstante, para las <b>preguntas 3 y 4</b>, se utiliza un sistema de puntuación diferente, con puntuaciones que van de <b>1 a 5 puntos</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Por medio de estas respuestas, se calcula un <b>Índice de Actividad Física</b>, en inglés denominado <i>Physical Activity Index</i> (<b>PAI</b>) con una <b>puntuación máxima total de 22 puntos</b>, sumando las puntuaciones máximas de cada pregunta en el APALQ.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Los <b>niveles de actividad física</b> se clasifican en tres categorías según el <b>PAI</b>: \r\n" + //
+                        "<ul>\r\n" + //
+                        "  <li><b>Inactivo</b>: 5-10 puntos</li>\r\n" + //
+                        "  <li><b>Moderadamente activo</b>: 11-16 puntos</li>\r\n" + //
+                        "  <li><b>Altamente activo</b>: ≥17 puntos</li>\r\n" + //
+                        "</ul>\r\n" + //
+                        "</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>El <b>APALQ</b> ha demostrado tener una <b>validez de criterio moderada</b> (<i>r</i> = 0.47) y una <b>buena fiabilidad</b> (<i>coeficiente de correlación intraclase</i> / <i>intraclass correlation coefficient</i>, <b>ICC</b>) (ICC: 0.74-0.77) entre los <b>niños españoles</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Es importante destacar que, aunque el <b>APALQ</b> es una herramienta válida para medir la actividad física en <b>niños y adolescentes españoles</b> de <b>9 a 17 años</b>, su principal fortaleza radica en la capacidad de ofrecer una <b>estimación general de la actividad física</b>, especialmente en contextos donde el tiempo es limitado, como por ejemplo en <b>centros de atención primaria</b> y en <b>estudios epidemiológicos</b> de gran tamaño o en aquellos que intentan evaluar una larga lista de indicadores de salud.</p>\r\n" + //
+                        "";
         return new QuestionnairesInfo(title, description, sessions, apalqList.isEmpty(), isTodayCompleted, today);
     }
 

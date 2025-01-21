@@ -2,7 +2,7 @@
 <app-navbar></app-navbar>
 
 <div class="container">
-    <h1>Prescripción de ejericio del paciente</h1>
+    <h1>Prescripción de ejercicio del paciente</h1>
     <ng-container *ngIf="(prescriptionsState | async) as state" [ngSwitch]="state.appState">
         <ng-container *ngSwitchCase="'ERROR'">
             <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
@@ -100,14 +100,14 @@
                 <div *ngIf="prescription.progression!=null" class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-3"><li>Progresión:</li></h3>
                 </div>
-                <div *ngIf="prescription.progression!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.progression.replace('\n', '<div style=\'line-height:0.5\'><br><br></div>')"></div>
+                <div *ngIf="prescription.progression!=null" class="answer ps-5 text-justify" [innerHTML]="prescription.progression.replace('\n', '<br><br>')"></div>
                 
                 <hr class="mb-4 mt-4">
             </div>
             <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="d-flex row align-items-center justify-content-center">
-                <h3 class="fw-bold mt-2"><li>Consideraciones especiales:</li></h3>
+                <h2 class="text-center mb-4">Consideraciones especiales</h2>
             </div>
-            <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="answer ps-5 text-justify" [innerHTML]="state.appData.prescriptions[0].specialConsiderations.replace('\n', '<br><br>')"></div>
+            <div *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="answer ps-5 text-justify" [innerHTML]="state.appData.prescriptions[0].specialConsiderations.replace('\n', '<div><br></div>')"></div>
             <hr *ngIf="state.appData.prescriptions[0].specialConsiderations!=null" class="mb-4 mt-4">
             <div class="d-flex justify-content-end mb-5 mt-4">
                 <button class="btn btn-primary" (click)="volver()">Volver</button>

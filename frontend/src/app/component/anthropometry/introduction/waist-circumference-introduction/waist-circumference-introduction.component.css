@@ -16,7 +16,17 @@ ul {
     margin-left: 1.5em;
 }
 
+ol {
+    font-size: 1em;
+    margin-left: 1.5em;
+}
+
 .inner-ul {
+    font-size: 1.2em;
+    margin-left: 0.5em;
+}
+
+.inner-ol {
     font-size: 1.2em;
     margin-left: 0.5em;
 }

@@ -64,20 +64,21 @@ public class CmtcefService {
         }
         Session today = new Session(dataRecordService.getSessionNumber(id), LocalDate.now(ZoneId.of("Europe/Madrid")));
         String title = "Cuestionario del modelo transteórico del cambio de ejercicio físico";
-        String description = "El modelo de cambio transteórico es un marco conceptual ampliamente utilizado en psicología de la salud para entender y\r\n" + //
-                        "facilitar el cambio de comportamientos no saludables a saludables, como la adopción y mantenimiento del ejercicio físico. Este\r\n" + //
-                        "modelo se fundamenta en la idea de que el cambio es un proceso que se desarrolla a través de una serie de etapas no lineales.<br><br>\r\n" + //
-                        "El modelo transteórico del cambio de ejercicio físico es un enfoque psicológico que describe las etapas por las que una persona\r\n" + //
-                        "pasa al cambiar su comportamiento frente al ejercicio.<br><br>\r\n" + //
-                        "Estas etapas son:\r\n<ul>" + //
-                        "<li>Precontemplación: La persona no tiene intención de empezar a ejercitarse en el corto plazo</li>\r\n" + //
-                        "<li>Contemplación: Reconoce la necesidad de cambio y piensa en empezar a ejercitarse</li>\r\n" + //
-                        "<li>Preparación: Se prepara para comenzar a ejercitarse pronto, tomando pequeños pasos hacia ese cambio</li>\r\n" + //
-                        "<li>Acción: Ha comenzado a ejercitarse regularmente, pero el cambio es reciente</li>\r\n" + //
-                        "<li>Mantenimiento: Continúa ejercitándose regularmente y trabaja para prevenir recaídas.</li></ul>\r\n" + //
-                        "Este modelo subraya que el cambio es un proceso gradual y personalizado, permitiendo a los profesionales de la salud\r\n" + //
-                        "desarrollar intervenciones adecuadas para cada etapa, mejorando así la motivación y el éxito en la adopción del ejercicio\r\n" + //
-                        "físico como un hábito de vida saludable.";
+        String description = "<p>El <b>modelo de cambio transteórico</b> es un marco conceptual ampliamente utilizado en psicología de la salud para entender y facilitar el cambio de <b>comportamientos no saludables a saludables</b>, como la <b>adopción y mantenimiento del ejercicio físico</b>. Este modelo se fundamenta en la idea de que el cambio es un proceso que se desarrolla a través de una <b>serie de etapas no lineales</b>.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>El modelo transteórico del cambio de ejercicio físico es un enfoque psicológico que describe las <b>etapas</b> por las que una persona pasa al cambiar su comportamiento frente al ejercicio.</p>\r\n" + //
+                        "\r\n" + //
+                        "<p>Estas etapas son:</p>\r\n" + //
+                        "<ul>\r\n" + //
+                        "  <li><b>Precontemplación</b>: La persona no tiene intención de empezar a ejercitarse en el corto plazo.</li>\r\n" + //
+                        "  <li><b>Contemplación</b>: Reconoce la necesidad de cambio y piensa en empezar a ejercitarse.</li>\r\n" + //
+                        "  <li><b>Preparación</b>: Se prepara para comenzar a ejercitarse pronto, tomando pequeños pasos hacia ese cambio.</li>\r\n" + //
+                        "  <li><b>Acción</b>: Ha comenzado a ejercitarse regularmente, pero el cambio es reciente.</li>\r\n" + //
+                        "  <li><b>Mantenimiento</b>: Continúa ejercitándose regularmente y trabaja para prevenir recaídas.</li>\r\n" + //
+                        "</ul>\r\n" + //
+                        "\r\n" + //
+                        "<p>Este modelo subraya que el <b>cambio es un proceso gradual y personalizado</b>, permitiendo a los profesionales de la salud desarrollar <b>intervenciones adecuadas</b> para cada etapa, mejorando así la <b>motivación</b> y el <b>éxito en la adopción del ejercicio físico</b> como un <b>hábito de vida saludable</b>.</p>\r\n" + //
+                        "";
         return new QuestionnairesInfo(title, description, sessions, cmtcefList.isEmpty(), isTodayCompleted, today);
     }
 
