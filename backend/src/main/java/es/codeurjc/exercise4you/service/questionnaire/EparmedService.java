@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.DocumentException;
 
+import es.codeurjc.exercise4you.entity.Patient;
+import es.codeurjc.exercise4you.entity.dto.PatientDTO;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
 import es.codeurjc.exercise4you.entity.questionnaire.Question;
 import es.codeurjc.exercise4you.entity.questionnaire.QuestionnaireAnswers;
@@ -25,6 +27,7 @@ import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.repository.mongo.questionnaire.EparmedRepository;
 import es.codeurjc.exercise4you.repository.mongo.questionnaire.QuestionRepository;
 import es.codeurjc.exercise4you.service.DataRecordService;
+import es.codeurjc.exercise4you.service.PatientService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -37,6 +40,8 @@ public class EparmedService {
     private final EparmedRepository eparmedRepository;
     @Autowired
     private final DataRecordService dataRecordService;
+    @Autowired
+    private final PatientService patientService;
     @Autowired
     private final PdfService pdfService;
 
@@ -91,19 +96,27 @@ public class EparmedService {
         
         // Try to get today's eparmed from the repository
         Optional<Eparmed> optional = eparmedRepository.findBySessionAndPatientId(session, id);
+        // We check if the patient can be pregnant to choose the first question
+        PatientDTO patient = patientService.getPatientDto(id);
+        String firstQuestion;
+        if(patient.getGender().equals("Femenino") && patient.getAge() >= 18 && patient.getAge() <= 65) {
+            firstQuestion = "eparmed1";
+        } else {
+            firstQuestion = "eparmed5";
+        }
         // If today's eparmed is not present, create a new one (we do not check if a data record exists, we will do so when the eparmed is completed)
         if(!optional.isPresent()){
-            Eparmed eparmed = Eparmed.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode("eparmed1").answers(new ArrayList<>()).build();
+            Eparmed eparmed = Eparmed.builder().patientId(id).completionDate(LocalDate.now(ZoneId.of("Europe/Madrid"))).session(dataRecordService.getSessionNumber(id)).complete(false).lastQuestionCode(firstQuestion).answers(new ArrayList<>()).build();
             eparmedRepository.save(eparmed);
-            Question question = questionRepository.findByCode("eparmed1");
+            Question question = questionRepository.findByCode(firstQuestion);
             List<Alert> alertList = new ArrayList<>();
             alertList.add(new Alert("ALERTA PARA PROFESIONALES DE LA SALUD ANTES DE INICIAR EL CUESTIONARIO","Este cuestionario está diseñado específicamente para ser administrado por profesionales de la salud. Su papel es fundamental para guiar a los pacientes a través de las preguntas, asegurándose de que las respuestas sean precisas y reflejen de manera fidedigna el estado de salud y las necesidades de cada paciente. En determinadas situaciones, usted podrá completar el cuestionario basándose en la información proporcionada por el paciente durante la consulta. Este enfoque colaborativo es crucial para personalizar las recomendaciones de actividad física, garantizando que sean seguras y efectivas. Por favor, proceda con la administración del cuestionario en el contexto de una evaluación de salud profesional y detallada."));
             return QuestionnaireInfo.builder().alreadyExists(false).question(question).alertList(alertList).build();
         }
         // If today's eparmed is present, we check if it hasn't had any questions answered (it is still in the first question)
         Eparmed eparmed = optional.get();
-        if(eparmed.getLastQuestionCode().equals("eparmed1")){
-            Question question = questionRepository.findByCode("eparmed1");
+        if(eparmed.getLastQuestionCode().equals(firstQuestion)){
+            Question question = questionRepository.findByCode(firstQuestion);
             List<Alert> alertList = new ArrayList<>();
             alertList.add(new Alert("ALERTA PARA PROFESIONALES DE LA SALUD ANTES DE INICIAR EL CUESTIONARIO","Este cuestionario está diseñado específicamente para ser administrado por profesionales de la salud. Su papel es fundamental para guiar a los pacientes a través de las preguntas, asegurándose de que las respuestas sean precisas y reflejen de manera fidedigna el estado de salud y las necesidades de cada paciente. En determinadas situaciones, usted podrá completar el cuestionario basándose en la información proporcionada por el paciente durante la consulta. Este enfoque colaborativo es crucial para personalizar las recomendaciones de actividad física, garantizando que sean seguras y efectivas. Por favor, proceda con la administración del cuestionario en el contexto de una evaluación de salud profesional y detallada."));
             return QuestionnaireInfo.builder().alreadyExists(false).question(question).alertList(alertList).build();
