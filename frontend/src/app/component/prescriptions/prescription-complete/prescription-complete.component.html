@@ -82,7 +82,7 @@
                                         <option>Diabetes</option>
                                         <option>Dislipemia</option>
                                         <option>Hipertensión</option>
-                                        <option>Síndrome metabóllico</option>
+                                        <option>Síndrome metabólico</option>
                                         <option>Sobrepeso y Obesidad</option>
                                     </select>
                                     <select [disabled]="this.prescriptionSelectionState!=''" (click)="checkHasParkinson()" *ngIf="(populationGroup=='Adultos (18-65 años)' || populationGroup=='Mayores (> 65 años)') && this.hasDisease && this.diseaseGroup == 'Enfermedades musculares'" class="form-select" id="disease" formControlName="disease">
