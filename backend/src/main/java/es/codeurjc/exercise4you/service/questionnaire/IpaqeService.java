@@ -185,7 +185,7 @@ public class IpaqeService {
             answers.add(new QuestionnaireAnswers.Answers(answer.getQuestion(), answer.getAnswer()));
         }
         String[] date = ipaqe.getCompletionDate().toString().split("-");
-        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], answers);
+        return new QuestionnaireAnswers("Sesión " + session + " - " + date[2] + "/" + date[1] + "/" + date[0], ipaqe.getWeight(), answers);
     }
 
     public void setWeight(Integer id, Integer session, Double weight) {

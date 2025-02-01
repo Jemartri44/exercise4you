@@ -32,6 +32,7 @@ export class QuestionnaireAnswersComponent implements OnInit {
         if(questionnaireAnswers === undefined ) {
           throw new Error('No se ha podido obtener la información del cuestionario');
         }
+        console.debug(questionnaireAnswers)
         return ({ appState: 'LOADED', appData: questionnaireAnswers })
       }),
       startWith({ appState: 'LOADING', questionState: 'LOADING' }),
