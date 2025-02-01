@@ -142,7 +142,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
 
@@ -359,7 +359,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
 
@@ -573,7 +573,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
         
@@ -686,7 +686,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
 
@@ -855,7 +855,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
 
@@ -976,7 +976,7 @@ public class PdfService {
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(4);
+        img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
 
