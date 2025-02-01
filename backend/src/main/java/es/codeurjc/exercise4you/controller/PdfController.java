@@ -43,6 +43,22 @@ public class PdfController {
                 .body(resource);
     }
 
+    @GetMapping("/skin-folds-guide")
+    public ResponseEntity<Resource> downloadSkinFoldsGuide() throws IOException {   
+        MultipartFile multipartFile = pdfService.getSkinFoldsGuide();
+        byte[] array = multipartFile.getBytes();
+
+        ByteArrayResource resource = new ByteArrayResource(array);
+        return ResponseEntity.ok()
+                .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.attachment()
+                            .filename(multipartFile.getName())
+                            .build().toString())
+                .body(resource);
+    }
+
     @GetMapping("/pdf/{id}/{pdfType}/{nSession}")
     public ResponseEntity<Resource> downloadPdf(@PathVariable Integer id, @PathVariable String pdfType, @PathVariable Integer nSession) throws IOException {   
         MultipartFile multipartFile = pdfService.getPdf(id, pdfType.replace("-X","").replace("-","").toLowerCase(), nSession);

@@ -87,6 +87,12 @@ public class PdfService {
         return s3Service.downloadMultipartFile(filepath, filename);
     }
 
+    public MultipartFile getSkinFoldsGuide() throws IOException{
+        String filepath = "pdfs/";
+        String filename = "skinFoldsGuide.pdf";
+        return s3Service.downloadMultipartFile(filepath, filename);
+    }
+
     public String generateIpaqPdf(Ipaq ipaq) throws DocumentException, IOException {
         Optional<Patient> optional = patientRepository.findById(ipaq.getPatientId());
         if (!optional.isPresent()) {

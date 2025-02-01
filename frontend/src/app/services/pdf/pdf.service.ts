@@ -16,4 +16,8 @@ export class PdfService {
   getManual() {
     return this.http.get(environment.apiUrl + "/manual", {observe: 'response', responseType: 'blob'});
   }
+
+  getSkinFoldsGuide() {
+    return this.http.get(environment.apiUrl + "/skin-folds-guide", {observe: 'response', responseType: 'blob'});
+  }
 }

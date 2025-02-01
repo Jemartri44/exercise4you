@@ -2,7 +2,7 @@
     <li><h3>Descripción</h3></li>
     <p>Realice <b>mediciones de pliegues cutáneos</b> en las <b>localizaciones específicas</b> utilizando un <b>plicómetro</b>. Estas mediciones son la base para la aplicación de diversas <b>fórmulas</b> y poder así establecer la <b>densidad corporal</b>.</p> 
     <p *ngIf="!this.kid">A partir de la <b>densidad corporal</b>, se pueden utilizar diferentes fórmulas para estimar el <b>porcentaje de masa grasa (% MG)</b>. Las que más se utilizan en población adulta son las fórmulas de <b>Siri</b> y <b>Brozek et al.</b> En esta calculadora se utiliza la <b>fórmula de Siri</b> para adultos entre <b>19 y 60 años</b>, y la <b>fórmula de Brozek et al.</b> para mayores de <b>60 años</b>.</p> 
-    <p>Para conocer en detalle cómo medir estos pliegues, consulte la <a><u>Guía de medición de pliegues cutáneos</u></a>.</p>
+    <p>Para conocer en detalle cómo medir estos pliegues, consulte la <a (click)="openSkinFoldsGuide()"><u>Guía de medición de pliegues cutáneos</u></a>.</p>
     <li><h3>Fórmulas para estimar la densidad corporal</h3></li>
     <ng-container *ngIf="!this.kid">
       <p>Las fórmulas más utilizadas para estimar la <b>densidad corporal</b> son:</p>
