@@ -116,7 +116,7 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), ipaq.getCompletionDate()) +" años)", leftColumnFont);
@@ -132,22 +132,17 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
-        Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
-        Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
-                        "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
-        p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        ct.addElement(p5);
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(8);
+        img.setSpacingBefore(20);
         ct.addElement(img);
         ct.go();
 
         Paragraph emptyLine = new Paragraph("");
-        emptyLine.setSpacingBefore(80);
+        emptyLine.setSpacingBefore(75);
         document.add(emptyLine);
         document.add(linebreak);
 
@@ -333,7 +328,7 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         DecimalFormat df = new DecimalFormat("0.00");
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), ipaqe.getCompletionDate()) +" años)", leftColumnFont);
@@ -349,22 +344,17 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
-        Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
-        Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
-                        "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
-        p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        ct.addElement(p5);
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(8);
+        img.setSpacingBefore(20);
         ct.addElement(img);
         ct.go();
 
         Paragraph emptyLine = new Paragraph("");
-        emptyLine.setSpacingBefore(80);
+        emptyLine.setSpacingBefore(75);
         document.add(emptyLine);
         document.add(linebreak);
 
@@ -551,7 +541,7 @@ public class PdfService {
         
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), cmtcef.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3= new Paragraph("Fecha: " + cmtcef.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + cmtcef.getSession() + ")", leftColumnFont);
@@ -563,22 +553,17 @@ public class PdfService {
         ct.addElement(p3);
         ct.go();
         
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
-        Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
-        Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
-        "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
-        p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        ct.addElement(p5);
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(8);
+        img.setSpacingBefore(10);
         ct.addElement(img);
         ct.go();
         
         Paragraph emptyLine = new Paragraph("");
-        emptyLine.setSpacingBefore(80);
+        emptyLine.setSpacingBefore(55);
         document.add(emptyLine);
         document.add(linebreak);
 
@@ -664,7 +649,7 @@ public class PdfService {
         
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), parq.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p3 = new Paragraph("Fecha: " + parq.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + parq.getSession() + ")", leftColumnFont);
@@ -676,7 +661,7 @@ public class PdfService {
         ct.addElement(p3);
         ct.go();
         
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
@@ -705,6 +690,7 @@ public class PdfService {
         recommendationReason.setSpacingBefore(8);
         recommendationReason.setLeading(12);
         recommendationReason.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        recommendationReason.setSpacingAfter(2);
         document.add(recommendationReason);
 
         List recommendations = new List(List.UNORDERED);
@@ -714,6 +700,7 @@ public class PdfService {
         for (String characteristic : results.getRecommendations()) {
             ListItem item = new ListItem(characteristic, bodyFont);
             item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.setLeading(12f);
             recommendations.add(item);
         }
         document.add(recommendations);
@@ -729,10 +716,11 @@ public class PdfService {
         }
         }
 
-        Paragraph delayExercise = new Paragraph("Retrase el inicio de su actividad física sí:", bodyFont);
+        Paragraph delayExercise = new Paragraph("Retrase el inicio de su actividad física si:", bodyFont);
         delayExercise.setSpacingBefore(8);
         delayExercise.setLeading(12);
         delayExercise.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        delayExercise.setSpacingAfter(2);
         document.add(delayExercise);
         String[] delayReasons = {
             "No se siente bien debido a una enfermedad temporal como un resfriado o fiebre. Conviene esperar a que esté recuperado.",
@@ -747,26 +735,29 @@ public class PdfService {
         for (String reason : delayReasons) {
             ListItem item = new ListItem(reason, bodyFont);
             item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.setLeading(12f);
             delay.add(item);
         }
         document.add(delay);
 
         Paragraph declarationTitle = new Paragraph("DECLARACIÓN DEL PACIENTE", subtitleFont);
         declarationTitle.setSpacingBefore(12);
+        declarationTitle.setSpacingAfter(2);
         declarationTitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
         document.add(declarationTitle);
-        Paragraph declaration = new Paragraph("Todas las personas que hayan completado el PAR-Q+, por favor lean y firmen la declaración que se muestra a continuación.\n" + //
-                        "\n" + //
-                        "Si tiene menos de la edad legal requerida para dar consentimiento o necesita el consentimiento de la persona que presenta su tutela; su padre, tutor o cuidador también debe firmar este formulario.\n" + //
-                        "\n" + //
-                        "Yo, el abajo firmante, declara haber leído y comprendido el mencionado cuestionario. Reconozco que esta autorización de actividad física es válida por un máximo de 12 meses a partir de la fecha en la que se cumplimenta y deja de ser válida si mi condición cambia. \n" + //
-                        "\n" + //
-                        "Autorizo al centro de fisioterapia a guardar una copia de este cuestionario para uso interno. En cuyo caso la entidad estará obligada a respetar la confidencialidad de dicho documento, en cumplimiento de la ley en vigor."
-                        , bodyFont);
-        declaration.setSpacingBefore(8);
-        declaration.setLeading(10);
-        declaration.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
-        document.add(declaration);
+        String[] declarations = {
+            "Todas las personas que hayan completado el PAR-Q+, por favor lean y firmen la declaración que se muestra a continuación.",
+            "Si tiene menos de la edad legal requerida para dar consentimiento o necesita el consentimiento de la persona que presenta su tutela; su padre, tutor o cuidador también debe firmar este formulario.",
+            "Yo, el abajo firmante, declara haber leído y comprendido el mencionado cuestionario. Reconozco que esta autorización de actividad física es válida por un máximo de 12 meses a partir de la fecha en la que se cumplimenta y deja de ser válida si mi condición cambia.",
+            "Autorizo al centro de fisioterapia a guardar una copia de este cuestionario para uso interno. En cuyo caso la entidad estará obligada a respetar la confidencialidad de dicho documento, en cumplimiento de la ley en vigor."
+        };
+        for(String declaration : declarations){
+            Paragraph p = new Paragraph(declaration, bodyFont);
+            p.setSpacingBefore(6);
+            p.setLeading(12f);
+            p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            document.add(p);
+        }
 
 
         ct.setSimpleColumn(90, 0, 310, 140); // coordinates for the left column
@@ -833,7 +824,7 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), eparmed.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p4 = new Paragraph("Fecha: " + eparmed.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + eparmed.getSession() + ")", leftColumnFont);
@@ -845,7 +836,7 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
                         "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
@@ -953,7 +944,7 @@ public class PdfService {
 
         ColumnText ct = new ColumnText(writer.getDirectContent());
         Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
-        ct.setSimpleColumn(80, 150, 320, 695); // coordinates for the left column
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
         Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
         Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), apalq.getCompletionDate()) +" años)", leftColumnFont);
         Paragraph p4 = new Paragraph("Fecha: " + apalq.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + apalq.getSession() + ")", leftColumnFont);
@@ -965,25 +956,20 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(300, 150, 520, 695); // coordinates for the right column
-        Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
-        Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
-                        "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
-        p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        ct.addElement(p5);
-        
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
         Image img = Image.getInstance(imgStream.readAllBytes());
         img.scaleToFit(80, 80); // adjust the size as needed
         img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        img.setSpacingBefore(8);
+        img.setSpacingBefore(10);
         ct.addElement(img);
         ct.go();
-
+        
         Paragraph emptyLine = new Paragraph("");
-        emptyLine.setSpacingBefore(80);
+        emptyLine.setSpacingBefore(55);
         document.add(emptyLine);
         document.add(linebreak);
+
 
         Font bodyFont = FontFactory.getFont("Helvetica", 9);
         Font boldBodyFont = FontFactory.getFont("Helvetica", 9, Font.BOLD);
