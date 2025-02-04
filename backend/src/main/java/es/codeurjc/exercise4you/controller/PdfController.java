@@ -60,7 +60,8 @@ public class PdfController {
     }
 
     @GetMapping("/pdf/{id}/{pdfType}/{nSession}")
-    public ResponseEntity<Resource> downloadPdf(@PathVariable Integer id, @PathVariable String pdfType, @PathVariable Integer nSession) throws IOException {   
+    public ResponseEntity<Resource> downloadPdf(@PathVariable Integer id, @PathVariable String pdfType, @PathVariable Integer nSession) throws IOException {
+        System.out.println("PdfController.downloadPdf() id: " + id + " pdfType: " + pdfType + " nSession: " + nSession);
         MultipartFile multipartFile = pdfService.getPdf(id, pdfType.replace("-X","").replace("-","").toLowerCase(), nSession);
         byte[] array = multipartFile.getBytes();
 

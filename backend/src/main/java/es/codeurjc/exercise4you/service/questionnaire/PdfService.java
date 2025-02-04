@@ -1,28 +1,34 @@
 package es.codeurjc.exercise4you.service.questionnaire;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
@@ -30,6 +36,7 @@ import com.itextpdf.text.List;
 import com.itextpdf.text.ListItem;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.ByteBuffer;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -39,6 +46,8 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import es.codeurjc.exercise4you.entity.Patient;
 import es.codeurjc.exercise4you.entity.PdfMultipartFile;
+import es.codeurjc.exercise4you.entity.objectives.Objective;
+import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
 import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
@@ -69,6 +78,9 @@ public class PdfService {
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private Locale locale = new Locale("es", "ES");
+    private DateTimeFormatter timeFormatter = DateTimeFormatter
+        .ofLocalizedTime(FormatStyle.SHORT)
+        .withLocale(locale);
 
     public MultipartFile getPdf(Integer id, String pdfType, Integer nSession) throws IOException{
         patientService.checkSession(nSession);
@@ -614,6 +626,8 @@ public class PdfService {
             document.add(conclusion);
         }
 
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
         document.close();
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_CMTCEF_" + cmtcef.getCompletionDate() +".pdf", buffer.toByteArray());
@@ -1081,6 +1095,8 @@ public class PdfService {
         conclusion.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
         document.add(conclusion);
 
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
         document.close();
         
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_APALQ_" + apalq.getCompletionDate() +".pdf", buffer.toByteArray());
@@ -1090,6 +1106,214 @@ public class PdfService {
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
         }
+    }
+
+    public String generateObjectivesPdf(ObjectivesResponse objectivesResponse) throws DocumentException, MalformedURLException, IOException {
+        Optional<Patient> optional = patientRepository.findById(objectivesResponse.getPatientId());
+        if (!optional.isPresent()) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+        Patient patient = optional.get();
+
+        Document document = new Document(PageSize.A4, 70, 70, 60, 60);
+        ByteBuffer buffer = new ByteBuffer();
+        PdfWriter writer = PdfWriter.getInstance(document, buffer);
+        document.open();
+
+        Font titleFont = FontFactory.getFont("Helvetica", 20);
+        Paragraph title = new Paragraph("Objetivos", titleFont);
+        title.setSpacingAfter(-10);
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        Chunk linebreak = new Chunk(new LineSeparator());
+        
+
+        document.add(title);
+        document.add(linebreak);
+
+        ColumnText ct = new ColumnText(writer.getDirectContent());
+        Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
+        ct.setSimpleColumn(90, 150, 336, 725); // coordinates for the left column
+        Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), objectivesResponse.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + objectivesResponse.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + objectivesResponse.getSession() + ")", leftColumnFont);
+        p1.setSpacingAfter(3);
+        p2.setSpacingAfter(3);
+        p4.setSpacingAfter(3);
+        ct.addElement(p1);
+        ct.addElement(p2);
+        ct.addElement(p4);
+        ct.go();
+
+        ct.setSimpleColumn(340, 150, 500, 725); // coordinates for the right column
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
+        img.scaleToFit(80, 80); // adjust the size as needed
+        img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        img.setSpacingBefore(8);
+        ct.addElement(img);
+        ct.go();
+
+        Paragraph emptyLine = new Paragraph("");
+        emptyLine.setSpacingBefore(55);
+        document.add(emptyLine);
+        document.add(linebreak);
+
+        Font subtitleFont = FontFactory.getFont("Helvetica", 14, Font.BOLD);
+        Paragraph subtitle = new Paragraph("Descripción", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(5);
+        subtitle.setSpacingAfter(5);
+        document.add(subtitle);
+
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        Paragraph p = new Paragraph();
+        p.setSpacingBefore(10);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Partiendo de los objetivos generales previamente definidos para el paciente y contando con su opinión y participación, se han establecido objetivos específicos durante esta sesión con el fin de guiar de manera efectiva su programa de ejercicio terapéutico. La colaboración del paciente ha sido fundamental para asegurar que los objetivos reflejen sus necesidades, preferencias y capacidades. Estos objetivos se han formulado utilizando la metodología SMART, que asegura que cada objetivo cumpla con los criterios de ser ", bodyFont));
+        p.add(new Chunk("Específico", boldBodyFont));
+        p.add(new Chunk(", ", bodyFont));
+        p.add(new Chunk("Medible", boldBodyFont));
+        p.add(new Chunk(", ", bodyFont));
+        p.add(new Chunk("Alcanzable", boldBodyFont));
+        p.add(new Chunk(", ", bodyFont));
+        p.add(new Chunk("Relevante", boldBodyFont));
+        p.add(new Chunk(" y con un ", bodyFont));
+        p.add(new Chunk("Tiempo definido", boldBodyFont));
+        p.add(new Chunk(".", bodyFont));
+        document.add(p);
+
+        String[] boldTexts = {"Específicos:", "Medibles:", "Alcanzables:", "Relevantes:", "Tiempo definido:"};
+        String[] definitions = {" Cada objetivo detalla claramente lo que se busca lograr. Por ejemplo, mejorar la fuerza muscular en una área determinada del cuerpo o incrementar la capacidad cardiovascular del paciente.",
+                        " Se han establecido indicadores cuantificables que permitirán evaluar el progreso de manera objetiva. Esto incluye el uso de pruebas estandarizadas, como el test 6 minutos marcha o cuestionarios de calidad de vida, que facilitan la monitorización de los avances alcanzados.",
+                        " Los objetivos han sido ajustados a las capacidades actuales del paciente, garantizando que sean realistas y factibles de lograr dentro de sus limitaciones físicas y contextuales. Esto incluye un equilibrio entre el desafío y la seguridad para promover una progresión constante.",
+                        " Cada objetivo está alineado con las necesidades y prioridades del paciente, asegurando que las intervenciones tengan un impacto significativo en su bienestar general y en la mejora de su calidad de vida.",
+                        " Se ha establecido un marco temporal claro para la consecución de cada objetivo, lo que facilita la planificación de las actividades y permite realizar evaluaciones periódicas para ajustar el programa según sea necesario."};
+        List list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1);
+            list.add(item);
+        }
+        document.add(list);
+
+        p = new Paragraph("La aplicación de la metodología SMART en la definición de los objetivos garantiza una intervención personalizada y estructurada, promoviendo la motivación y el compromiso del paciente. Además, facilita la evaluación continua del progreso, permitiendo realizar los ajustes necesarios para optimizar los resultados del programa de ejercicio terapéutico.", bodyFont);
+        p.setSpacingBefore(25);
+        p.setSpacingAfter(15);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        subtitle = new Paragraph("Características del paciente", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+        
+        list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        ListItem item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Grupo poblacional: ", boldBodyFont));
+        item.add(new Chunk(objectivesResponse.getObjectives().get(0).getPopulationGroup(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Padece enfermedades crónicas: ", boldBodyFont));
+        item.add(new Chunk(objectivesResponse.getObjectives().get(0).getChronicDisease(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Grupo de enfermedades crónicas: ", boldBodyFont));
+        item.add(new Chunk(objectivesResponse.getObjectives().get(0).getGroupOfChronicDiseases(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Enfermedad que padece: ", boldBodyFont));
+        item.add(new Chunk(objectivesResponse.getObjectives().get(0).getDisease(), bodyFont));
+        list.add(item);
+        document.add(list);
+        
+        p = new Paragraph("A continuación, se detallan los diferentes objetivos acordados con el paciente:", bodyFont);
+        p.setSpacingAfter(15);
+        p.setSpacingBefore(15);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        for(Objective objective : objectivesResponse.getObjectives()) {
+            document.newPage();
+
+            subtitle = new Paragraph("Objetivo " + (objectivesResponse.getObjectives().indexOf(objective)+1), subtitleFont);
+            subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            subtitle.setSpacingBefore(5);
+            subtitle.setSpacingAfter(5);
+            document.add(subtitle);
+
+            addElementName(document, "Objetivo: ");
+            addElementDetails(document, objective.getObjective());
+            addElementName(document, "Rango: ");
+            addElementDetails(document, objective.getRange());
+            addElementName(document, "Prueba o cuestionario: ");
+            addElementDetails(document, objective.getTestOrQuestionnaire());
+            addElementName(document, "Específico: ");
+            addElementDetails(document, objective.getSpecific());
+            addElementName(document, "Medible: ");
+            addElementDetails(document, objective.getMeasurable());
+            addElementName(document, "Alcanzable: ");
+            addElementDetails(document, objective.getAchievable());
+            addElementName(document, "Relevante: ");
+            addElementDetails(document, objective.getRelevant());
+            addElementName(document, "Temporal: ");
+            addElementDetails(document, objective.getTemporal());
+            addElementName(document, "Objetivo SMART: ");
+            addElementDetails(document, objective.getSmartObjective());
+        }
+
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
+        document.close();
+
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_OBJECTIVES_" + objectivesResponse.getCompletionDate() +".pdf", buffer.toByteArray());
+        try {
+            String returned = s3Service.uploadMultipartFile("pdfs/objectives/", pdfMultipartFile);
+            return returned.split(" ")[3];
+        } catch (Exception e) {
+            throw new IOException("Error uploading file to S3");
+        }
+    }
+
+    private static void addElementName(Document document, String name) throws DocumentException {
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        List list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        ListItem item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        item.add(new Chunk(name, boldBodyFont));
+        list.add(item);
+        document.add(list);
+    }
+
+    private static void addElementDetails(Document document, String details) throws DocumentException {
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        Paragraph p = new Paragraph(details, bodyFont);
+        p.setIndentationLeft(40);
+        p.setSpacingAfter(10);
+        p.setSpacingBefore(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        document.add(p);
     }
 
     private static int getYearsBetween(LocalDate date1, LocalDate date2) {

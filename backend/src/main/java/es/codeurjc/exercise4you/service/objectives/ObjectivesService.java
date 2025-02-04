@@ -26,6 +26,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Files;
+import com.itextpdf.text.DocumentException;
 
 import es.codeurjc.exercise4you.entity.DataRecord;
 import es.codeurjc.exercise4you.entity.Patient;
@@ -40,6 +41,7 @@ import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.repository.mongo.ObjectivesRepository;
 import es.codeurjc.exercise4you.service.DataRecordService;
 import es.codeurjc.exercise4you.service.auth.AuthService;
+import es.codeurjc.exercise4you.service.questionnaire.PdfService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -55,6 +57,8 @@ public class ObjectivesService {
     private PatientRepository patientRepository;
     @Autowired
     private ObjectivesRepository objectivesRepository;
+    @Autowired
+    private PdfService pdfService;
 
     private List<Objective> objectives;
 
@@ -150,6 +154,14 @@ public class ObjectivesService {
             objectivesRepository.delete(optional.get());
         }else{
             dataRecordService.setObjectives(objectivesResponse);
+        }
+        try {
+            String pdfName = pdfService.generateObjectivesPdf(objectivesResponse);
+            objectivesResponse.setPdf(pdfName);
+        } catch (DocumentException e) {
+            throw new RuntimeException("Error generando el archivo PDF");
+        } catch (IOException e) {
+            throw new RuntimeException("Error guardando el archivo PDF en el servidor");
         }
         objectivesRepository.save(objectivesResponse);
     }
