@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.DocumentException;
 
 import es.codeurjc.exercise4you.entity.DataRecord;
 import es.codeurjc.exercise4you.entity.Patient;
@@ -34,6 +35,7 @@ import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.repository.mongo.PrescriptionsRepository;
 import es.codeurjc.exercise4you.service.DataRecordService;
 import es.codeurjc.exercise4you.service.auth.AuthService;
+import es.codeurjc.exercise4you.service.questionnaire.PdfService;
 
 @Service
 public class PrescriptionService {
@@ -48,6 +50,8 @@ public class PrescriptionService {
     private PatientRepository patientRepository;
     @Autowired
     private PrescriptionsRepository prescriptionsRepository;
+    @Autowired
+    private PdfService pdfService;
 
     private List<Prescription> prescriptions;
 
@@ -151,6 +155,14 @@ public class PrescriptionService {
             prescriptionsRepository.delete(optional.get());
         }else{
             dataRecordService.setPrescriptions(prescriptionsResponse);
+        }
+        try {
+            String pdfName = pdfService.generatePrescriptionsPdf(prescriptionsResponse);
+            prescriptionsResponse.setPdf(pdfName);
+        } catch (DocumentException e) {
+            throw new RuntimeException("Error generando el archivo PDF");
+        } catch (IOException e) {
+            throw new RuntimeException("Error guardando el archivo PDF en el servidor");
         }
         prescriptionsRepository.save(prescriptionsResponse);
     }

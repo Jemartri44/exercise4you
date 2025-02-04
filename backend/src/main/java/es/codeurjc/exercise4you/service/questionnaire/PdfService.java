@@ -48,6 +48,8 @@ import es.codeurjc.exercise4you.entity.Patient;
 import es.codeurjc.exercise4you.entity.PdfMultipartFile;
 import es.codeurjc.exercise4you.entity.objectives.Objective;
 import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
+import es.codeurjc.exercise4you.entity.prescriptions.Prescription;
+import es.codeurjc.exercise4you.entity.prescriptions.PrescriptionsResponse;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
 import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
 import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
@@ -1290,6 +1292,232 @@ public class PdfService {
         } catch (Exception e) {
             throw new IOException("Error uploading file to S3");
         }
+    }
+
+    public String generatePrescriptionsPdf(PrescriptionsResponse prescriptionsResponse) throws DocumentException, MalformedURLException, IOException {
+
+        Optional<Patient> optional = patientRepository.findById(prescriptionsResponse.getPatientId());
+        if (!optional.isPresent()) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+        Patient patient = optional.get();
+
+        Document document = new Document(PageSize.A4, 70, 70, 60, 60);
+        ByteBuffer buffer = new ByteBuffer();
+        PdfWriter writer = PdfWriter.getInstance(document, buffer);
+        document.open();
+
+        Font titleFont = FontFactory.getFont("Helvetica", 20);
+        Paragraph title = new Paragraph("Prescripción de ejercicio físico", titleFont);
+        title.setSpacingAfter(-10);
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        Chunk linebreak = new Chunk(new LineSeparator());
+        
+
+        document.add(title);
+        document.add(linebreak);
+
+        ColumnText ct = new ColumnText(writer.getDirectContent());
+        Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
+        ct.setSimpleColumn(90, 150, 336, 725); // coordinates for the left column
+        Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), prescriptionsResponse.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + prescriptionsResponse.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + prescriptionsResponse.getSession() + ")", leftColumnFont);
+        p1.setSpacingAfter(3);
+        p2.setSpacingAfter(3);
+        p4.setSpacingAfter(3);
+        ct.addElement(p1);
+        ct.addElement(p2);
+        ct.addElement(p4);
+        ct.go();
+
+        ct.setSimpleColumn(340, 150, 500, 725); // coordinates for the right column
+        Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
+        Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
+                        "No olvide consultar a su médico antes de iniciar un programa de ejercicio físico.", rightColumnFont);
+        p5.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        ct.addElement(p5);
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
+        img.scaleToFit(80, 80); // adjust the size as needed
+        img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        img.setSpacingBefore(8);
+        ct.addElement(img);
+        ct.go();
+
+        Paragraph emptyLine = new Paragraph("");
+        emptyLine.setSpacingBefore(80);
+        document.add(emptyLine);
+        document.add(linebreak);
+
+        Font subtitleFont = FontFactory.getFont("Helvetica", 14, Font.BOLD);
+        Paragraph subtitle = new Paragraph("Descripción", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(5);
+        subtitle.setSpacingAfter(5);
+        document.add(subtitle);
+
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        Paragraph p = new Paragraph("A continuación, le presentamos una descripción general de la prescripción de ejercicio diseñada específicamente para usted. Este plan se basa en sus necesidades y objetivos, con la finalidad de mejorar su estado de salud y prevenir posibles complicaciones asociadas a su condición. Cada una de las recomendaciones aquí incluidas ha sido cuidadosamente seleccionada en función de la información que usted nos ha proporcionado y de las guías clínicas más actualizadas.", bodyFont);
+        p.setSpacingBefore(10);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        p = new Paragraph("Nuestro enfoque parte de la identificación de su población objetivo (edad y características fisiológicas) y de las enfermedades crónicas o factores de riesgo que pudieran requerir un seguimiento especial. A partir de estos datos, se han determinado tanto el nivel de exigencia que mejor se adapta a su estado actual como el tipo de ejercicio (aeróbico, fortalecimiento muscular, fortalecimiento muscular y óseo o neuromuscular) y la modalidad más adecuada (continuo, dinámico, estático, balístico, fuerza dinámica, fuerza isométrica, etc.).", bodyFont);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        p = new Paragraph("La prescripción incluye indicaciones sobre la frecuencia, la intensidad, la duración, el tipo de entrenamiento y el volumen total de trabajo recomendado a la semana. Además, se ha planificado una progresión gradual para que su organismo se adapte al ejercicio sin riesgos innecesarios. Esta planificación tiene siempre en cuenta los objetivos específicos establecidos para usted, como podrían ser el aumento de la fuerza, la mejora de la capacidad aeróbica o la reducción del dolor articular.", bodyFont);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        p = new Paragraph("Por último, se han incorporado consideraciones especiales que recogen pautas de seguridad, posibles contraindicaciones, necesidad de supervisión y otros factores relevantes para su caso en particular. Estas precauciones aseguran que el programa sea eficaz y seguro, teniendo en cuenta cualquier limitación o requerimiento específico.", bodyFont);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        p = new Paragraph("A continuación, podrá consultar la prescripción de ejercicio generada, que detalla los elementos mencionados de manera individualizada. Este plan está pensado para promover su salud de forma sostenible, favoreciendo la adherencia y permitiendo realizar ajustes según sus avances y necesidades. Si tiene cualquier duda, no dude en contactar con su profesional de referencia para resolverla.", bodyFont);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        document.add(p);
+
+        subtitle = new Paragraph("Características del paciente", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+        
+        List list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        ListItem item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Grupo poblacional: ", boldBodyFont));
+        item.add(new Chunk(prescriptionsResponse.getPrescriptions().get(0).getPopulationGroup(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Padece enfermedades crónicas: ", boldBodyFont));
+        item.add(new Chunk(prescriptionsResponse.getPrescriptions().get(0).getChronicDisease(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Grupo de enfermedades crónicas: ", boldBodyFont));
+        item.add(new Chunk(prescriptionsResponse.getPrescriptions().get(0).getGroupOfChronicDiseases(), bodyFont));
+        list.add(item);
+        item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk("Enfermedad que padece: ", boldBodyFont));
+        item.add(new Chunk(prescriptionsResponse.getPrescriptions().get(0).getDisease(), bodyFont));
+        list.add(item);
+        document.add(list);
+
+        for(Prescription prescription : prescriptionsResponse.getPrescriptions()) {
+            document.newPage();
+
+            subtitle = new Paragraph("Ejercicio " + (prescriptionsResponse.getPrescriptions().indexOf(prescription)+1), subtitleFont);
+            subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            subtitle.setSpacingBefore(5);
+            subtitle.setSpacingAfter(5);
+            document.add(subtitle);
+
+            addPrescriptionElement(document, "Ejercicio", prescription.getExercise());
+            addPrescriptionElement(document, "Modalidad", prescription.getModality());
+            addPrescriptionElement(document, "Frecuencia", prescription.getFrequency());
+            addPrescriptionElement(document, "Intensidad", prescription.getIntensity());
+            addPrescriptionElement(document, "Tiempo", prescription.getTime());
+            addPrescriptionElement(document, "Tipo", prescription.getType());
+            addPrescriptionElement(document, "Volumen", prescription.getVolume());
+            addPrescriptionElement(document, "Progresión", prescription.getProgression());
+
+        }
+
+        if(prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations() != null && !prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations().isEmpty()) {
+            document.newPage();
+
+            subtitle = new Paragraph("Consideraciones especiales", subtitleFont);
+            subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            subtitle.setSpacingBefore(5);
+            subtitle.setSpacingAfter(5);
+            document.add(subtitle);
+
+            String[] lines = prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations().split("\\r?\\n");
+            emptyLine = new Paragraph("");
+            emptyLine.setSpacingBefore(5);
+            document.add(emptyLine);
+            list = new List(List.UNORDERED);
+            list.setListSymbol("\u2022  ");
+            list.setIndentationLeft(20);
+            list.setIndentationRight(20);
+            
+            for(String line : lines) {
+                item = new ListItem();
+                item.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+                item.add(new Chunk(line, bodyFont));
+                list.add(item);
+            }
+            document.add(list); 
+        }
+
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
+        document.close();
+
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_PRESCRIPTION_" + prescriptionsResponse.getCompletionDate() +".pdf", buffer.toByteArray());
+        try {
+            String returned = s3Service.uploadMultipartFile("pdfs/prescription/", pdfMultipartFile);
+            return returned.split(" ")[3];
+        } catch (Exception e) {
+            throw new IOException("Error uploading file to S3");
+        }
+    }
+
+    private static void addPrescriptionElement(Document document, String name, String details) throws DocumentException {
+        if(details == null || details.isEmpty()) {
+            return;
+        }
+        addPrescriptionElementName(document, name);
+        addPrescriptionElementDetails(document, details);
+    }
+
+    private static void addPrescriptionElementName(Document document, String name) throws DocumentException {
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        List list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        ListItem item = new ListItem();
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        item.add(new Chunk(name + ": ", boldBodyFont));
+        list.add(item);
+        document.add(list);
+    }
+
+    private static void addPrescriptionElementDetails(Document document, String details) throws DocumentException {
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        String[] lines = details.split("\\r?\\n");
+        Paragraph emptyLine = new Paragraph("");
+        emptyLine.setSpacingBefore(5);
+        document.add(emptyLine);
+        for(String line : lines) {
+            Paragraph p = new Paragraph(line, bodyFont);
+            p.setIndentationLeft(40);
+            p.setSpacingAfter(5);
+            p.setLeading(12);
+            p.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            document.add(p);
+        }
+        document.add(emptyLine);
+        
     }
 
     private static void addElementName(Document document, String name) throws DocumentException {

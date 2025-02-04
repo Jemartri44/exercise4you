@@ -49,7 +49,7 @@ export class PrescriptionsSessionButtonsComponent {
 
   openPdf(session: number) {
     this.loading_pdf = true;
-    this.pdfService.getPdf(this.router.url.split('/')[2], this.router.url.split('/')[3], session).subscribe(response => {
+    this.pdfService.getPdf(this.router.url.split('/')[2], "prescription", session).subscribe(response => {
       this.loading_pdf = false;
       if(response.body == null) {
         console.error("Error: PDF is null");
