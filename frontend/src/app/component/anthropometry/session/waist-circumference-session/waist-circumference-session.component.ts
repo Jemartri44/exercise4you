@@ -18,6 +18,7 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
   @ViewChild('risk') risk: ElementRef;
   error: string = "";
   gender: boolean;
+  changesSaved: boolean = false;
 
   constructor( private anthropometryService: AnthropometryService) { }
 
@@ -44,6 +45,7 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
   }
 
   calculate(): boolean {
+    this.changesSaved = false;
     let waistCircumference = +this.waistCircumference.nativeElement.value;
     if(waistCircumference) {
       waistCircumference = AnthropometryService.round(+this.waistCircumference.nativeElement.value, 1);
@@ -60,8 +62,8 @@ export class WaistCircumferenceSessionComponent implements AfterViewInit, OnInit
 
   validate(): boolean {
     const waistCircumference = +this.waistCircumference.nativeElement.value;
-    if (waistCircumference) {
-      if (waistCircumference < 0 || waistCircumference >= 1000) {
+    if (waistCircumference != null && waistCircumference != undefined) {
+      if (waistCircumference <= 0 || waistCircumference >= 1000) {
         this.error = "Introduzca una circunferencia de cintura válida";
         return false;
       }

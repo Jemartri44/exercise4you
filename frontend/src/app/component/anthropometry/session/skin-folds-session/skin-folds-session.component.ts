@@ -47,6 +47,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
   formula2: string = "";
   gender: boolean;
   age: number
+  changesSaved: boolean = false;
 
   constructor( private anthropometryService: AnthropometryService) {  }
 
@@ -99,6 +100,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
 
 
   calculate(throwError:boolean = true): boolean {
+    this.changesSaved = false;
     this.roundParams();
     if (!this.validate(throwError)) return false;
     let foldsSum: number;
@@ -132,7 +134,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
     const weight = +this.weight.nativeElement.value;
     const height = +this.height.nativeElement.value;
     if (!weight || !height) {
-      if(throwError){this.error = 'Complete los campos requeridos'}
+      if(throwError){this.error = 'Complete todos los campos requeridos'}
       return false;
     }
     if (weight != undefined) {
@@ -154,7 +156,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
           anteriorThighFold = +this.anteriorThighFold.nativeElement.value
           abdominalFold = +this.abdominalFold.nativeElement.value
           pectoralFold = +this.pectoralFold.nativeElement.value
-          if (!anteriorThighFold || !abdominalFold || !pectoralFold) { if(throwError){this.error = 'Complete los campos requeridos'}; return false; }
+          if (!anteriorThighFold || !abdominalFold || !pectoralFold) { if(throwError){this.error = 'Complete todos los campos requeridos'}; return false; }
           if (anteriorThighFold < 0 || anteriorThighFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue de muslo anterior válido"}; return false; }
           if (abdominalFold < 0 || abdominalFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue abdominal válido"}; return false; }
           if (pectoralFold < 0 || pectoralFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue pectoral válido"}; return false; }
@@ -162,7 +164,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
           suprailiacFold = +this.suprailiacFold.nativeElement.value
           tricipitalFold = +this.tricipitalFold.nativeElement.value
           anteriorThighFold = +this.anteriorThighFold.nativeElement.value
-          if (!suprailiacFold || !tricipitalFold || !anteriorThighFold) { if(throwError){this.error = 'Complete los campos requeridos'}; return false; }
+          if (!suprailiacFold || !tricipitalFold || !anteriorThighFold) { if(throwError){this.error = 'Complete todos los campos requeridos'}; return false; }
           if (suprailiacFold < 0 || suprailiacFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue suprailíaco válido"}; return false; }
           if (tricipitalFold < 0 || tricipitalFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue tricipital válido"}; return false; }
           if (anteriorThighFold < 0 || anteriorThighFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue de muslo anterior válido"}; return false; }
@@ -176,7 +178,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
         abdominalFold = +this.abdominalFold.nativeElement.value
         suprailiacFold = +this.suprailiacFold.nativeElement.value
         anteriorThighFold = +this.anteriorThighFold.nativeElement.value
-        if (!pectoralFold || !midaxillaryFold || !tricipitalFold || !subscapularFold || !abdominalFold || !suprailiacFold || !anteriorThighFold) { if(throwError){this.error = 'Complete los campos requeridos'}; return false; }
+        if (!pectoralFold || !midaxillaryFold || !tricipitalFold || !subscapularFold || !abdominalFold || !suprailiacFold || !anteriorThighFold) { if(throwError){this.error = 'Complete todos los campos requeridos'}; return false; }
         if (pectoralFold < 0 || pectoralFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue pectoral válido"}; return false; }
         if (midaxillaryFold < 0 || midaxillaryFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue axilar medio válido"}; return false; }
         if (tricipitalFold < 0 || tricipitalFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue tricipital válido"}; return false; }
@@ -190,7 +192,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
         subscapularFold = +this.subscapularFold.nativeElement.value
         bicipitalFold = +this.bicipitalFold.nativeElement.value
         tricipitalFold = +this.tricipitalFold.nativeElement.value
-        if (!suprailiacFold || !subscapularFold || !bicipitalFold || !tricipitalFold) { if(throwError){this.error = 'Complete los campos requeridos'}; return false; }
+        if (!suprailiacFold || !subscapularFold || !bicipitalFold || !tricipitalFold) { if(throwError){this.error = 'Complete todos los campos requeridos'}; return false; }
         if (suprailiacFold < 0 || suprailiacFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue suprailíaco válido"}; return false; }
         if (subscapularFold < 0 || subscapularFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue subescapular válido"}; return false; }
         if (bicipitalFold < 0 || bicipitalFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue bicipital válido"}; return false; }
@@ -199,7 +201,7 @@ export class SkinFoldsSessionComponent implements AfterViewInit, OnInit{
       case "Fórmula de Boileau et al.":
         tricipitalFold = this.tricipitalFold.nativeElement.value
         subscapularFold = this.subscapularFold.nativeElement.value
-        if (!tricipitalFold || !subscapularFold) { if(throwError){this.error = 'Complete los campos requeridos'}; return false; }
+        if (!tricipitalFold || !subscapularFold) { if(throwError){this.error = 'Complete todos los campos requeridos'}; return false; }
         if (tricipitalFold < 0 || tricipitalFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue tricipital válido"}; return false; }
         if (subscapularFold < 0 || subscapularFold >= 1000) { if(throwError){this.error = "Introduzca un pliegue subescapular válido"}; return false; }
         break;

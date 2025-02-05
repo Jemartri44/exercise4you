@@ -131,7 +131,6 @@
                         </div>
                     </div>
                 </div> 
-                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
 
                 <!-- RESULTADOS -->
                 <li class="mt-4">
@@ -174,5 +173,15 @@
             </ul>
         </div>
 
+    </div>
+    <div *ngIf="this.changesSaved" class="d-flex justify-content-center">
+        <div class="alert alert-success text-center" role="alert">
+            Los datos se han guardado correctamente.
+        </div>
+    </div>
+    <div *ngIf="error.length!=0" class="d-flex justify-content-center">
+        <div class="alert alert-danger text-center">
+            {{this.error}}
+        </div>
     </div>
 </div>

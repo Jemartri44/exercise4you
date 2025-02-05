@@ -21,6 +21,7 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
   @ViewChild('risk') risk: ElementRef;
   error: string = "";
   gender: boolean;
+  changesSaved: boolean = false;
 
   constructor( private anthropometryService: AnthropometryService) {  }
 
@@ -49,6 +50,7 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
   }
 
   calculate(): boolean {
+    this.changesSaved = false;
     let waistCircumference = +this.waistCircumference.nativeElement.value;
     let hipCircumference = +this.hipCircumference.nativeElement.value;
     if(waistCircumference) {
@@ -73,14 +75,14 @@ export class IccSessionComponent implements AfterViewInit, OnInit {
   validate(): boolean {
     const waistCircumference = +this.waistCircumference.nativeElement.value;
     const hipCircumference = +this.hipCircumference.nativeElement.value;
-    if (waistCircumference) {
-      if (waistCircumference < 0 || waistCircumference >= 1000) {
+    if (waistCircumference != null && waistCircumference != undefined) {
+      if (waistCircumference <= 0 || waistCircumference >= 1000) {
         this.error = "Introduzca una circunferencia de cintura válida";
         return false;
       }
     }
-    if (hipCircumference) {
-      if (hipCircumference < 0 || hipCircumference >= 1000) {
+    if (hipCircumference != null && hipCircumference != undefined) {
+      if (hipCircumference <= 0 || hipCircumference >= 1000) {
         this.error = "Introduzca una circunferencia de cadera válida";
         return false;
       }

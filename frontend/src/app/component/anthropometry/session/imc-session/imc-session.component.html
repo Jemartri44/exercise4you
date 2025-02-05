@@ -13,7 +13,6 @@
                     <input #height (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="height" name="height" min="0" max="999" step="0.01" maxlength="5">
                 </div>
                 <p>Cálculo:<span class="ms-5"></span>IMC = peso (kg) / altura (m)<span>&#178;</span><span class="ms-4"></span>IMC principal = IMC / 25</p>
-                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
                 <li class="mt-4"><h3>Resultados</h3></li>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <label for="imc" class="me-5">Índice de masa corporal:</label>
@@ -82,6 +81,16 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div *ngIf="this.changesSaved" class="d-flex justify-content-center">
+        <div class="alert alert-success text-center" role="alert">
+            Los datos se han guardado correctamente.
+        </div>
+    </div>
+    <div *ngIf="error.length!=0" class="d-flex justify-content-center">
+        <div class="alert alert-danger text-center">
+            {{this.error}}
         </div>
     </div>
 </div>

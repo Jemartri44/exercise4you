@@ -22,6 +22,7 @@ export class IdealWeightSessionComponent {
   @ViewChild('difference') difference: ElementRef;
   error: string = "";
   gender: boolean;
+  changesSaved: boolean = false;
 
   constructor( private anthropometryService: AnthropometryService) {  }
 
@@ -49,6 +50,7 @@ export class IdealWeightSessionComponent {
   }
 
   calculate(): boolean {
+    this.changesSaved = false;
     let weight = +this.weight.nativeElement.value;
     let height = +this.height.nativeElement.value;
     if(weight) {
@@ -72,13 +74,13 @@ export class IdealWeightSessionComponent {
   validate(): boolean {
     const weight = +this.weight.nativeElement.value;
     const height = +this.height.nativeElement.value;
-    if (weight) {
-      if (weight < 0 || weight >= 1000) {
+    if (weight != null && weight != undefined) {
+      if (weight <= 0 || weight >= 1000) {
         this.error = "Introduzca un peso válido";
         return false;
       }
     }
-    if (height) {
+    if (height != null && height != undefined) {
       if (height < 10 || height >= 300) {
         this.error = "Introduzca una altura válida";
         return false;

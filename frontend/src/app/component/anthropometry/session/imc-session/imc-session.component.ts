@@ -21,6 +21,7 @@ export class ImcSessionComponent implements AfterViewInit {
   @ViewChild('category') category: ElementRef;
   @ViewChild('risk') risk: ElementRef;
   error: string = "";
+  changesSaved: boolean = false;
 
 
   constructor( private anthropometryService: AnthropometryService) { }
@@ -40,6 +41,7 @@ export class ImcSessionComponent implements AfterViewInit {
   }
 
   calculate(): boolean {
+    this.changesSaved = false;
     let weight = +this.weight.nativeElement.value;
     let height = +this.height.nativeElement.value;
     if(weight) {
@@ -50,6 +52,7 @@ export class ImcSessionComponent implements AfterViewInit {
       height = AnthropometryService.round(+this.height.nativeElement.value, 2);
       this.height.nativeElement.value = height
     }
+    console.debug(this.validate())
     if (!this.validate()) return false;
     if (weight && height) {
       let solutions = this.anthropometryService.calculateImc(weight, height);
@@ -65,14 +68,15 @@ export class ImcSessionComponent implements AfterViewInit {
   validate(): boolean {
     const weight = +this.weight.nativeElement.value;
     const height = +this.height.nativeElement.value;
-    if (weight) {
-      if (weight < 0 || weight >= 1000) {
+    console.debug(weight)
+    if (weight != null && weight != undefined) {
+      if (weight <= 0 || weight >= 1000) {
         this.error = "Introduzca un peso válido";
         return false;
       }
     }
-    if (height) {
-      if (height < 0) {
+    if (height != null && height != undefined) {
+      if (height <= 0) {
         this.error = "Introduzca una altura válida";
         return false;
       }

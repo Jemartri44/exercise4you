@@ -154,12 +154,15 @@ export class AnthropometryComponent implements OnInit {
     if(this.calculator === undefined) {
       throw new Error('No se ha podido obtener la información del cuestionario');
     }
+    this.calculator.changesSaved = false;
     let data = this.calculator.getData();
     if(data === null) {
       return;
     }
+    console.debug(data);
     this.anthropometryState = this.anthropometryService.saveData(this.router.url.split('/')[3], this.router.url.split('/')[2], this.session.split(' ')[1] ,data).pipe(
       map(() => {
+        this.calculator.changesSaved = true;
         return { appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADED' };
       }),
       startWith({ appState: 'LOADED', dataState: 'LOADED', saveState: 'LOADING'}),

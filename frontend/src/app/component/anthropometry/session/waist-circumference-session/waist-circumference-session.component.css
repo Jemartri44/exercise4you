@@ -31,3 +31,8 @@ ul {
 .form-control.text {
     width: 250px;
 }
+
+.alert{
+    font-size:1.2em;
+    padding: 10px;
+}

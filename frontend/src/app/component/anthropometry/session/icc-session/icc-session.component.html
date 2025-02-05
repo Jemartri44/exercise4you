@@ -12,7 +12,6 @@
                     <input #hipCircumference (change)="calculate()" class="form-control number" [readonly]="!this.editable" type="number" id="hipCircumference" name="hipCircumference" min="0" max="999" step="1" maxlength="5">
                 </div>
                 <p>Cálculo:<span class="ms-5"></span> ICC = cir. cintura (cm) / cir. cadera (cm)</p>
-                <p *ngIf="error.length!=0" class="mb-4 alert alert-danger">{{this.error}}</p>
                 <li class="mt-4"><h3>Resultados</h3></li>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <label for="icc" class="me-5">Índice cintura-cadera:</label>
@@ -83,6 +82,16 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div *ngIf="this.changesSaved" class="d-flex justify-content-center">
+        <div class="alert alert-success text-center" role="alert">
+            Los datos se han guardado correctamente.
+        </div>
+    </div>
+    <div *ngIf="error.length!=0" class="d-flex justify-content-center">
+        <div class="alert alert-danger text-center">
+            {{this.error}}
         </div>
     </div>
 </div>
