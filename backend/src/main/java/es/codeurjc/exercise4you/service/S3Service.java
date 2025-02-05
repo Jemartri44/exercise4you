@@ -28,6 +28,7 @@ public class S3Service {
     }
 
     public MultipartFile downloadMultipartFile(String filePath, String filename) throws IOException{
+        System.out.println("Downloading file from S3: " + filePath + filename);
         return s3Repository.downloadMultipartFile(bucketName, filePath, filename);
     }
 }

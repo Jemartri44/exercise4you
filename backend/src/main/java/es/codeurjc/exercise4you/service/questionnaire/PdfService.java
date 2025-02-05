@@ -1252,13 +1252,16 @@ public class PdfService {
         p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
         document.add(p);
 
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+
         for(Objective objective : objectivesResponse.getObjectives()) {
             document.newPage();
 
             subtitle = new Paragraph("Objetivo " + (objectivesResponse.getObjectives().indexOf(objective)+1), subtitleFont);
             subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            subtitle.setSpacingBefore(5);
-            subtitle.setSpacingAfter(5);
+            subtitle.setSpacingBefore(10);
+            subtitle.setSpacingAfter(20);
             document.add(subtitle);
 
             addElementName(document, "Objetivo: ");
@@ -1279,10 +1282,17 @@ public class PdfService {
             addElementDetails(document, objective.getTemporal());
             addElementName(document, "Objetivo SMART: ");
             addElementDetails(document, objective.getSmartObjective());
+
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
+            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.addElement(img);
+            ct.go();
         }
 
-        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 110, 0);
+        
         document.close();
 
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_OBJECTIVES_" + objectivesResponse.getCompletionDate() +".pdf", buffer.toByteArray());
@@ -1344,6 +1354,7 @@ public class PdfService {
         img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
+        img.scaleToFit(110,110);
 
         Paragraph emptyLine = new Paragraph("");
         emptyLine.setSpacingBefore(80);
@@ -1421,13 +1432,19 @@ public class PdfService {
         list.add(item);
         document.add(list);
 
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+
+
         for(Prescription prescription : prescriptionsResponse.getPrescriptions()) {
             document.newPage();
+            
+            writer.setMargins(70, 70, 70, 60);
 
             subtitle = new Paragraph("Ejercicio " + (prescriptionsResponse.getPrescriptions().indexOf(prescription)+1), subtitleFont);
             subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            subtitle.setSpacingBefore(5);
-            subtitle.setSpacingAfter(5);
+            subtitle.setSpacingBefore(10);
+            subtitle.setSpacingAfter(20);
             document.add(subtitle);
 
             addPrescriptionElement(document, "Ejercicio", prescription.getExercise());
@@ -1439,6 +1456,12 @@ public class PdfService {
             addPrescriptionElement(document, "Volumen", prescription.getVolume());
             addPrescriptionElement(document, "Progresión", prescription.getProgression());
 
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
+            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.addElement(img);
+            ct.go();
         }
 
         if(prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations() != null && !prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations().isEmpty()) {
@@ -1446,8 +1469,8 @@ public class PdfService {
 
             subtitle = new Paragraph("Consideraciones especiales", subtitleFont);
             subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            subtitle.setSpacingBefore(5);
-            subtitle.setSpacingAfter(5);
+            subtitle.setSpacingBefore(10);
+            subtitle.setSpacingAfter(10);
             document.add(subtitle);
 
             String[] lines = prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations().split("\\r?\\n");
@@ -1466,10 +1489,17 @@ public class PdfService {
                 list.add(item);
             }
             document.add(list); 
+
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
+            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.addElement(img);
+            ct.go();
         }
 
-        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 45, 0);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 110, 0);
+
         document.close();
 
         PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_PRESCRIPTION_" + prescriptionsResponse.getCompletionDate() +".pdf", buffer.toByteArray());
@@ -1513,7 +1543,7 @@ public class PdfService {
             p.setIndentationLeft(40);
             p.setSpacingAfter(5);
             p.setLeading(12);
-            p.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
             document.add(p);
         }
         document.add(emptyLine);
@@ -1527,7 +1557,7 @@ public class PdfService {
         list.setIndentationLeft(20);
         list.setIndentationRight(20);
         ListItem item = new ListItem();
-        item.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
         item.add(new Chunk(name, boldBodyFont));
         list.add(item);
         document.add(list);
@@ -1540,7 +1570,7 @@ public class PdfService {
         p.setSpacingAfter(10);
         p.setSpacingBefore(5);
         p.setLeading(12);
-        p.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
         document.add(p);
     }
 
