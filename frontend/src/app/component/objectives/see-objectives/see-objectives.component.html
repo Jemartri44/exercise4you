@@ -23,28 +23,28 @@
                     <div class="col">
                         <h3 class="fw-bold mt-2"><li>Grupo poblacional:</li></h3>
                     </div><div class="col">
-                        <h3 class="fw-bold ms-5 mt-2"><li>El paciente padece enfermedades crónicas:</li></h3>
+                        <h3 class="fw-bold ms-4 mt-2"><li>El paciente padece enfermedades crónicas:</li></h3>
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col me-5">
-                        <input type="text" class="form-control ms-5" [value]="state.appData.objectives[0].populationGroup" readonly>
+                    <div class="col">
+                        <div class="alert alert-custom ms-5" [innerHTML]="state.appData.objectives[0].populationGroup"></div>
                     </div><div class="col ms-5">
-                        <input type="text" class="form-control ms-5 me-5" [value]="state.appData.objectives[0].chronicDisease" readonly>
+                        <div class="alert alert-custom ms-5" [innerHTML]="state.appData.objectives[0].chronicDisease"></div>
                     </div>
                 </div>
                 <div class="d-flex row align-items-center justify-content-center">
                     <div class="col">
                         <h3 class="fw-bold mt-2"><li>Grupo de enfermedades del paciente:</li></h3>
                     </div><div class="col">
-                        <h3 class="fw-bold ms-5 mt-2"><li>Enfermedad que padece el paciente:</li></h3>
+                        <h3 class="fw-bold ms-4 mt-2"><li>Enfermedad que padece el paciente:</li></h3>
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col me-5">
-                        <input type="text" class="form-control ms-5 me-5" [value]="state.appData.objectives[0].groupOfChronicDiseases" readonly>
+                    <div class="col">
+                        <div class="alert alert-custom ms-5" [innerHTML]="state.appData.objectives[0].groupOfChronicDiseases"></div>
                     </div><div class="col ms-5">
-                        <input type="text" class="form-control ms-5" [value]="state.appData.objectives[0].disease" readonly>
+                        <div class="alert alert-custom ms-5" [innerHTML]="state.appData.objectives[0].disease"></div>
                     </div>
                 </div>
             </div>
@@ -56,14 +56,14 @@
                     <div class="col">
                         <h3 class="fw-bold mt-2"><li>Objetivo:</li></h3>
                     </div><div class="col">
-                        <h3 class="fw-bold ms-5 mt-2"><li>Rango:</li></h3>
+                        <h3 class="fw-bold ms-4 mt-2"><li>Rango:</li></h3>
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col me-5">
-                        <input type="text" class="form-control ms-5 me-5" [value]="objective.objective" readonly>
+                    <div class="col">
+                        <div class="alert alert-custom ms-5" [innerHTML]="objective.objective"></div>
                     </div><div class="col ms-5">
-                        <input type="text" class="form-control ms-5" [value]="objective.range" readonly>
+                        <div class="alert alert-custom ms-5" [innerHTML]="objective.range"></div>
                     </div>
                 </div>
 
@@ -71,51 +71,41 @@
                     <div class="col">
                         <h3 class="fw-bold mt-2"><li>Prueba o cuestionario:</li></h3>
                     </div><div class="col">
-                        <h3 class="fw-bold ms-5 mt-2"><li>Específico:</li></h3>
+                        <h3 class="fw-bold ms-4 mt-2"><li>Específico:</li></h3>
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center">
-                    <div class="col me-5">
-                        <textarea [rows]="1 + objective.testOrQuestionnaire.length/55" class="form-control ms-5 me-5" [value]="objective.testOrQuestionnaire" readonly></textarea>
+                    <div class="col">
+                        <div class="alert alert-custom ms-5" [innerHTML]="objective.testOrQuestionnaire"></div>
                     </div><div class="col ms-5">
-                        <textarea [rows]="1 + objective.specific.length/55" class="form-control ms-5" [value]="objective.specific" readonly></textarea>
+                        <div class="alert alert-custom ms-5" [innerHTML]="objective.specific"></div>
                     </div>
                 </div>
 
                 <div class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-2"><li>Medible:</li></h3>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <textarea [rows]="1 + objective.measurable.length/120" class="form-control ms-5" [value]="objective.measurable" readonly></textarea>
-                </div>
+                <div class="alert alert-custom ms-5" [innerHTML]="objective.measurable"></div>
 
                 <div class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-2"><li>Alcanzable:</li></h3>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <textarea [rows]="1 + objective.achievable.length/120" class="form-control ms-5" [value]="objective.achievable" readonly></textarea>
-                </div>
+                <div class="alert alert-custom ms-5" [innerHTML]="objective.achievable"></div>
 
                 <div class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-2"><li>Relevante:</li></h3>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <textarea [rows]="1 + objective.relevant.length/120" class="form-control ms-5" [value]="objective.relevant" readonly></textarea>
-                </div>
+                <div class="alert alert-custom ms-5" [innerHTML]="objective.relevant"></div>
 
                 <div class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-2"><li>Temporal:</li></h3>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <textarea [rows]="1 + objective.temporal.length/120" class="form-control ms-5" [value]="objective.temporal" readonly></textarea>
-                </div>
+                <div class="alert alert-custom ms-5" [innerHTML]="objective.temporal"></div>
 
                 <div class="d-flex row align-items-center justify-content-center">
                     <h3 class="fw-bold mt-2"><li>Objetivo SMART:</li></h3>
                 </div>
-                <div class="d-flex align-items-center justify-content-center">
-                    <textarea [rows]="1 + objective.smartObjective.length/120" class="form-control ms-5" [value]="objective.smartObjective" readonly></textarea>
-                </div>
+                <div class="alert alert-info ms-5" [innerHTML]="objective.smartObjective"></div>
                 
                 <hr class="mb-4 mt-4">
             </div>

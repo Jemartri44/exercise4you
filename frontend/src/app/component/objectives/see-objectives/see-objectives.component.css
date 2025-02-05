@@ -51,3 +51,18 @@ textarea {
     font-size: 1.2rem;
     resize: none;
 }
+
+.alert-info {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    resize: none;
+}
+
+.alert-custom {
+    font-size: 1.2rem;
+    resize: none;
+    background-color: #ffffff;
+    border-color: #e4e4e4;
+    color: #272727;
+    padding: 12px;
+}

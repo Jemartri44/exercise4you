@@ -54,6 +54,19 @@ input {
 
 }
 
-br {
-    line-height: 1px;
+.alert-info {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    resize: none;
+    background-color: hsl(187, 100%, 95%); ;
+}
+
+.alert-custom {
+    height:max-content;
+    font-size: 1.2rem;
+    resize: none;
+    background-color: #ffffff;
+    border-color: #e4e4e4;
+    color: #272727;
+    padding: 12px;
 }
