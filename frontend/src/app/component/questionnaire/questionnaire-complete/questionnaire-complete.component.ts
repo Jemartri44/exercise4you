@@ -31,6 +31,7 @@ export class QuestionnaireCompleteComponent implements OnInit{
   error: string = "";
   weightState: string = "";
   percentage: number = 0;
+  block: string = "";
   @ViewChild('modalAlert') modalAlert: ElementRef;
   @ViewChild('modalWeight') modalWeight: ElementRef;
   @ViewChild('modalAlreadyExists') modalAlreadyExists: ElementRef;
@@ -117,6 +118,12 @@ export class QuestionnaireCompleteComponent implements OnInit{
       case 'APALQ':
         this.title = 'Cuestionario de evaluación de los niveles de actividad física (APALQ)';
         break;
+      case 'SF-36':
+        this.title = 'Cuestionario de salud SF-36';
+        break;
+      case 'PedsQL':
+        this.title = 'Cuestionario de calidad de vida pediátrica (PedsQL)';
+        break;
     }
   }
 
@@ -155,7 +162,15 @@ export class QuestionnaireCompleteComponent implements OnInit{
     if(answer === undefined) {
       return;
     }
-    this.questionnaireState = this.questionnaireService.getNextQuestion( this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4], this.question.code, this.question.question, answer).pipe(
+    let question = this.question.question;
+    if(this.router.url.split('/')[3] = 'SF-36') {
+      question = this.question.introduction;
+      if(this.question.question !== "") {
+        question = question + "<br>" + this.question.question;
+      }
+    }
+
+    this.questionnaireState = this.questionnaireService.getNextQuestion( this.router.url.split('/')[3], this.router.url.split('/')[2], this.router.url.split('/')[4], this.question.code, question, answer).pipe(
       map((question: QuestionnaireInfo["question"]) => {
         if(question === undefined ) {
           throw new Error('No se ha podido obtener la información del cuestionario');
@@ -274,12 +289,34 @@ export class QuestionnaireCompleteComponent implements OnInit{
   }
 
   calculatePercentage(code: string) {
+    if(code.at(0) == 'p'){
+      let totalQuestions = 23;
+      this.percentage = Math.floor(100*(parseInt(code.substring(6, code.length))-1)/totalQuestions);
+      this.getBlock(code);
+    }
+    if(code.at(0) == 's'){
+      let totalQuestions = 36;
+      this.percentage = Math.floor(100*(parseInt(code.substring(2, code.length))-1)/totalQuestions);
+    }
     if(code.at(code.length-1) == 'a'){
       let totalQuestions = 23;
       this.percentage = Math.floor(100*parseInt(code.substring(6, code.length-1))/totalQuestions);
     } else if(code.at(code.length-1) == 'b'){
       let totalQuestions = 10;
       this.percentage = Math.floor(100*parseInt(code.substring(6, code.length-1))/totalQuestions);
+    }
+  }
+
+  getBlock(code: string) {
+    let question = parseInt(code.substring(6, code.length));
+    if(question <= 8){
+      this.block = "MI SALUD Y ACTIVIDADES: Pregunta " + question + " de 8";
+    } else if(question <= 13){
+      this.block = "MIS SENTIMIENTOS: Pregunta " + (question-8) + " de 5";
+    } else if(question <= 18){
+      this.block = "MI VIDA SOCIAL: Pregunta " + (question-13) + " de 5";
+    } else if(question <= 23){
+      this.block = "MI SALUD MENTAL: Pregunta " + (question-18) + " de 5";
     }
   }
 }

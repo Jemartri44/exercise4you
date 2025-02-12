@@ -42,3 +42,7 @@ h3 {
 .question {
   color: #5362a3;
 }
+
+ul {
+  list-style-position: outside;
+}

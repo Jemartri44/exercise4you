@@ -152,9 +152,8 @@ public class ObjectivesService {
         Optional<ObjectivesResponse> optional = objectivesRepository.findBySessionAndPatientId(nSession, id);
         if(optional.isPresent()){
             objectivesRepository.delete(optional.get());
-        }else{
-            dataRecordService.setObjectives(objectivesResponse);
         }
+        dataRecordService.setObjectives(objectivesResponse);
         try {
             String pdfName = pdfService.generateObjectivesPdf(objectivesResponse);
             objectivesResponse.setPdf(pdfName);

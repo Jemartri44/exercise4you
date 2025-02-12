@@ -64,6 +64,9 @@ export class QuestionnaireAnswersComponent implements OnInit {
       case 'ePARmed-X':
         this.title = 'Examen médico electrónico de aptitud para la actividad física (ePARmed-X+)';
         break;
+      case 'SF-36':
+        this.title = 'Cuestionario de salud SF-36';
+        break;
     }
   }
 

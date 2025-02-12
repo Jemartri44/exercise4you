@@ -23,6 +23,8 @@ import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
 import es.codeurjc.exercise4you.entity.questionnaire.Ipaqe;
 import es.codeurjc.exercise4you.entity.questionnaire.Parq;
+import es.codeurjc.exercise4you.entity.questionnaire.Pedsql;
+import es.codeurjc.exercise4you.entity.questionnaire.Sf;
 import es.codeurjc.exercise4you.repository.jpa.DataRecordRepository;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 
@@ -185,6 +187,42 @@ public class DataRecordService {
         // We get the data record we should update
         DataRecord dataRecord = getCurrentDataRecord(patientId, session);
         dataRecord.setEparmed(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+
+    public void setSf(Sf sf) {
+        if(sf == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(sf.getPatientId(), sf.getSession());
+        dataRecord.setSf(sf.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deleteSf(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setSf(null);
+        dataRecordRepository.save(dataRecord);
+        deleteDataRecordIfEmpty(dataRecord);
+    }
+
+    public void setPedsql(Pedsql pedsql) {
+        if(pedsql == null){
+            throw new InternalError("Questionnaire is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(pedsql.getPatientId(), pedsql.getSession());
+        dataRecord.setPedsql(pedsql.getId());
+        dataRecordRepository.save(dataRecord);
+    }
+
+    public void deletePedsql(Integer patientId, Integer session) {
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(patientId, session);
+        dataRecord.setPedsql(null);
         dataRecordRepository.save(dataRecord);
         deleteDataRecordIfEmpty(dataRecord);
     }

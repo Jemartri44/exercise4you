@@ -42,19 +42,42 @@
                                     <hr class="dropdown-divider">
                                 </li>
                             </ng-container>
+                        
+                            <li><a class="dropdown-item" (click)="goToCmtcef()" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
+                                    ejercicio físico</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" (click)="goToParq()" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
+                                    todos (PAR-Q+)</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" (click)="goToEparmed()" [ngClass]="this.router.url.split('/')[3]==='ePARmed-X' ? 'bold' : ''">Examen médico electrónico de aptitud para la actividad
+                                    física (ePARmed-X+)</a>
+                            </li>
+                            <ng-container *ngSwitchCase="'LOADING'">
+                                <li>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-primary justify-content-end" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                            </ng-container>
+                            <ng-container *ngIf="state.appState==='LOADED'">
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) < 18 "><a class="dropdown-item" (click)="goToPedsql()" [ngClass]="this.router.url.split('/')[3]==='PedsQL' ? 'bold' : ''">Cuestionario de calidad de vida pediátrica (PedsQL)</a>
+                                </li>
+                                <li *ngIf="getAge(state.appData?.birthdate) >= 18"><a class="dropdown-item" (click)="goToSf()" [ngClass]="this.router.url.split('/')[3]==='SF-36' ? 'bold' : ''">Cuestionario de salud SF-36</a>
+                                </li>
+                            </ng-container>
                         </ng-container>
-                        <li><a class="dropdown-item" (click)="goToCmtcef()" [ngClass]="this.router.url.split('/')[3]==='CMTCEF' ? 'bold' : ''">Cuestionario del modelo transteórico del cambio de
-                                ejercicio físico</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" (click)="goToParq()" [ngClass]="this.router.url.split('/')[3]==='PAR-Q' ? 'bold' : ''">Cuestionario de aptitud para la actividad física para
-                                todos (PAR-Q+)</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" (click)="goToEparmed()" [ngClass]="this.router.url.split('/')[3]==='ePARmed-X' ? 'bold' : ''">Examen médico electrónico de aptitud para la actividad
-                                física (ePARmed-X+)</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-4">

@@ -28,7 +28,7 @@ export class QuestionnaireListComponent implements OnInit {
     appError?: string;
   }> | undefined;
 
-  constructor(private questionnaireService: QuestionnaireService, private router: Router) { }
+  constructor(private questionnaireService: QuestionnaireService, public router: Router) { }
 
   ngOnInit(): void {
     this.questionnairesState = this.questionnaireService.getQuestionnaireListInfo( this.router.url.split('/')[3], this.router.url.split('/')[2]).pipe(

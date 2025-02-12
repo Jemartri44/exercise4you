@@ -25,6 +25,8 @@ public class QuestionnaireService {
     private final CmtcefService cmtcefService;
     private final ParqService parqService;
     private final EparmedService eparmedService;
+    private final SfService sfService;
+    private final PedsqlService pedsqlService;
     @Autowired
     private final PatientRepository patientRepository;
 
@@ -44,6 +46,10 @@ public class QuestionnaireService {
                 return parqService.getParqSessionsInfo(id);
             case "ePARmed-X":
                 return eparmedService.getEparmedSessionsInfo(id);
+            case "SF-36":
+                return sfService.getSfSessionsInfo(id);
+            case "PedsQL":
+                return pedsqlService.getPedsqlSessionsInfo(id);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -66,6 +72,10 @@ public class QuestionnaireService {
                 return parqService.startParq(id, session);
             case "ePARmed-X":
                 return eparmedService.startEparmed(id, session);
+            case "SF-36":
+                return sfService.startSf(id, session);
+            case "PedsQL":
+                return pedsqlService.startPedsql(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -94,6 +104,12 @@ public class QuestionnaireService {
             case "ePARmed-X":
                 eparmedService.deleteEparmed(id, session);
                 return eparmedService.startEparmed(id, session);
+            case "SF-36":
+                sfService.deleteSf(id, session);
+                return sfService.startSf(id, session);
+            case "PedsQL":
+                pedsqlService.deletePedsql(id, session);
+                return pedsqlService.startPedsql(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -116,6 +132,10 @@ public class QuestionnaireService {
                 return parqService.nextQuestion(id, session, questionCode, question, answer);
             case "ePARmed-X":
                 return eparmedService.nextQuestion(id, session, questionCode, question, answer);
+            case "SF-36":
+                return sfService.nextQuestion(id, session, questionCode, question, answer);
+            case "PedsQL":
+                return pedsqlService.nextQuestion(id, session, questionCode, question, answer);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }
@@ -138,6 +158,10 @@ public class QuestionnaireService {
                 return parqService.getAnswers(id, session);
             case "ePARmed-X":
                 return eparmedService.getAnswers(id, session);
+            case "SF-36":
+                return sfService.getAnswers(id, session);
+            case "PedsQL":
+                return pedsqlService.getAnswers(id, session);
             default:
                 throw new RuntimeException("Invalid questionnaire type");
         }

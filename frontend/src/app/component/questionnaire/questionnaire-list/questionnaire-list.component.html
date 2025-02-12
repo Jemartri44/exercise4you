@@ -19,8 +19,97 @@
                     <h2>
                         <li>Descripción</li>
                     </h2>
+                    <p [innerHTML]="state.appData?.description"></p>
+                    <div *ngIf="this.router.url.split('/')[3] === 'SF-36'">
+                        <p>El <b>SF-36</b> (del inglés <i>Medical Outcomes Study 36-Item Short-Form Health Survey</i>) es un cuestionario ampliamente utilizado para evaluar la <b>calidad de vida relacionada con la salud</b> en diversos contextos clínicos y de investigación. Se compone de <b>36 ítems</b> que abarcan ocho dimensiones o escalas principales:</p>
+                        <ol class="mb-2">
+                        <li><b>Función física</b></li>
+                        <li><b>Rol físico</b> (limitaciones en el desempeño de actividades cotidianas por problemas físicos)</li>
+                        <li><b>Dolor corporal</b></li>
+                        <li><b>Salud general</b></li>
+                        <li><b>Vitalidad</b> (energía y fatiga)</li>
+                        <li><b>Función social</b></li>
+                        <li><b>Rol emocional</b> (limitaciones en el desempeño de actividades cotidianas por problemas emocionales)</li>
+                        <li><b>Salud mental</b></li>
+                        </ol>
+                        <p>Estas ocho dimensiones, en conjunto, permiten obtener un <b>perfil amplio</b> de la <b>salud percibida</b> por la persona, tanto desde la perspectiva física como mental.</p>
+
+                        <a class="btn btn-outline-primary ms-5 mb-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <h2 class="mb-1 mt-1 ms-1 me-1">Ver más detalles</h2>
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body ps-5 pe-4 pt-4">
+                                <h2><li>Características y utilidad clínica</li></h2>
+                                <ul class="inner-ul mb-3">
+                                    <li><b>Aplicabilidad:</b> El SF-36 está diseñado para ser auto-administrado, administrado por teléfono o aplicado mediante entrevista presencial a partir de los 14 años de edad. Su brevedad y facilidad de uso permiten integrarlo tanto en la práctica clínica como en estudios de investigación, ofreciendo una evaluación rápida y eficaz de la calidad de vida relacionada con la salud.</li>
+                                    <li><b>Validez y fiabilidad:</b> Ha sido validado en numerosas poblaciones y enfermedades crónicas, mostrando buena reproducibilidad y sensibilidad a los cambios en el estado de salud de los pacientes.</li>
+                                    <li><b>Comparaciones poblacionales:</b> Al contar con valores normativos para distintas poblaciones, el SF-36 posibilita la comparación de los resultados de un individuo o grupo con patrones de referencia.</li>
+                                </ul>
+
+                                <h2><li>Relevancia en ejercicio terapéutico</li></h2>
+                                <p>El <b>SF-36</b> suele emplearse en programas de rehabilitación y ejercicio terapéutico para evaluar la evolución del paciente no solo en términos de mejoría física, sino también en <b>bienestar psicológico</b> y <b>social</b>. En el contexto de la presente aplicación, resulta de gran utilidad para:</p>
+                                <ul class="inner-ul mb-3">
+                                    <li><b>Monitorizar</b> la efectividad de las intervenciones de ejercicio en la calidad de vida.</li>
+                                    <li><b>Personalizar</b> los programas de actividad física, ajustando la intensidad y frecuencia de los ejercicios a la respuesta individual de los usuarios.</li>
+                                    <li><b>Evaluar</b> el impacto global de la adherencia al ejercicio, valorando no solo la sintomatología física, sino también la percepción subjetiva de salud.</li>
+                                </ul>
+
+                                <h2><li>Conclusión y aplicación en la evaluación de la calidad de vida</li></h2>
+                                <p>Al incorporar el <b>SF-36</b> en la evaluación de los pacientes que participan en programas de ejercicio terapéutico, se obtiene una medida estandarizada de cómo perciben su salud y bienestar en ámbitos físicos, emocionales y sociales. Este enfoque integral resulta esencial para:</p>
+                                <ol class="mb-2">
+                                    <li>Detectar tempranamente posibles dificultades asociadas a la enfermedad o condición física, permitiendo ajustes oportunos en el programa de intervención.</li>
+                                    <li>Evaluar la evolución del paciente a lo largo del proceso de rehabilitación, identificando cambios en la calidad de vida que reflejen la eficacia de las intervenciones terapéuticas.</li>
+                                    <li>Brindar un soporte integral que considere tanto aspectos físicos como psicológicos, contribuyendo a la optimización del plan de rehabilitación y a la adherencia a largo plazo.</li>
+                                </ol>
+                                <p>Gracias a la aplicación sistemática del <b>SF-36</b>, la atención clínica se orienta más allá de los síntomas físicos y se enfoca en la <b>experiencia global de salud</b>, apoyando la <b>toma de decisiones terapéuticas</b> basadas en la evidencia y la <b>personalización</b> de las intervenciones.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="this.router.url.split('/')[3] === 'PedsQL'">
+                        <p>El <b>PedsQL</b> (del inglés <i>Pediatric Quality of Life Inventory</i>) es un instrumento ampliamente utilizado para evaluar la <b>calidad de vida relacionada con la salud</b> en población pediátrica (<b>niños y adolescentes</b>). Su diseño permite recoger información desde la perspectiva tanto de los propios menores como de sus padres o cuidadores, ofreciendo una <b>visión integral</b> del estado de salud y bienestar en diferentes contextos clínicos y de investigación.</p>
+                        <p>Este cuestionario consta de distintas versiones y módulos específicos según la edad y la patología, aunque en su forma genérica abarca áreas fundamentales de la vida del niño:</p>
+                        <ol class="mb-2">
+                        <li><b>Función física</b></li>
+                        <li><b>Funcionamiento emocional</b></li>
+                        <li><b>Funcionamiento social</b></li>
+                        <li><b>Funcionamiento escolar</b></li>
+                        </ol>
+                        <p>Estas dimensiones permiten obtener un <b>perfil amplio</b> de la <b>calidad de vida percibida</b> y el impacto que pueden tener <b>enfermedades crónicas</b>, tratamientos médicos o intervenciones terapéuticas en el desarrollo y la vida cotidiana de los niños.</p>
+
+                        <a class="btn btn-outline-primary ms-5 mb-3" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <h2 class="mb-1 mt-1 ms-1 me-1">Ver más detalles</h2>
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body ps-5 pe-4 pt-4">
+                                <h2><li>Características y utilidad clínica</li></h2>
+                                <ul class="inner-ul mb-3">
+                                <li><b>Aplicabilidad:</b> El PedsQL es relativamente breve y está adaptado a diferentes grupos de edad (desde 2 hasta 18 años, con módulos correspondientes a edades preescolares, escolares y adolescentes), lo que facilita su uso en consulta, programas de rehabilitación y estudios de investigación.</li>
+                                <li><b>Validez y fiabilidad:</b> Ha sido validado en múltiples países y en un amplio rango de condiciones pediátricas —incluyendo enfermedades crónicas, obesidad infantil o trastornos del desarrollo—, mostrando buena consistencia interna, reproducibilidad y sensibilidad a los cambios en el estado de salud.</li>
+                                <li><b>Perspectiva múltiple:</b> Dispone de versiones autoadministradas para los niños (cuando su edad y capacidad de comprensión lo permiten) y versiones paralelas para los padres o cuidadores. Esto permite contrastar la percepción del menor con la valoración de los adultos responsables.</li>
+                                <li><b>Comparaciones normativas:</b> Existen valores de referencia que posibilitan comparar los resultados de un individuo o grupo con la población general o con grupos específicos de niños con la misma patología.</li>
+                                </ul>
+
+                                <h2><li>Relevancia en ejercicio terapéutico</li></h2>
+                                <p>El <b>PedsQL</b> es especialmente útil en programas de rehabilitación y ejercicio terapéutico dirigidos a población pediátrica, ya que permite capturar cambios tanto en la dimensión física como en la esfera psicosocial de la calidad de vida. En este contexto, el cuestionario resulta de gran utilidad para:</p>
+                                <ul class="inner-ul mb-3">
+                                <li><b>Monitorizar</b> la efectividad de las intervenciones de ejercicio en la calidad de vida infantil, ofreciendo indicadores cuantitativos del progreso en el funcionamiento físico y psicosocial.</li>
+                                <li><b>Personalizar</b> los programas de actividad física, adaptando la intensidad y la duración de las actividades a las necesidades y evolución de cada niño, considerando también su percepción subjetiva de bienestar.</li>
+                                <li><b>Identificar</b> áreas de mejora específicas, ya que si un niño presenta mayor afectación en el ámbito emocional o social, la intervención se puede orientar de manera más individualizada para abordar estos aspectos.</li>
+                                </ul>
+
+                                <h2><li>Conclusión y aplicación en la evaluación de la calidad de vida</li></h2>
+                                <p>Al incorporar el <b>PedsQL</b> en la evaluación de los niños que participan en programas de ejercicio terapéutico, se obtiene una <b>medida estandarizada</b> de cómo perciben su <b>salud</b> y <b>bienestar</b> en diferentes ámbitos de la vida diaria. Este enfoque global resulta clave para:</p>
+                                <ol class="mb-2">
+                                <li>Detectar tempranamente posibles dificultades asociadas a su enfermedad o tratamiento.</li>
+                                <li>Evaluar la evolución del niño a lo largo del programa.</li>
+                                <li>Brindar un soporte integral ajustado a las necesidades físicas, emocionales y sociales de la población pediátrica.</li>
+                                </ol>
+                                <p>Con el uso de este cuestionario, la intervención no solo se centra en los componentes puramente físicos de la rehabilitación, sino que abarca la <b>perspectiva completa del menor</b>, facilitando la <b>toma de decisiones clínicas</b> y la <b>optimización del plan terapéutico</b>.</p>
+
+                            </div>
+                        </div>
+                    </div>
                 </ul>
-                <p [innerHTML]="state.appData?.description"></p>
                 <app-session-buttons *ngIf="!state.appData?.todayCompleted" [buttons]="['toComplete']" [session]="today.number" [date]="today.date + ' (hoy)'"></app-session-buttons>
 
             </div>

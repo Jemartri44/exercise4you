@@ -52,6 +52,8 @@ public class DataRecord implements Serializable{
     private String cmtcef;
     private String parq;
     private String eparmed;
+    private String sf;
+    private String pedsql;
 
     private String imc;
     private String icc;

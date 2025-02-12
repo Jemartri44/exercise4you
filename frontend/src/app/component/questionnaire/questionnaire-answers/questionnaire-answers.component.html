@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div *ngFor="let answer of state.appData.answers; index as i" class="me-3 mb-2">
-                <h3><li [innerHTML]="answer.question"></li></h3>
+                <h3><ul><li [innerHTML]="answer.question"></li></ul></h3>
                 <div class="d-flex align-items-center justify-content-center">
                     <h3 class="fw-bold ms-5 mt-2">Respuesta:</h3>
                     <input type="text" class="form-control ms-5" [value]="answer.answer" readonly>

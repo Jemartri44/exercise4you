@@ -87,6 +87,16 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/ePARmed-X']);
   }
 
+  goToSf() {
+    console.debug("Redirecting to SF-36");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/SF-36']);
+  }
+
+  goToPedsql() {
+    console.debug("Redirecting to PedsQL");
+    this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/PedsQL']);
+  }
+
   goToIMC() {
     console.debug("Redirecting to IMC");
     this.router.navigate(['pacientes/' + this.router.url.split('/')[2] + '/IMC']);

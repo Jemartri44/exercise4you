@@ -65,6 +65,16 @@ export const routes: Routes = [
     { path: 'pacientes/:id/ePARmed-X/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ePARmed-X/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
 
+    { path: 'pacientes/:id/SF-36', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/SF-36/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/SF-36/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/SF-36/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
+    { path: 'pacientes/:id/PedsQL', component: QuestionnaireListComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PedsQL/:session/completar', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PedsQL/:session/repetir', component: QuestionnaireCompleteComponent, canActivate: [authGuard] },
+    { path: 'pacientes/:id/PedsQL/:session/ver-respuestas', component: QuestionnaireAnswersComponent, canActivate: [authGuard] },
+
     { path: 'pacientes/:id/IMC', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/ICC', component: AnthropometryComponent, canActivate: [authGuard] },
     { path: 'pacientes/:id/circunferencia-cintura', component: AnthropometryComponent, canActivate: [authGuard] },

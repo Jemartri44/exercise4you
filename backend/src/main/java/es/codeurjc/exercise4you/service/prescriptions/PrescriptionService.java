@@ -153,9 +153,8 @@ public class PrescriptionService {
         System.out.println(prescriptionsResponse.toString());
         if(optional.isPresent()){
             prescriptionsRepository.delete(optional.get());
-        }else{
-            dataRecordService.setPrescriptions(prescriptionsResponse);
         }
+        dataRecordService.setPrescriptions(prescriptionsResponse);
         try {
             String pdfName = pdfService.generatePrescriptionsPdf(prescriptionsResponse);
             prescriptionsResponse.setPdf(pdfName);

@@ -14,6 +14,18 @@ p {
     line-height: 1.5rem;
 }
 
+ol {
+    text-align: justify;
+    font-size:1.1rem;
+    line-height: 1.5rem;
+}
+
+.inner-ul {
+    text-align: justify;
+    font-size:1.1rem;
+    line-height: 1.5rem;
+}
+
 .spinner-border {
     width: 4rem;
     height: 4rem;
@@ -21,3 +33,5 @@ p {
     margin-top: 15%;
 }
 
+.collapse {
+}

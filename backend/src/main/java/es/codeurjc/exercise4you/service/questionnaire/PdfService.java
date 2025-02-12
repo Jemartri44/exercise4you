@@ -24,24 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.List;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.ByteBuffer;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import es.codeurjc.exercise4you.entity.Patient;
@@ -50,18 +34,8 @@ import es.codeurjc.exercise4you.entity.objectives.Objective;
 import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
 import es.codeurjc.exercise4you.entity.prescriptions.Prescription;
 import es.codeurjc.exercise4you.entity.prescriptions.PrescriptionsResponse;
-import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
-import es.codeurjc.exercise4you.entity.questionnaire.Cmtcef;
-import es.codeurjc.exercise4you.entity.questionnaire.Eparmed;
-import es.codeurjc.exercise4you.entity.questionnaire.Ipaq;
-import es.codeurjc.exercise4you.entity.questionnaire.Ipaqe;
-import es.codeurjc.exercise4you.entity.questionnaire.Parq;
-import es.codeurjc.exercise4you.entity.questionnaire.results.ApalqResults;
-import es.codeurjc.exercise4you.entity.questionnaire.results.CmtcefResults;
-import es.codeurjc.exercise4you.entity.questionnaire.results.EparmedResults;
-import es.codeurjc.exercise4you.entity.questionnaire.results.IpaqResults;
-import es.codeurjc.exercise4you.entity.questionnaire.results.IpaqeResults;
-import es.codeurjc.exercise4you.entity.questionnaire.results.ParqResults;
+import es.codeurjc.exercise4you.entity.questionnaire.*;
+import es.codeurjc.exercise4you.entity.questionnaire.results.*;
 import es.codeurjc.exercise4you.repository.jpa.PatientRepository;
 import es.codeurjc.exercise4you.service.DataRecordService;
 import es.codeurjc.exercise4you.service.PatientService;
@@ -823,7 +797,7 @@ public class PdfService {
         }
         Patient patient = optional.get();
         EparmedResults results = EparmedService.getResults(eparmed);
-        Document document = new Document(PageSize.A4, 70, 70, 60, 30);
+        Document document = new Document(PageSize.A4, 70, 70, 60, 80);
         ByteBuffer buffer = new ByteBuffer();
         PdfWriter writer = PdfWriter.getInstance(document, buffer);
         document.open();
@@ -852,6 +826,8 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
+        
+
         ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
         Font rightColumnFont = FontFactory.getFont("Helvetica", 8, Font.ITALIC);
         Paragraph p5 = new Paragraph("Este informe no constituye un diagnóstico.\n" + //
@@ -872,6 +848,12 @@ public class PdfService {
         document.add(linebreak);
 
         Font bodyFont = FontFactory.getFont("Helvetica", 9);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 50, 0);
+        ct.setSimpleColumn(70, 30, 525, 85); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
+
         Font subtitleFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
         Paragraph recommendationsTitle = new Paragraph("RECOMENDACIONES", subtitleFont);
         recommendationsTitle.setSpacingBefore(10);
@@ -896,8 +878,13 @@ public class PdfService {
         declaration.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
         document.add(declaration);
 
+        float yPos = writer.getVerticalPosition(true);
 
-        ct.setSimpleColumn(90, 0, 310, 140); // coordinates for the left column
+        if(yPos < 183){
+            document.newPage();
+        }
+
+        ct.setSimpleColumn(90, 0, 310, 160); // coordinates for the left column
         p1 = new Paragraph("Nombre completo: " + patient.getName() + " "  + patient.getSurnames(), bodyFont);
         p2 = new Paragraph("Firma: _____________", bodyFont);
         Paragraph p3 = new Paragraph("Nombre del padre/tutor/cuidador:", bodyFont);
@@ -912,7 +899,7 @@ public class PdfService {
         ct.addElement(p4);
         ct.go();
 
-        ct.setSimpleColumn(330, 0, 500, 140); // coordinates for the right column
+        ct.setSimpleColumn(330, 0, 500, 160); // coordinates for the right column
         p1 = new Paragraph("Nombre del testigo:", bodyFont);
         p2 = new Paragraph("Firma del testigo: _____________", bodyFont);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd, HH:mm");
@@ -925,6 +912,14 @@ public class PdfService {
         ct.addElement(p2);
         ct.addElement(p3);
         ct.go();
+
+        if(writer.getPageNumber() == 2){
+            ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 50, 0);
+            ct.setSimpleColumn(70, 30, 525, 85); // coordinates for the right column
+            linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+            ct.addElement(linebreak);
+            ct.go();
+        }
 
         document.close();
         
@@ -1110,6 +1105,895 @@ public class PdfService {
         }
     }
 
+    public String generateSfPdf(Sf sf) throws DocumentException, MalformedURLException, IOException {
+        Optional<Patient> optional = patientRepository.findById(sf.getPatientId());
+        if (!optional.isPresent()) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+        Patient patient = optional.get();
+        SfResults results = SfService.getResults(sf);
+
+        Document document = new Document(PageSize.A4, 70, 70, 60, 60);
+        ByteBuffer buffer = new ByteBuffer();
+        PdfWriter writer = PdfWriter.getInstance(document, buffer);
+        document.open();
+
+        Font titleFont = FontFactory.getFont("Helvetica", 20);
+        Paragraph title = new Paragraph("Cuestionario de salud SF-36", titleFont);
+        title.setSpacingAfter(-10);
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        Chunk linebreak = new Chunk(new LineSeparator());
+
+        document.add(title);
+        document.add(linebreak);
+
+        ColumnText ct = new ColumnText(writer.getDirectContent());
+        Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
+        ct.setSimpleColumn(90, 150, 336, 725); // coordinates for the left column
+        Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), sf.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p4 = new Paragraph("Fecha: " + sf.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + sf.getSession() + ")", leftColumnFont);
+        p1.setSpacingAfter(3);
+        p2.setSpacingAfter(3);
+        p4.setSpacingAfter(3);
+        ct.addElement(p1);
+        ct.addElement(p2);
+        ct.addElement(p4);
+        ct.go();
+
+        ct.setSimpleColumn(340, 150, 500, 725); // coordinates for the right column
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
+        img.scaleToFit(80, 80); // adjust the size as needed
+        img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        img.setSpacingBefore(8);
+        ct.addElement(img);
+        ct.go();
+        img.scaleToFit(100,100);
+
+        Paragraph emptyLine = new Paragraph("");
+        emptyLine.setSpacingBefore(55);
+        document.add(emptyLine);
+        document.add(linebreak);
+
+        Font subtitleFont = FontFactory.getFont("Helvetica", 14, Font.BOLD);
+        Paragraph subtitle = new Paragraph("Descripción", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(5);
+        subtitle.setSpacingAfter(5);
+        document.add(subtitle);
+
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        Paragraph p = new Paragraph();
+        p.setSpacingBefore(10);
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("El SF-36 (del inglés Medical Outcomes Study 36-Item Short-Form Health Survey) es un cuestionario ampliamente utilizado para evaluar la ", bodyFont));
+        p.add(new Chunk("calidad de vida relacionada con la salud", boldBodyFont));
+        p.add(new Chunk(" en diversos contextos clínicos y de investigación. Se compone de ", bodyFont));
+        p.add(new Chunk("36 ítems", boldBodyFont));
+        p.add(new Chunk(" que abarcan ocho dimensiones o escalas principales:", bodyFont));
+        document.add(p);
+
+        String[] boldTexts = {"Función física", "Rol físico", "Dolor corporal", "Salud general", "Vitalidad", "Función social", "Rol emocional", "Salud mental"};
+        String[] definitions = {"", " (limitaciones en el desempeño de actividades cotidianas por problemas físicos)", "", "", " (energía y fatiga)", "", " (limitaciones en el desempeño de actividades cotidianas por problemas emocionales)", ""};
+        List list = new List(List.ORDERED);
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setFont(boldBodyFont);
+            item.setSpacingAfter(i == boldTexts.length - 1 ? 0 : 2);
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1.2f);
+            list.add(item);
+        }
+        document.add(list);
+
+        p = new Paragraph();
+        p.setSpacingBefore(5);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Estas ocho dimensiones, en conjunto, permiten obtener un ", bodyFont));
+        p.add(new Chunk("perfil amplio", boldBodyFont));
+        p.add(new Chunk(" de la ", bodyFont));
+        p.add(new Chunk("salud percibida", boldBodyFont));
+        p.add(new Chunk(" por la persona, tanto desde la perspectiva física como mental.", bodyFont));
+        document.add(p);
+
+        subtitle = new Paragraph("Características y utilidad clínica", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+
+        boldTexts = new String[]{"Aplicabilidad: ", "Validez y fiabilidad: ", "Comparaciones poblacionales: "};
+        definitions = new String[]{"El SF-36 está diseñado para ser auto-administrado, administrado por teléfono o aplicado mediante entrevista presencial a partir de los 14 años de edad.",
+            "Ha sido validado en numerosas poblaciones y enfermedades crónicas, mostrando buena reproducibilidad y sensibilidad a los cambios en el estado de salud de los pacientes.",
+            "Al contar con valores normativos para distintas poblaciones, el SF-36 posibilita la comparación de los resultados de un individuo o grupo con patrones de referencia."};
+        
+        list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1);
+            list.add(item);
+        }
+        document.add(list);
+
+        subtitle = new Paragraph("Relevancia en ejercicio terapéutico", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(10);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+        
+        p = new Paragraph();
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("El ", bodyFont));
+        p.add(new Chunk("SF-36", boldBodyFont));
+        p.add(new Chunk(" suele emplearse en programas de rehabilitación y ejercicio terapéutico para evaluar la evolución del paciente no solo en términos de mejoría física, sino también en ", bodyFont));
+        p.add(new Chunk("bienestar psicológico", boldBodyFont));
+        p.add(new Chunk(" y ", bodyFont));
+        p.add(new Chunk("social", boldBodyFont));
+        p.add(new Chunk(". En el contexto de la presente aplicación, resulta de gran utilidad para:", bodyFont));
+        document.add(p);
+
+        boldTexts = new String[]{"Monitorizar", "Personalizar", "Evaluar"};
+        definitions = new String[]{" la efectividad de las intervenciones de ejercicio en la calidad de vida.",
+            " los programas de actividad física, ajustando la intensidad y frecuencia de los ejercicios a la respuesta individual de los usuarios.",
+            " el impacto global de la adherencia al ejercicio, valorando no solo la sintomatología física, sino también la percepción subjetiva de salud."};
+        list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1);
+            list.add(item);
+        }
+        document.add(list);
+
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
+
+        document.newPage();
+
+        subtitle = new Paragraph("Conclusión y aplicación en", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        document.add(subtitle);
+
+        subtitle = new Paragraph("la evaluación de la calidad de vida", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+
+        p = new Paragraph();
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Al incorporar el ", bodyFont));
+        p.add(new Chunk("SF-36", boldBodyFont));
+        p.add(new Chunk(" en la evaluación de los pacientes que participan en programas de ejercicio terapéutico, se obtiene una medida estandarizada de cómo perciben su salud y bienestar en ámbitos físicos, emocionales y sociales. Este enfoque integral resulta esencial para:", bodyFont));
+        document.add(p);
+
+        definitions = new String[]{"Detectar tempranamente posibles dificultades asociadas a la enfermedad o condición física, permitiendo ajustes oportunos en el programa de intervención.",
+            "Evaluar la evolución del paciente a lo largo del proceso de rehabilitación, identificando cambios en la calidad de vida que reflejen la eficacia de las intervenciones terapéuticas.",
+            "Brindar un soporte integral que considere tanto aspectos físicos como psicológicos, contribuyendo a la optimización del plan de rehabilitación y a la adherencia a largo plazo."};
+        list = new List(List.ORDERED);
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setFont(boldBodyFont);
+            item.setSpacingAfter(i == boldTexts.length - 1 ? 0 : 2);
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1.2f);
+            list.add(item);
+        }
+        document.add(list);
+
+        p = new Paragraph();
+        p.setSpacingBefore(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Gracias a la aplicación sistemática del ", bodyFont));
+        p.add(new Chunk("SF-36", boldBodyFont));
+        p.add(new Chunk(", la atención clínica se orienta más allá de los síntomas físicos y se enfoca en la ", bodyFont));
+        p.add(new Chunk("experiencia global de salud", boldBodyFont));
+        p.add(new Chunk(", apoyando la ", bodyFont));
+        p.add(new Chunk("toma de decisiones terapéuticas", boldBodyFont));
+        p.add(new Chunk(" basadas en la evidencia y la ", bodyFont));
+        p.add(new Chunk("personalización", boldBodyFont));
+        p.add(new Chunk(" de las intervenciones.", bodyFont));
+        document.add(p);
+
+        subtitle = new Paragraph("Resultados", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(10);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+
+        // Crear una tabla de 3 columnas
+        PdfPTable table = new PdfPTable(3);
+        table.setWidthPercentage(100); // Ocupa el 100% del ancho disponible
+        // Definir anchos relativos de las columnas (por ejemplo, 2:1:5)
+        float[] columnWidths = {2.8f, 1.8f, 7f};
+        table.setWidths(columnWidths);
+
+        // Definir un padding (espaciado interno) para las celdas
+        int cellPadding = 6;
+        float cellPaddingTopRatio = 0.5f;
+
+        // Definir el color de la cabecera
+        BaseColor headerColor = new BaseColor(98, 151, 208, 100);
+
+        Font resultsFont = FontFactory.getFont("Helvetica", 12, Font.BOLD, new BaseColor(13, 62, 160));
+
+        // --- Fila de cabecera ---
+        PdfPCell cell;
+
+        cell = new PdfPCell(new Paragraph("Dimensiones", boldBodyFont));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setPadding(cellPadding);
+        cell.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        cell.setBackgroundColor(headerColor);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Puntuación sobre 100", boldBodyFont));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setPadding(cellPadding);
+        cell.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        cell.setBackgroundColor(headerColor);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Resumen del contenido", boldBodyFont));
+        // Para la cabecera se puede centrar también o alinear de otra forma
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setPadding(cellPadding);
+        cell.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        cell.setBackgroundColor(headerColor);
+        table.addCell(cell);
+
+        // --- Fila 1: Función física ---
+        PdfPCell cell1 = new PdfPCell(new Paragraph("Función física", bodyFont));
+        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell1.setPadding(cellPadding);
+        cell1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(cell1);
+
+        PdfPCell cell2 = new PdfPCell(new Paragraph(String.valueOf(results.getPhysicalFunction()), resultsFont));
+        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell2.setPadding(cellPadding);
+        cell2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(cell2);
+
+        PdfPCell cell3 = new PdfPCell(new Paragraph(
+                "Grado en que la salud limita las actividades físicas tales como el autocuidado, caminar, subir escaleras, inclinarse, " +
+                "coger o llevar pesos, y los esfuerzos moderados e intensos.", bodyFont));
+        cell3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell3.setPadding(cellPadding);
+        cell3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(cell3);
+
+        // --- Fila 2: Rol físico ---
+        PdfPCell r2c1 = new PdfPCell(new Paragraph("Rol físico", bodyFont));
+        r2c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r2c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r2c1.setPadding(cellPadding);
+        r2c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r2c1);
+
+        PdfPCell r2c2 = new PdfPCell(new Paragraph(String.valueOf(results.getRolePhysical()), resultsFont));
+        r2c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r2c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r2c2.setPadding(cellPadding);
+        r2c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r2c2);
+
+        PdfPCell r2c3 = new PdfPCell(new Paragraph(
+                "Grado en que la salud física interfiere en el trabajo y en otras actividades diarias, lo que incluye el rendimiento " +
+                "menor que el deseado, la limitación en el tipo de actividades realizadas o la dificultad en la realización de actividades.", bodyFont));
+        r2c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r2c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r2c3.setPadding(cellPadding);
+        r2c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r2c3);
+
+        // --- Fila 3: Dolor corporal ---
+        PdfPCell r3c1 = new PdfPCell(new Paragraph("Dolor corporal", bodyFont));
+        r3c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r3c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r3c1.setPadding(cellPadding);
+        r3c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r3c1);
+
+        PdfPCell r3c2 = new PdfPCell(new Paragraph(String.valueOf(results.getBodilyPain()), resultsFont));
+        r3c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r3c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r3c2.setPadding(cellPadding);
+        r3c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r3c2);
+
+        PdfPCell r3c3 = new PdfPCell(new Paragraph(
+                "La intensidad del dolor y su efecto en el trabajo habitual, tanto fuera de casa como en el hogar.", bodyFont));
+        r3c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r3c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r3c3.setPadding(cellPadding);
+        r3c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r3c3);
+
+        // --- Fila 4: Salud general ---
+        PdfPCell r4c1 = new PdfPCell(new Paragraph("Salud general", bodyFont));
+        r4c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r4c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r4c1.setPadding(cellPadding);
+        r4c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r4c1);
+
+        PdfPCell r4c2 = new PdfPCell(new Paragraph(String.valueOf(results.getGeneralHealth()), resultsFont));
+        r4c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r4c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r4c2.setPadding(cellPadding);
+        r4c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r4c2);
+
+        PdfPCell r4c3 = new PdfPCell(new Paragraph(
+                "Valoración personal de la salud que incluye la salud actual, las perspectivas de salud en el futuro y la resistencia a enfermar.", bodyFont));
+        r4c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r4c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r4c3.setPadding(cellPadding);
+        r4c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r4c3);
+
+        // --- Fila 5: Vitalidad ---
+        PdfPCell r5c1 = new PdfPCell(new Paragraph("Vitalidad", bodyFont));
+        r5c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r5c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r5c1.setPadding(cellPadding);
+        r5c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r5c1);
+
+        PdfPCell r5c2 = new PdfPCell(new Paragraph(String.valueOf(results.getVitality()), resultsFont));
+        r5c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r5c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r5c2.setPadding(cellPadding);
+        r5c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r5c2);
+
+        PdfPCell r5c3 = new PdfPCell(new Paragraph(
+                "Sentimiento de energía y vitalidad, frente al sentimiento de cansancio y agotamiento.", bodyFont));
+        r5c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r5c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r5c3.setPadding(cellPadding);
+        r5c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r5c3);
+
+        // --- Fila 6: Función social ---
+        PdfPCell r6c1 = new PdfPCell(new Paragraph("Función social", bodyFont));
+        r6c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r6c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r6c1.setPadding(cellPadding);
+        r6c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r6c1);
+
+        PdfPCell r6c2 = new PdfPCell(new Paragraph(String.valueOf(results.getSocialFunction()), resultsFont));
+        r6c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r6c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r6c2.setPadding(cellPadding);
+        r6c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r6c2);
+
+        PdfPCell r6c3 = new PdfPCell(new Paragraph(
+                "Grado en el que los problemas de salud física o emocional interfieren en la vida social habitual.", bodyFont));
+        r6c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r6c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r6c3.setPadding(cellPadding);
+        r6c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r6c3);
+
+        // --- Fila 7: Rol emocional ---
+        PdfPCell r7c1 = new PdfPCell(new Paragraph("Rol emocional", bodyFont));
+        r7c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r7c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r7c1.setPadding(cellPadding);
+        r7c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r7c1);
+
+        PdfPCell r7c2 = new PdfPCell(new Paragraph(String.valueOf(results.getRoleEmotional()), resultsFont));
+        r7c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r7c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r7c2.setPadding(cellPadding);
+        r7c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r7c2);
+
+        PdfPCell r7c3 = new PdfPCell(new Paragraph(
+                "Grado en el que los problemas emocionales interfieren en el trabajo u otras actividades diarias, lo que incluye la reducción en el tiempo " +
+                "dedicado a esas actividades, el rendimiento menor que el deseado y una disminución del cuidado al trabajar.", bodyFont));
+        r7c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r7c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r7c3.setPadding(cellPadding);
+        r7c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r7c3);
+
+        // --- Fila 8: Salud mental ---
+        PdfPCell r8c1 = new PdfPCell(new Paragraph("Salud mental", bodyFont));
+        r8c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r8c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r8c1.setPadding(cellPadding);
+        r8c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r8c1);
+
+        PdfPCell r8c2 = new PdfPCell(new Paragraph(String.valueOf(results.getMentalHealth()), resultsFont));
+        r8c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r8c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r8c2.setPadding(cellPadding);
+        r8c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r8c2);
+
+        PdfPCell r8c3 = new PdfPCell(new Paragraph(
+                "Salud mental general, lo que incluye la depresión, la ansiedad, el control de la conducta y el control emocional y el efecto positivo en general.", bodyFont));
+        r8c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r8c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r8c3.setPadding(cellPadding);
+        r8c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r8c3);
+
+        // --- Fila 9: Evolución declarada de la salud ---
+        PdfPCell r9c1 = new PdfPCell(new Paragraph("Evolución declarada de la salud", bodyFont));
+        r9c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r9c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r9c1.setPadding(cellPadding);
+        r9c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r9c1);
+
+        PdfPCell r9c2 = new PdfPCell(new Paragraph(String.valueOf(results.getHealthEvolution()), resultsFont));
+        r9c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r9c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r9c2.setPadding(cellPadding);
+        r9c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r9c2);
+
+        PdfPCell r9c3 = new PdfPCell(new Paragraph(
+                "Valoración de la salud actual comparada con la de un año atrás.", bodyFont));
+        r9c3.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+        r9c3.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r9c3.setPadding(cellPadding);
+        r9c3.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r9c3);
+
+        // Añadir la tabla al documento
+        document.add(table);
+    
+
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(30, 30, 930, 800); // coordinates for the right column
+        img.setAlignment(Element.ALIGN_RIGHT);
+        img.setAlignment(Element.ALIGN_TOP);
+        ct.addElement(img);
+        ct.go();
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
+
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 110, 0);
+        
+        document.close();
+
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_SF36_" + sf.getCompletionDate() +".pdf", buffer.toByteArray());
+        try {
+            String returned = s3Service.uploadMultipartFile("pdfs/sf36/", pdfMultipartFile);
+            return returned.split(" ")[3];
+        } catch (Exception e) {
+            throw new IOException("Error uploading file to S3");
+        }
+    }
+
+    public String generatePedsqlPdf(Pedsql pedsql) throws DocumentException, MalformedURLException, IOException {
+        Optional<Patient> optional = patientRepository.findById(pedsql.getPatientId());
+        if (!optional.isPresent()) {
+            throw new IllegalArgumentException("Patient not found");
+        }
+        Patient patient = optional.get();
+        PedsqlResults results = PedsqlService.getResults(pedsql);
+
+        Document document = new Document(PageSize.A4, 70, 70, 60, 60);
+        ByteBuffer buffer = new ByteBuffer();
+        PdfWriter writer = PdfWriter.getInstance(document, buffer);
+        document.open();
+
+        Font titleFont = FontFactory.getFont("Helvetica", 20);
+        Paragraph title = new Paragraph("Cuestionario de calidad de vida pediátrica (PedsQL)", titleFont);
+        title.setSpacingAfter(-10);
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        Chunk linebreak = new Chunk(new LineSeparator());
+
+        document.add(title);
+        document.add(linebreak);
+
+        ColumnText ct = new ColumnText(writer.getDirectContent());
+        Font leftColumnFont = FontFactory.getFont("Helvetica", 10);
+        ct.setSimpleColumn(90, 150, 336, 695); // coordinates for the left column
+        Paragraph p1 = new Paragraph("Paciente: " + patient.getSurnames() + ", " + patient.getName(), leftColumnFont);
+        Paragraph p2 = new Paragraph("Fecha de nacimiento: " + patient.getBirthdate().format(formatter)  + " ("+ getYearsBetween(patient.getBirthdate(), pedsql.getCompletionDate()) +" años)", leftColumnFont);
+        Paragraph p3= new Paragraph("Fecha: " + pedsql.getCompletionDate().format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + " (Sesión " + pedsql.getSession() + ")", leftColumnFont);
+        p1.setSpacingAfter(3);
+        p2.setSpacingAfter(3);
+        p3.setSpacingAfter(3);
+        ct.addElement(p1);
+        ct.addElement(p2);
+        ct.addElement(p3);
+        ct.go();
+        
+        ct.setSimpleColumn(340, 150, 500, 695); // coordinates for the right column
+        InputStream imgStream = new ClassPathResource("img/exercise4you.png").getInputStream();
+        Image img = Image.getInstance(imgStream.readAllBytes());
+        img.scaleToFit(80, 80); // adjust the size as needed
+        img.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        img.setSpacingBefore(10);
+        ct.addElement(img);
+        ct.go();
+        
+        Paragraph emptyLine = new Paragraph("");
+        emptyLine.setSpacingBefore(55);
+        document.add(emptyLine);
+        document.add(linebreak);
+
+        Font subtitleFont = FontFactory.getFont("Helvetica", 14, Font.BOLD);
+        Paragraph subtitle = new Paragraph("Descripción", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(5);
+        subtitle.setSpacingAfter(5);
+        document.add(subtitle);
+
+        Font bodyFont = FontFactory.getFont("Helvetica", 10);
+        Font boldBodyFont = FontFactory.getFont("Helvetica", 10, Font.BOLD);
+        Paragraph p = new Paragraph();
+        p.setSpacingBefore(10);
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("El ", bodyFont));
+        p.add(new Chunk("PedsQL", boldBodyFont));
+        p.add(new Chunk(" (Pediatric Quality of Life Inventory) es un instrumento ampliamente utilizado para evaluar la ", bodyFont));
+        p.add(new Chunk("calidad de vida relacionada con la salud", boldBodyFont));
+        p.add(new Chunk(" en población pediátrica ", bodyFont));
+        p.add(new Chunk("(niños y adolescentes)", boldBodyFont));
+        p.add(new Chunk(" Su diseño permite recoger información desde la perspectiva tanto de los propios menores como de sus padres o cuidadores, ofreciendo una visión integral del estado de salud y bienestar en diferentes contextos clínicos y de investigación. Este cuestionario consta de distintas versiones y módulos específicos según la edad y la patología, aunque en su forma genérica abarca áreas fundamentales de la vida del niño:", bodyFont));
+        document.add(p);
+
+        String[] boldTexts = {"Función física", "Funcionamiento emocional", "Funcionamiento social", "Funcionamiento escolar"};
+        List list = new List(List.ORDERED);
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setFont(boldBodyFont);
+            item.setSpacingAfter(i == boldTexts.length - 1 ? 0 : 2);
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.setLeading(0, 1.2f);
+            list.add(item);
+        }
+        document.add(list);
+
+        p = new Paragraph();
+        p.setSpacingBefore(5);
+        p.setSpacingAfter(10);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Estas dimensiones permiten obtener un ", bodyFont));
+        p.add(new Chunk("perfil amplio", boldBodyFont));
+        p.add(new Chunk(" de la ", bodyFont));
+        p.add(new Chunk("calidad de vida percibida", boldBodyFont));
+        p.add(new Chunk(" y el impacto que pueden tener ", bodyFont));
+        p.add(new Chunk("enfermedades crónicas", boldBodyFont));
+        p.add(new Chunk(", tratamientos médicos o intervenciones terapéuticas en el desarrollo y la vida cotidiana de los niños.", bodyFont));
+        document.add(p);
+
+        subtitle = new Paragraph("Características y utilidad clínica", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+
+        boldTexts = new String[]{"Aplicabilidad: ", "Validez y fiabilidad: ", "Perspectiva múltiple: ", "Comparaciones normativas: "};
+        String[] definitions = {"El PedsQL es relativamente breve y está adaptado a diferentes grupos de edad (desde 2 hasta 18 años, con módulos correspondientes a edades preescolares, escolares y adolescentes), lo que facilita su uso en consulta, programas de rehabilitación y estudios de investigación.",
+            "Ha sido validado en múltiples países y en un amplio rango de condiciones pediátricas —incluyendo enfermedades crónicas, obesidad infantil o trastornos del desarrollo—, mostrando buena consistencia interna, reproducibilidad y sensibilidad a los cambios en el estado de salud.",
+            "Dispone de versiones autoadministradas para los niños (cuando su edad y capacidad de comprensión lo permiten) y versiones paralelas para los padres o cuidadores. Esto permite contrastar la percepción del menor con la valoración de los adultos responsables.", 
+            "Existen valores de referencia que posibilitan comparar los resultados de un individuo o grupo con la población general o con grupos específicos de niños con la misma patología."};    
+        
+        list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1);
+            list.add(item);
+        }
+        document.add(list);
+
+        Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
+
+        document.newPage();
+
+        subtitle = new Paragraph("Relevancia en ejercicio terapéutico", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(10);
+        subtitle.setSpacingAfter(20);
+        document.add(subtitle);
+        
+        p = new Paragraph();
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("El ", bodyFont));
+        p.add(new Chunk("PedsQL", boldBodyFont));
+        p.add(new Chunk(" es especialmente útil en programas de rehabilitación y ejercicio terapéutico dirigidos a población pediátrica, ya que permite capturar cambios tanto en la dimensión física como en la esfera psicosocial de la calidad de vida. En este contexto, el cuestionario resulta de gran utilidad para:", bodyFont));
+        document.add(p);
+
+        boldTexts = new String[]{"Monitorizar", "Personalizar", "Evaluar"};
+        definitions = new String[]{" la efectividad de las intervenciones de ejercicio en la calidad de vida infantil, ofreciendo indicadores cuantitativos del progreso en el funcionamiento físico y psicosocial.",
+            " los programas de actividad física, adaptando la intensidad y la duración de las actividades a las necesidades y evolución de cada niño, considerando también su percepción subjetiva de bienestar.",
+            " áreas de mejora específicas, ya que si un niño presenta mayor afectación en el ámbito emocional o social, la intervención se puede orientar de manera más individualizada para abordar estos aspectos."};
+        list = new List(List.UNORDERED);
+        list.setListSymbol("\u2022  ");
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(boldTexts[i], boldBodyFont));
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1);
+            list.add(item);
+        }
+        document.add(list);
+
+        subtitle = new Paragraph("Conclusión y aplicación en la evaluación de la calidad de vida", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingAfter(10);
+        subtitle.setSpacingBefore(10);
+        document.add(subtitle);
+
+        p = new Paragraph();
+        p.setSpacingAfter(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Al incorporar el ", bodyFont));
+        p.add(new Chunk("PedsQL", boldBodyFont));
+        p.add(new Chunk(" en la evaluación de los niños que participan en programas de ejercicio terapéutico, se obtiene una ", bodyFont));
+        p.add(new Chunk("medida estandarizada", boldBodyFont));
+        p.add(new Chunk(" de cómo perciben su ", bodyFont));
+        p.add(new Chunk("salud", boldBodyFont));
+        p.add(new Chunk(" y ", bodyFont));
+        p.add(new Chunk("bienestar", boldBodyFont));
+        p.add(new Chunk(" en diferentes ámbitos de la vida diaria. Este enfoque global resulta clave para:", bodyFont));
+        document.add(p);
+
+        definitions = new String[]{"Detectar tempranamente posibles dificultades asociadas a su enfermedad o tratamiento.",
+            "Evaluar la evolución del niño a lo largo del programa.",
+            "Brindar un soporte integral ajustado a las necesidades físicas, emocionales y sociales de la población pediátrica."};
+        list = new List(List.ORDERED);
+        list.setIndentationLeft(20);
+        list.setIndentationRight(20);
+        for (int i = 0; i < boldTexts.length; i++) {
+            ListItem item = new ListItem();
+            item.setFont(boldBodyFont);
+            item.setSpacingAfter(i == boldTexts.length - 1 ? 0 : 2);
+            item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+            item.add(new Chunk(definitions[i], bodyFont));
+            item.setLeading(0, 1.2f);
+            list.add(item);
+        }
+        document.add(list);
+
+        p = new Paragraph();
+        p.setSpacingBefore(5);
+        p.setLeading(12);
+        p.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
+        p.add(new Chunk("Con el uso de este cuestionario, la intervención no solo se centra en los componentes puramente físicos de la rehabilitación, sino que abarca la ", bodyFont));
+        p.add(new Chunk("perspectiva completa del menor", boldBodyFont));
+        p.add(new Chunk(", facilitando la ", bodyFont));
+        p.add(new Chunk("toma de decisiones clínicas", boldBodyFont));
+        p.add(new Chunk(" y la ", bodyFont));
+        p.add(new Chunk("optimización del plan terapéutico", boldBodyFont));
+        p.add(new Chunk(".", bodyFont));
+        document.add(p);
+
+        subtitle = new Paragraph("Resultados", subtitleFont);
+        subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        subtitle.setSpacingBefore(10);
+        subtitle.setSpacingAfter(10);
+        document.add(subtitle);
+
+        
+        // Crear una tabla de 3 columnas
+        PdfPTable table = new PdfPTable(2);
+        table.setWidthPercentage(100); // Ocupa el 100% del ancho disponible
+        // Definir anchos relativos de las columnas (por ejemplo, 2:1:5)
+        float[] columnWidths = {6f, 2f};
+        table.setWidths(columnWidths);
+
+        // Definir un padding (espaciado interno) para las celdas
+        int cellPadding = 6;
+        float cellPaddingTopRatio = 0.5f;
+        
+        // Definir el color de la cabecera
+        BaseColor headerColor = new BaseColor(98, 151, 208, 100);
+
+        Font resultsFont = FontFactory.getFont("Helvetica", 12, Font.BOLD, new BaseColor(13, 62, 160));
+
+        // --- Fila de cabecera ---
+        PdfPCell cell;
+        
+        cell = new PdfPCell(new Paragraph("Dimensión", boldBodyFont));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setPadding(cellPadding);
+        cell.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        cell.setBackgroundColor(headerColor);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Paragraph("Puntuación obtenida (0-100)", boldBodyFont));
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell.setPadding(cellPadding);
+        cell.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        cell.setBackgroundColor(headerColor);
+        table.addCell(cell);
+
+        // --- Fila 1: Funcionamiento físico ---
+        PdfPCell cell1 = new PdfPCell(new Paragraph("Funcionamiento físico", bodyFont));
+        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell1.setPadding(cellPadding);
+        cell1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(cell1);
+
+        PdfPCell cell2 = new PdfPCell(new Paragraph(String.valueOf(results.getPhysicalFunction()), resultsFont));
+        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        cell2.setPadding(cellPadding);
+        cell2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(cell2);
+        
+        // --- Fila 2: Funcionamiento emocional ---
+        PdfPCell r2c1 = new PdfPCell(new Paragraph("Funcionamiento emocional", bodyFont));
+        r2c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r2c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r2c1.setPadding(cellPadding);
+        r2c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r2c1);
+        
+        PdfPCell r2c2 = new PdfPCell(new Paragraph(String.valueOf(results.getEmotionalFunction()), resultsFont));
+        r2c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r2c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r2c2.setPadding(cellPadding);
+        r2c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r2c2);
+        
+        // --- Fila 3: Funcionamiento social ---
+        PdfPCell r3c1 = new PdfPCell(new Paragraph("Funcionamiento social", bodyFont));
+        r3c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r3c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r3c1.setPadding(cellPadding);
+        r3c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r3c1);
+        
+        PdfPCell r3c2 = new PdfPCell(new Paragraph(String.valueOf(results.getSocialFunction()), resultsFont));
+        r3c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r3c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r3c2.setPadding(cellPadding);
+        r3c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r3c2);
+
+        // --- Fila 4: Funcionamiento escolar ---
+        PdfPCell r4c1 = new PdfPCell(new Paragraph("Funcionamiento escolar", bodyFont));
+        r4c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r4c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r4c1.setPadding(cellPadding);
+        r4c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r4c1);
+        
+        PdfPCell r4c2 = new PdfPCell(new Paragraph(String.valueOf(results.getSchoolarFunction()), resultsFont));
+        r4c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r4c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r4c2.setPadding(cellPadding);
+        r4c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r4c2);
+        
+        // --- Fila 5: Funcionamiento psicosocial ---
+        PdfPCell r5c1 = new PdfPCell(new Paragraph("Funcionamiento psicosocial", bodyFont));
+        r5c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r5c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r5c1.setPadding(cellPadding);
+        r5c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r5c1);
+
+        PdfPCell r5c2 = new PdfPCell(new Paragraph(String.valueOf(results.getPsychosocialFunction()), resultsFont));
+        r5c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r5c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r5c2.setPadding(cellPadding);
+        r5c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r5c2);
+        
+        // --- Fila 6: Función social ---
+        PdfPCell r6c1 = new PdfPCell(new Paragraph("Puntuación total", boldBodyFont));
+        r6c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r6c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r6c1.setPadding(cellPadding);
+        r6c1.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r6c1);
+        
+        PdfPCell r6c2 = new PdfPCell(new Paragraph(String.valueOf(results.getTotal()), resultsFont));
+        r6c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+        r6c2.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        r6c2.setPadding(cellPadding);
+        r6c2.setPaddingTop(cellPadding * cellPaddingTopRatio);
+        table.addCell(r6c2);
+        
+        // Añadir la tabla al documento
+        document.add(table);
+        
+        
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(30, 30, 930, 800); // coordinates for the right column
+        img.setAlignment(Element.ALIGN_RIGHT);
+        img.setAlignment(Element.ALIGN_TOP);
+        ct.addElement(img);
+        ct.go();
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
+
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Fecha y hora: " + LocalDateTime.now(ZoneId.of("Europe/Madrid")).format(formatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale)) + ", a las " + LocalTime.now(ZoneId.of("Europe/Madrid")).format(timeFormatter) , footerFont), 525, 110, 0);
+        
+        document.close();
+
+        PdfMultipartFile pdfMultipartFile = new PdfMultipartFile(String.valueOf(patient.getId()) + "_PEDSQL_" + pedsql.getCompletionDate() +".pdf", buffer.toByteArray());
+        try {
+            String returned = s3Service.uploadMultipartFile("pdfs/pedsql/", pdfMultipartFile);
+            return returned.split(" ")[3];
+        } catch (Exception e) {
+            throw new IOException("Error uploading file to S3");
+        }
+    }
+
     public String generateObjectivesPdf(ObjectivesResponse objectivesResponse) throws DocumentException, MalformedURLException, IOException {
         Optional<Patient> optional = patientRepository.findById(objectivesResponse.getPatientId());
         if (!optional.isPresent()) {
@@ -1154,6 +2038,7 @@ public class PdfService {
         img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
+        img.scaleToFit(100,100);
 
         Paragraph emptyLine = new Paragraph("");
         emptyLine.setSpacingBefore(55);
@@ -1254,6 +2139,10 @@ public class PdfService {
 
         Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
         ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
 
         for(Objective objective : objectivesResponse.getObjectives()) {
             document.newPage();
@@ -1284,10 +2173,14 @@ public class PdfService {
             addElementDetails(document, objective.getSmartObjective());
 
             ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
-            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
-            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.setSimpleColumn(30, 30, 930, 800); // coordinates for the right column
+            img.setAlignment(Element.ALIGN_RIGHT);
+            img.setAlignment(Element.ALIGN_TOP);
             ct.addElement(img);
+            ct.go();
+            ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+            linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+            ct.addElement(linebreak);
             ct.go();
         }
 
@@ -1354,7 +2247,7 @@ public class PdfService {
         img.setSpacingBefore(8);
         ct.addElement(img);
         ct.go();
-        img.scaleToFit(110,110);
+        img.scaleToFit(100,100);
 
         Paragraph emptyLine = new Paragraph("");
         emptyLine.setSpacingBefore(80);
@@ -1434,6 +2327,10 @@ public class PdfService {
 
         Font footerFont = FontFactory.getFont("Helvetica", 10, Font.ITALIC);
         ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
+        ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+        linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+        ct.addElement(linebreak);
+        ct.go();
 
 
         for(Prescription prescription : prescriptionsResponse.getPrescriptions()) {
@@ -1457,10 +2354,14 @@ public class PdfService {
             addPrescriptionElement(document, "Progresión", prescription.getProgression());
 
             ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
-            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
-            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.setSimpleColumn(30, 30, 930, 800); // coordinates for the right column
+            img.setAlignment(Element.ALIGN_RIGHT);
+            img.setAlignment(Element.ALIGN_TOP);
             ct.addElement(img);
+            ct.go();
+            ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+            linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+            ct.addElement(linebreak);
             ct.go();
         }
 
@@ -1470,7 +2371,7 @@ public class PdfService {
             subtitle = new Paragraph("Consideraciones especiales", subtitleFont);
             subtitle.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
             subtitle.setSpacingBefore(10);
-            subtitle.setSpacingAfter(10);
+            subtitle.setSpacingAfter(15);
             document.add(subtitle);
 
             String[] lines = prescriptionsResponse.getPrescriptions().get(0).getSpecialConsiderations().split("\\r?\\n");
@@ -1484,17 +2385,21 @@ public class PdfService {
             
             for(String line : lines) {
                 item = new ListItem();
-                item.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+                item.setAlignment(com.itextpdf.text.Element.ALIGN_JUSTIFIED);
                 item.add(new Chunk(line, bodyFont));
                 list.add(item);
             }
             document.add(list); 
 
             ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, new Phrase("Pág. " + writer.getPageNumber(), bodyFont), 500, 75, 0);
-            ct.setSimpleColumn(30, 30, 280, 120); // coordinates for the right column
-            img.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-            img.setAlignment(Element.ALIGN_BOTTOM);
+            ct.setSimpleColumn(30, 30, 930, 800); // coordinates for the right column
+            img.setAlignment(Element.ALIGN_RIGHT);
+            img.setAlignment(Element.ALIGN_TOP);
             ct.addElement(img);
+            ct.go();
+            ct.setSimpleColumn(70, 30, 525, 110); // coordinates for the right column
+            linebreak = new Chunk(new LineSeparator(3.0F, 100.0F, new BaseColor(98, 151, 208), Element.ALIGN_BOTTOM, 0.0F));
+            ct.addElement(linebreak);
             ct.go();
         }
 
@@ -1577,4 +2482,5 @@ public class PdfService {
     private static int getYearsBetween(LocalDate date1, LocalDate date2) {
         return Period.between(date1, date2).getYears();
     }
+
 }
