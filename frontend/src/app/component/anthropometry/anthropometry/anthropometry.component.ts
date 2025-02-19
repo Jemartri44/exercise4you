@@ -156,6 +156,7 @@ export class AnthropometryComponent implements OnInit {
     }
     this.calculator.changesSaved = false;
     let data = this.calculator.getData();
+    console.debug(data)
     if(data === null) {
       return;
     }

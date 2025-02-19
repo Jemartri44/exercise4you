@@ -45,6 +45,8 @@ public class DataRecord implements Serializable{
 
     @Column(name = "n_session", nullable = false)
     private Integer nSession;
+
+    private String biometricsData;
     
     private String apalq;
     private String ipaq;

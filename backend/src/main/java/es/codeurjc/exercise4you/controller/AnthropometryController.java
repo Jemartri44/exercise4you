@@ -105,6 +105,7 @@ public class AnthropometryController {
 
     @PostMapping("/pacientes/{id}/anthropometry/medición-pliegues-cutáneos/save-data/{nSession}")
     public void saveSkinFoldsData(@RequestBody SkinFoldsDto skinFoldsDto, @PathVariable Integer id, @PathVariable Integer nSession) {
+        System.out.println(skinFoldsDto);
         anthropometryService.saveSkinFoldsData(skinFoldsDto, id, nSession);
     }
 }

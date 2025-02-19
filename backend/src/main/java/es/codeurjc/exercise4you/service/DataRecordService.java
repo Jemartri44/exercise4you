@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
+import org.bouncycastle.asn1.x509.qualified.BiometricData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import es.codeurjc.exercise4you.entity.anthropometry.IdealWeight;
 import es.codeurjc.exercise4you.entity.anthropometry.Imc;
 import es.codeurjc.exercise4you.entity.anthropometry.SkinFolds;
 import es.codeurjc.exercise4you.entity.anthropometry.WaistCircumference;
+import es.codeurjc.exercise4you.entity.biometrics.BiometricsData;
 import es.codeurjc.exercise4you.entity.objectives.ObjectivesResponse;
 import es.codeurjc.exercise4you.entity.prescriptions.PrescriptionsResponse;
 import es.codeurjc.exercise4you.entity.questionnaire.Apalq;
@@ -81,6 +83,16 @@ public class DataRecordService {
             return;
         }
         dataRecordRepository.delete(dataRecord);
+    }
+
+    public void setBiometricsData(BiometricsData biometricsData) {
+        if(biometricsData == null){
+            throw new InternalError("Biometrics data is not valid");
+        }
+        // We get the data record we should update
+        DataRecord dataRecord = getCurrentDataRecord(biometricsData.getPatientId(), biometricsData.getSession());
+        dataRecord.setBiometricsData(biometricsData.getId());
+        dataRecordRepository.save(dataRecord);
     }
     
     public void setApalq(Apalq apalq) {

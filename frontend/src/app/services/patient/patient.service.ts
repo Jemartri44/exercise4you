@@ -5,6 +5,9 @@ import { Patient } from '../../model/patient/patient';
 import { environment } from '../../../environments/environment.prod';
 import { PatientPage } from '../../model/patient/patient-page';
 import { NewPatientRequest } from './newPatientRequest';
+import { GeneralData } from '../../model/patient/general-data';
+import { BiometricsData } from '../../model/patient/biometrics-data';
+import { BiometricsAllData } from '../../model/patient/biometrics-all-data';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,8 @@ import { NewPatientRequest } from './newPatientRequest';
 export class PatientService {
 
   constructor(private http:HttpClient) { }
+
+  // Patient personal data
 
   getPatients(search: string, page: number = 0, size: number = 10):Observable<PatientPage>{
     
@@ -48,5 +53,39 @@ export class PatientService {
     return this.http.post<Patient>(environment.apiUrl+"/paciente/" + id + "/editar", newPatient).pipe(
       catchError(this.handleError)
     )
+  }
+
+  // Patient general data (personal + biometrics)
+
+  getPatientGeneralData(patientId: string): Observable<GeneralData> {
+    let url = environment.apiUrl+"/paciente/" + patientId + "/general-data";
+    return this.http.get<GeneralData>(url)
+  }
+
+  getBiometricsData(patientId: string, session: string): Observable<BiometricsData> {
+    let url = environment.apiUrl+"/paciente/" + patientId + "/biometrics-data/" + session;
+    return this.http.get<BiometricsData>(url).pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getAllBiometricsData(patientId: string): Observable<BiometricsAllData> {
+    let url = environment.apiUrl+"/paciente/" + patientId + "/all-biometrics-data";
+    return this.http.get<BiometricsAllData>(url)
+  }
+
+  saveData(patientId: string, session: string, data: BiometricsData): Observable<BiometricsData> {
+    console.debug("DATA: ")
+    console.debug(data)
+    console.debug(patientId);
+    console.debug(session)
+    let url = environment.apiUrl+"/paciente/" + patientId + "/save-data/" + session;
+    return this.http.post<BiometricsData>(url, data)
+  }
+
+  public static round(value: number, decimals: number): number {
+    if(decimals == 0) return Math.round(value + Number.EPSILON);
+    let factor = Math.pow(10, decimals);
+    return Math.round((value + Number.EPSILON) * factor) / factor;
   }
 }

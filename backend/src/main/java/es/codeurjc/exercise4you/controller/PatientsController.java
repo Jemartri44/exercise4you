@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.exercise4you.controller.request.PatientRequest;
+import es.codeurjc.exercise4you.entity.anthropometry.dto.ImcDto;
+import es.codeurjc.exercise4you.entity.biometrics.BiometricsAllData;
+import es.codeurjc.exercise4you.entity.biometrics.BiometricsData;
+import es.codeurjc.exercise4you.entity.biometrics.BiometricsDataDto;
+import es.codeurjc.exercise4you.entity.biometrics.BiometricsGeneralData;
+import es.codeurjc.exercise4you.entity.biometrics.GeneralData;
 import es.codeurjc.exercise4you.entity.dto.PatientDTO;
 import es.codeurjc.exercise4you.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +51,28 @@ public class PatientsController {
     public PatientDTO editPatient(@PathVariable Integer id, @RequestBody PatientRequest patientRequest){
         return patientService.editPatient(id, patientRequest);
     }
+
+
+    // GENERAL PATIENT DATA ENDPOINTS
+
+    @GetMapping("/paciente/{id}/general-data")
+    public GeneralData getGeneralData(@PathVariable Integer id){
+        return new GeneralData(patientService.getPatientDto(id), patientService.getBiometricsGeneralData(id));
+    }
+
+    @GetMapping("/paciente/{id}/all-biometrics-data")
+    public BiometricsAllData getBiometricsAllData(@PathVariable Integer id){
+        return patientService.getBiometricsAllData(id);
+    }
+
+    @GetMapping("/paciente/{id}/biometrics-data/{nSession}")
+    public BiometricsDataDto getBiometricsData(@PathVariable Integer id, @PathVariable Integer nSession){
+        return patientService.getBiometricsData(id, nSession);
+    }
+
+    @PostMapping("/paciente/{id}/save-data/{nSession}")
+    public void saveImcData(@RequestBody BiometricsDataDto biometricsDataDto, @PathVariable Integer id, @PathVariable Integer nSession) {
+        patientService.saveBiometricsData(biometricsDataDto, id, nSession);
+    }
+
 }

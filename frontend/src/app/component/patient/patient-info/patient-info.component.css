@@ -25,3 +25,41 @@ p {
   margin-bottom: 20px;
   font-size: large;
 }
+
+.vr {
+  border-left: 2px solid #000;
+  height: 100%;
+}
+
+label {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: large;
+}
+
+input {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: large;
+  max-width: 100px !important;
+}
+
+.input-group-text {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  max-height: auto !important;
+}
+
+h2 {
+  margin-top: 50px;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.input-group-text {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  max-height: auto !important;
+  margin-right: 10px;
+}
+

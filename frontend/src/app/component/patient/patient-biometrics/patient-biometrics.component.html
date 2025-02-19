@@ -1,0 +1,278 @@
+<div class="d-flex justify-content-between align-items-center">
+    <h1 name="title">Datos biométricos</h1>
+    <app-patient-session (selectedOption)="selectedOption($event)" [options]="this.sessions"></app-patient-session>
+</div>
+<div *ngIf="this.state === 'LOADING'">
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border loading-spinner text-primary justify-content-end" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+<div [ngClass]="(!this.tablesMode||this.state == 'LOADING') ? 'hidden' : ''">
+    <h1 class="text-center session">Registro histórico</h1>
+    <ng-container *ngIf="this.biometricsAllData!==undefined && this.biometricsAllData!==null">
+        <ng-container *ngIf="this.biometricsAllData.previous!==undefined && this.biometricsAllData.previous!==null">
+            <div class="d-flex justify-content-center text-center" *ngIf="this.biometricsAllData.previous.length === 0">
+                <p class="alert alert-warning text-center" role="alert">
+                    Aún no hay datos biométricos registrados
+                </p>
+            </div>
+            <ng-container *ngIf="this.biometricsAllData.previous.length !== 0">
+                <!-- Tabla de Medidas corporales -->
+                <h2 class="text-center"><u>Medidas corporales</u></h2>
+                <table *ngIf="biometricsAllData!==undefined && biometricsAllData!==null" class="table table-primary table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Sesión</th>
+                            <th scope="col">Estatura (cm)</th>
+                            <th scope="col">Peso (kg)</th>
+                            <th scope="col">C. Cintura (cm)</th>
+                            <th scope="col">C. Cadera (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let record of biometricsAllData.previous">
+                            <td>{{ record.session.date }}</td>
+                            <td>{{ record.session.number }}</td>
+                            <td>{{ record.biometricsDataDto.data.height ? record.biometricsDataDto.data.height : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.weight ? record.biometricsDataDto.data.weight : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.waistCircumference ? record.biometricsDataDto.data.waistCircumference : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.hipCircumference ? record.biometricsDataDto.data.hipCircumference : '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Tabla de Signos vitales -->
+                <h2 class="text-center"><u>Signos vitales</u></h2>
+                <table *ngIf="biometricsAllData!==undefined && biometricsAllData!==null" class="table table-secondary table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Sesión</th>
+                            <th scope="col">FC reposo (lpm)</th>
+                            <th scope="col">FR reposo (rpm)</th>
+                            <th scope="col">Presión arterial (mmHg)</th>
+                            <th scope="col">Saturación (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let record of biometricsAllData.previous">
+                            <td>{{ record.session.date }}</td>
+                            <td>{{ record.session.number }}</td>
+                            <td>{{ record.biometricsDataDto.data.restingHeartRate ? record.biometricsDataDto.data.restingHeartRate : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.restingRespiratoryFrequency ? record.biometricsDataDto.data.restingRespiratoryFrequency : '-' }}</td>
+                            <td>
+                                {{
+                                    (record.biometricsDataDto.data.systolicBloodPressure && record.biometricsDataDto.data.diastolicBloodPressure)
+                                    ? record.biometricsDataDto.data.systolicBloodPressure + '/' + record.biometricsDataDto.data.diastolicBloodPressure
+                                    : '-'
+                                }}
+                            </td>
+                            <td>{{ record.biometricsDataDto.data.oxygenSaturation ? record.biometricsDataDto.data.oxygenSaturation : '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Tabla de Pruebas de laboratorio -->
+                <h2 class="text-center"><u>Pruebas de laboratorio</u></h2>
+                <table *ngIf="biometricsAllData!==undefined && biometricsAllData!==null" class="table table-success table-bordered text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Sesión</th>
+                            <th scope="col">Glucosa (mg/dl)</th>
+                            <th scope="col">Col. Total (mg/dl)</th>
+                            <th scope="col">Col. HDL (mg/dl)</th>
+                            <th scope="col">Col. LDL (mg/dl)</th>
+                            <th scope="col">Triglicéridos (mg/dl)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let record of biometricsAllData.previous">
+                            <td>{{ record.session.date }}</td>
+                            <td>{{ record.session.number }}</td>
+                            <td>{{ record.biometricsDataDto.data.glucose ? record.biometricsDataDto.data.glucose : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.totalCholesterol ? record.biometricsDataDto.data.totalCholesterol : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.hdlCholesterol ? record.biometricsDataDto.data.hdlCholesterol : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.ldlCholesterol ? record.biometricsDataDto.data.ldlCholesterol : '-' }}</td>
+                            <td>{{ record.biometricsDataDto.data.triglycerides ? record.biometricsDataDto.data.triglycerides : '-' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</div>
+<div [ngClass]="(this.tablesMode||this.state == 'LOADING') ? 'hidden' : ''">
+    <h1 class="text-center session">{{this.session}}</h1>
+    <h2 class="text-center"><u>Medidas corporales</u></h2>
+    <div class="row align-content-center">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="height" class="me-3"><b>Altura:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end me-5">
+                    <input #height class="form-control number" type="number" id="height" name="height" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">cm</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="waistCircumference" class="me-3"><b>Circunferencia de la cintura:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #waistCircumference class="form-control number" type="number" id="waistCircumference" name="waistCircumference" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">cm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="weight" class="me-3"><b>Peso:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end me-5">
+                    <input #weight class="form-control number" type="number" id="weight" name="weight" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">kg</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="hipCircumference" class="me-3"><b>Circunferencia de la cadera:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #hipCircumference class="form-control number" type="number" id="hipCircumference" name="hipCircumference" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">cm</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="(this.tablesMode||this.state == 'LOADING') ? 'hidden' : ''">
+    <h2 class="text-center"><u>Signos vitales</u></h2>
+    <div class="row align-content-center">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="restingHeartRate" class="me-3"><b>Frecuencia cardiaca en reposo:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #restingHeartRate class="form-control number" type="number" id="restingHeartRate" name="restingHeartRate" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">lpm</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="bloodPresure" class="me-3"><b>Presión arterial:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #systolicBloodPressure class="form-control number blood-pressure" type="number" id="systolicBloodPressure" name="systolicBloodPressure" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">/</span>
+                    <input #diastolicBloodPressure class="form-control number blood-pressure" type="number" id="diastolicBloodPressure" name="diastolicBloodPressure" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mmHg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="restingRespiratoryFrequency" class="me-3"><b>Frecuencia respiratoria en reposo:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #restingRespiratoryFrequency class="form-control number" type="number" id="restingRespiratoryFrequency" name="restingRespiratoryFrequency" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">rpm</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="oxygenSaturation" class="me-3"><b>Saturación de oxígeno (SpO<sub>2</sub>):</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #oxygenSaturation class="form-control number" type="number" id="oxygenSaturation" name="oxygenSaturation" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div [ngClass]="(this.tablesMode||this.state == 'LOADING') ? 'hidden' : ''">
+    <h2 class="text-center"><u>Pruebas de laboratorio</u></h2>
+    <div class="row align-content-center">
+        <div class="col-3 align-content-center">
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="glucose" class="me-3"><b>Glucosa en sangre:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #glucose class="form-control number" type="number" id="glucose" name="glucose" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mg/dl</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 align-content-center">
+        </div>
+    </div>
+    <div class="row align-content-center">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="totalCholesterol" class="me-3"><b>Colesterol total:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #totalCholesterol class="form-control number" type="number" id="totalCholesterol" name="totalCholesterol" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mg/dl</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="hdlCholesterol" class="me-3"><b>Colesterol HDL:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #hdlCholesterol class="form-control number" type="number" id="hdlCholesterol" name="hdlCholesterol" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mg/dl</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="ldlCholesterol" class="me-3"><b>Colesterol LDL:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #ldlCholesterol class="form-control number" type="number" id="ldlCholesterol" name="ldlCholesterol" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mg/dl</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 align-content-center">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <label for="triglycerides" class="me-3"><b>Triglicéridos:</b></label>
+                <div class="input-group align-content-center d-flex justify-content-end">
+                    <input #triglycerides class="form-control number" type="number" id="triglycerides" name="triglycerides" (change)="round()" [readonly]="!this.editable">
+                    <span class="input-group-text">mg/dl</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center" *ngIf="this.editable">
+        <div *ngIf="this.changesSaved && this.state === 'LOADED'" class="d-flex justify-content-center">
+            <div class="alert alert-success text-center" role="alert">
+                Los datos se han guardado correctamente.
+            </div>
+        </div>
+        <div *ngIf="error.length!=0 && this.state === 'LOADED'" class="d-flex justify-content-center">
+            <div class="alert alert-danger text-center">
+                {{this.error}}
+            </div>
+        </div>
+        <div *ngIf="this.state === 'SAVING'"><button class="btn btn-primary d-block w-100 disabled" type="submit">
+            <div class="spinner-border save-spinner next text-light justify-content-end me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            Guardando</button></div>
+        <div *ngIf="this.state === 'ERROR'" class="d-flex justify-content-center">
+            <div class="alert alert-danger text-center">
+                Ha ocurrido un error al guardar los datos
+            </div>
+        </div>
+    </div><div class="d-flex justify-content-center mb-4" *ngIf="this.editable">
+        <button *ngIf="(this.state === 'LOADED' || this.state === 'ERROR') && this.session === this.sessions[0]" class="btn btn-primary" (click)="save()">Guardar resultados</button>
+    </div>
+</div>

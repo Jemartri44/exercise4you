@@ -1,6 +1,6 @@
 { 
     "/api/v1/*": { 
-    "target": "http://localhost:8080", 
+    "target": "https://exercise4you.es", 
     "secure": false, 
     "logLevel": "debug", 
     "changeOrigin": true 

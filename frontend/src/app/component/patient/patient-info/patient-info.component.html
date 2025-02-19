@@ -1,8 +1,7 @@
 <app-header></app-header>
 <app-navbar></app-navbar>
 <div class="container">
-    <h1 name="title">Datos personales</h1>
-
+    
     <ng-container *ngIf="(patientState | async) as state" [ngSwitch]="state.appState">
         <ng-container *ngSwitchCase="'ERROR'">
             <p class="alert alert-danger">{{ state.appError }}. Inténtelo de nuevo.</p>
@@ -15,16 +14,26 @@
             </div>
         </ng-container>
         <ng-container *ngIf="state.appState==='LOADED'">
-            <div class="">
-                <p><b>Nombre:</b>   {{state.appData?.name}}</p>
-                <p><b>Apellidos:</b>   {{state.appData?.surnames}}</p>
-                <p><b>Género:</b>   {{state.appData?.gender}}</p>
-                <p><b>Fecha de nacimiento:</b>   {{state.appData?.birthdate | date: 'dd/MM/yyyy'}}</p>
-                <p><b>Edad:</b>   {{state.appData?.age}} años</p>
+            <div class="d-flex justify-content-between mt-5">
+                <div class="col-4">
+                    <h1 name="title">Datos personales</h1>
+                    <p><b>Nombre:</b>   {{state.appData?.name}}</p>
+                    <p><b>Apellidos:</b>   {{state.appData?.surnames}}</p>
+                    <p><b>Género:</b>   {{state.appData?.gender}}</p>
+                    <p><b>Fecha de nacimiento:</b>   {{state.appData?.birthdate | date: 'dd/MM/yyyy'}}</p>
+                    <p><b>Edad:</b>   {{state.appData?.age}} años</p>
+                    <button class="btn btn-primary ms-4 mt-2" (click)="goToEditPatient()" type="submit">Editar paciente</button>
+                </div>
+                <div class="d-flex col mt-5" style="height: auto;">
+                    <div class="vr"></div>
+                </div>
+                <div class="col-7">
+                    <app-patient-biometrics [biometricsGeneralData]="this.biometricsGeneralData" [session]="this.session" [sessions]="this.sessions"></app-patient-biometrics>
+                </div>
             </div>
-            <button class="btn btn-primary ms-4 mt-2" (click)="goToEditPatient()" type="submit">Editar paciente</button>
         </ng-container>
     </ng-container>
+    <div style="height:100px"></div>
 </div>
 
 <app-footer></app-footer>
