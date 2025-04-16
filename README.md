@@ -1,6 +1,6 @@
 # Exercise4You 🏋️‍♂️  
 ## Introducción 📍  
-**Exercise4You** (https://exercise4you.es) es una aplicación web diseñada para fisioterapeutas, que les permite gestionar pacientes y prescribir ejercicio terapéutico de manera personalizada. Esta herramienta se enmarca dentro de una tesis doctoral y combina funcionalidades clave como la gestión de usuarios, la creación de cuestionarios dinámicos, la generación de informes en formato PDF y el uso de calculadoras antropométricas. La aplicación ha sido desarrollada con tecnologías modernas como Angular, Spring Boot y servicios de AWS, asegurando escalabilidad y seguridad.  
+**Exercise4You** (https://exercise4you.es) es una aplicación web diseñada para fisioterapeutas, que les permite gestionar pacientes y prescribir ejercicio terapéutico de manera personalizada. Esta herramienta se enmarca dentro de una tesis doctoral y combina funcionalidades clave como la gestión de usuarios, la creación de cuestionarios dinámicos, la generación de informes en formato PDF y el uso de calculadoras antropométricas. La aplicación ha sido desarrollada con tecnologías modernas como Angular, Spring Boot y servicios de AWS, asegurando escalabilidad y seguridad. Para más información, consultar el siguiente [enlace](https://www.jesusmartintrilla.dev/experience/exercise4you).
 
 ---
 
